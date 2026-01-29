@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESME Accelerate — Carte des Programmes IA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --white: #ffffff;
+            --bg-light: #f8faf9;
+            --bg-soft: #f0f5f3;
+            --emerald-500: #10b981;
+            --emerald-600: #059669;
+            --emerald-700: #047857;
+            --emerald-50: #ecfdf5;
+            --emerald-100: #d1fae5;
+            --violet-500: #8b5cf6;
+            --violet-600: #7c3aed;
+            --violet-50: #f5f3ff;
+            --violet-100: #ede9fe;
+            --blue-500: #3b82f6;
+            --blue-50: #eff6ff;
+            --amber-500: #f59e0b;
+            --amber-600: #d97706;
+            --amber-50: #fffbeb;
+            --amber-100: #fef3c7;
+            --dark: #1a1a2e;
+            --dark-soft: #2d2d44;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-light);
+            color: var(--dark);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 45px 40px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--emerald-50);
+            border: 1px solid var(--emerald-100);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--emerald-600);
+            margin-bottom: 18px;
+        }
+
+        .badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--emerald-500);
+            border-radius: 50%;
+        }
+
+        .main-title {
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 12px;
+            color: var(--dark);
+        }
+
+        .main-title span {
+            color: var(--emerald-600);
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--gray-600);
+        }
+
+        /* Main Grid - 50/50 Layout */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            align-items: stretch;
+        }
+
+        /* Block Styling */
+        .block {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .block-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--bg-soft);
+        }
+
+        .block-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .block-left .block-icon {
+            background: var(--emerald-500);
+        }
+
+        .block-right .block-icon {
+            background: linear-gradient(135deg, var(--amber-500), var(--amber-600));
+        }
+
+        .block-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .block-subtitle {
+            font-size: 0.78rem;
+            color: var(--gray-500);
+            margin-top: 3px;
+        }
+
+        /* Left Block - Programs */
+        .programs-list {
+            flex: 1;
+        }
+
+        .program-item {
+            display: flex;
+            gap: 14px;
+            padding: 18px 0;
+            border-bottom: 1px solid var(--bg-soft);
+        }
+
+        .program-item:last-of-type {
+            border-bottom: none;
+        }
+
+        .program-badge {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .program-item.p1 .program-badge {
+            background: var(--violet-50);
+            color: var(--violet-600);
+            border: 2px solid var(--violet-100);
+        }
+
+        .program-item.p2 .program-badge {
+            background: var(--blue-50);
+            color: var(--blue-500);
+            border: 2px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .program-item.p3 .program-badge {
+            background: var(--emerald-50);
+            color: var(--emerald-600);
+            border: 2px solid var(--emerald-100);
+        }
+
+        .program-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .program-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .program-title {
+            font-size: 0.98rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .program-duration {
+            font-size: 0.72rem;
+            color: var(--gray-500);
+            background: var(--bg-soft);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .program-audience {
+            font-size: 0.8rem;
+            color: var(--emerald-600);
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .program-impact {
+            font-size: 0.82rem;
+            color: var(--gray-600);
+            line-height: 1.5;
+        }
+
+        /* Socle Transverse */
+        .socle-transverse {
+            background: linear-gradient(135deg, var(--amber-50) 0%, var(--white) 100%);
+            border: 1px solid var(--amber-100);
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .socle-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--amber-500), #ef4444);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .socle-content h4 {
+            font-size: 0.88rem;
+            font-weight: 700;
+            margin-bottom: 3px;
+            color: var(--amber-600);
+        }
+
+        .socle-content p {
+            font-size: 0.8rem;
+            color: var(--gray-600);
+            line-height: 1.45;
+        }
+
+        /* Right Block - Workshop */
+        .block-right-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Workshop Innovation Card */
+        .workshop-card {
+            background: var(--bg-soft);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .workshop-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .workshop-emoji {
+            width: 42px;
+            height: 42px;
+            background: var(--white);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .workshop-title-wrap h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .workshop-title-wrap span {
+            font-size: 0.75rem;
+            color: var(--amber-600);
+            font-weight: 600;
+        }
+
+        .workshop-description {
+            font-size: 0.88rem;
+            color: var(--gray-600);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .workshop-description strong {
+            color: var(--dark);
+        }
+
+        .workshop-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .workshop-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--white);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            color: var(--gray-700);
+            font-weight: 500;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .workshop-tag span {
+            font-size: 0.85rem;
+        }
+
+        /* ESME Lab Premium */
+        .esme-lab {
+            background: linear-gradient(135deg, var(--violet-50) 0%, var(--white) 100%);
+            border: 2px solid var(--violet-100);
+            border-radius: 18px;
+            padding: 24px;
+            flex: 1;
+        }
+
+        .esme-lab-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .esme-lab-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, var(--violet-500), var(--violet-600));
+            color: white;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 6px 14px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+
+        .esme-lab-badge::before {
+            content: '⭐';
+            font-size: 0.75rem;
+        }
+
+        .esme-lab-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .esme-lab-description {
+            font-size: 0.85rem;
+            color: var(--gray-600);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .esme-lab-description strong {
+            color: var(--violet-600);
+        }
+
+        /* Steps */
+        .esme-steps {
+            display: flex;
+            gap: 12px;
+        }
+
+        .esme-step {
+            flex: 1;
+            text-align: center;
+            padding: 16px 12px;
+            background: var(--white);
+            border-radius: 12px;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .esme-step:not(:last-child)::after {
+            content: '→';
+            position: absolute;
+            right: -16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--violet-400);
+            font-size: 1rem;
+            font-weight: 600;
+            z-index: 1;
+        }
+
+        .esme-step-number {
+            width: 30px;
+            height: 30px;
+            background: var(--violet-50);
+            border: 2px solid var(--violet-200);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--violet-600);
+            margin: 0 auto 10px;
+        }
+
+        .esme-step-label {
+            font-size: 0.75rem;
+            color: var(--gray-600);
+            line-height: 1.4;
+        }
+
+        .esme-step-label strong {
+            display: block;
+            color: var(--dark);
+            font-size: 0.82rem;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            padding-top: 25px;
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .footer-logo {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+            color: var(--dark);
+        }
+
+        .footer-logo span {
+            color: var(--emerald-600);
+        }
+
+        .footer-tagline {
+            font-size: 0.78rem;
+            color: var(--gray-500);
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 30px 20px;
+            }
+
+            .esme-steps {
+                flex-direction: column;
+            }
+
+            .esme-step:not(:last-child)::after {
+                content: '↓';
+                right: 50%;
+                top: auto;
+                bottom: -16px;
+                transform: translateX(50%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="badge">Carte 2 — Dispositif Opérationnel</div>
+            <h1 class="main-title">La Carte des <span>Programmes IA</span></h1>
+            <p class="subtitle">Votre dispositif de transformation opérationnelle</p>
+        </header>
+
+        <!-- Main Content Grid 50/50 -->
+        <div class="main-grid">
+            <!-- BLOC GAUCHE : Socle de Compétences -->
+            <div class="block block-left">
+                <div class="block-header">
+                    <div class="block-icon">📚</div>
+                    <div>
+                        <h2 class="block-title">Le Socle de Compétences</h2>
+                        <p class="block-subtitle">Formations structurées · 1 à 2 jours</p>
+                    </div>
+                </div>
+
+                <div class="programs-list">
+                    <!-- P1 -->
+                    <div class="program-item p1">
+                        <div class="program-badge">P1</div>
+                        <div class="program-content">
+                            <div class="program-header-row">
+                                <span class="program-title">IA Stratégie & Décision</span>
+                                <span class="program-duration">1 jour</span>
+                            </div>
+                            <p class="program-audience">COMEX · Top Management</p>
+                            <p class="program-impact">Vision stratégique, arbitrage des investissements, mesure du ROI</p>
+                        </div>
+                    </div>
+
+                    <!-- P2 -->
+                    <div class="program-item p2">
+                        <div class="program-badge">P2</div>
+                        <div class="program-content">
+                            <div class="program-header-row">
+                                <span class="program-title">IA Management & Pilotage</span>
+                                <span class="program-duration">1-2 jours</span>
+                            </div>
+                            <p class="program-audience">Managers · Chefs de projets</p>
+                            <p class="program-impact">Cadrage projets IA, déploiement et conduite du changement</p>
+                        </div>
+                    </div>
+
+                    <!-- P3 -->
+                    <div class="program-item p3">
+                        <div class="program-badge">P3</div>
+                        <div class="program-content">
+                            <div class="program-header-row">
+                                <span class="program-title">IA Maîtrise & Métiers</span>
+                                <span class="program-duration">2 jours</span>
+                            </div>
+                            <p class="program-audience">8 familles métiers : BE, Travaux, Maintenance, Affaires...</p>
+                            <p class="program-impact">Intégration concrète de l'IA dans les processus quotidiens</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Socle Transverse -->
+                <div class="socle-transverse">
+                    <div class="socle-icon">🛡️</div>
+                    <div class="socle-content">
+                        <h4>Socle Transverse — IA Responsable</h4>
+                        <p>Sécurité des données, éthique industrielle et RGPD intégrés dans chaque module P1→P3</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BLOC DROITE : Accélérateur d'Innovation -->
+            <div class="block block-right">
+                <div class="block-header">
+                    <div class="block-icon">🚀</div>
+                    <div>
+                        <h2 class="block-title">L'Accélérateur d'Innovation</h2>
+                        <p class="block-subtitle">De l'idée au prototype</p>
+                    </div>
+                </div>
+
+                <div class="block-right-content">
+                    <!-- Workshop Innovation -->
+                    <div class="workshop-card">
+                        <div class="workshop-header">
+                            <div class="workshop-emoji">💡</div>
+                            <div class="workshop-title-wrap">
+                                <h4>Workshop Innovation</h4>
+                                <span>½ journée ou 1 journée</span>
+                            </div>
+                        </div>
+
+                        <p class="workshop-description">
+                            <strong>Exploration d'une thématique choisie</strong> en format collaboratif : nouveaux services, nouveaux modèles, rupture technologique. Échanges structurés pour faire émerger des propositions innovantes concrètes.
+                        </p>
+
+                        <div class="workshop-features">
+                            <div class="workshop-tag"><span>🎯</span> Thématique ciblée</div>
+                            <div class="workshop-tag"><span>👥</span> Format collaboratif</div>
+                            <div class="workshop-tag"><span>💬</span> Échanges structurés</div>
+                            <div class="workshop-tag"><span>✨</span> Propositions actionnables</div>
+                        </div>
+                    </div>
+
+                    <!-- ESME Lab -->
+                    <div class="esme-lab">
+                        <div class="esme-lab-header">
+                            <span class="esme-lab-badge">Option Premium</span>
+                            <h4 class="esme-lab-title">ESME Lab</h4>
+                        </div>
+
+                        <p class="esme-lab-description">
+                            Développez un <strong>prototype fonctionnel</strong> en lien direct avec les propositions innovantes issues des workshops. Les ingénieurs de l'ESME Lab transforment vos idées en POC concret.
+                        </p>
+
+                        <div class="esme-steps">
+                            <div class="esme-step">
+                                <div class="esme-step-number">1</div>
+                                <p class="esme-step-label"><strong>Cadrage</strong>Définition du périmètre et objectifs</p>
+                            </div>
+                            <div class="esme-step">
+                                <div class="esme-step-number">2</div>
+                                <p class="esme-step-label"><strong>POC</strong>Développement du prototype</p>
+                            </div>
+                            <div class="esme-step">
+                                <div class="esme-step-number">3</div>
+                                <p class="esme-step-label"><strong>Restitution</strong>Présentation et plan de déploiement</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-logo">ESME <span>Accelerate</span></div>
+            <p class="footer-tagline">Propulsé par IAvenir — Formation IA Certifiée Qualiopi</p>
+        </footer>
+    </div>
+</body>
+</html>

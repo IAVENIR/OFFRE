@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESME Accelerate — Genèse de l'Ingénierie de Rupture</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --white: #ffffff;
+            --bg-light: #f8faf9;
+            --bg-soft: #f0f5f3;
+            --emerald-500: #10b981;
+            --emerald-600: #059669;
+            --emerald-700: #047857;
+            --emerald-50: #ecfdf5;
+            --emerald-100: #d1fae5;
+            --dark: #1a1a2e;
+            --dark-soft: #2d2d44;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --red-500: #ef4444;
+            --red-50: #fef2f2;
+            --amber-500: #f59e0b;
+            --amber-50: #fffbeb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-light);
+            color: var(--dark);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 50px 40px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--emerald-50);
+            border: 1px solid var(--emerald-100);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--emerald-600);
+            margin-bottom: 20px;
+        }
+
+        .badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--emerald-500);
+            border-radius: 50%;
+        }
+
+        .main-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            color: var(--dark);
+        }
+
+        .main-title span {
+            color: var(--emerald-600);
+        }
+
+        .subtitle {
+            font-size: 1.05rem;
+            font-weight: 400;
+            color: var(--gray-600);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .subtitle strong {
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .section-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            background: var(--emerald-500);
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .section-intro {
+            font-size: 0.95rem;
+            color: var(--gray-600);
+            margin-bottom: 28px;
+            max-width: 800px;
+        }
+
+        /* Section 1: Analyse */
+        .section-analysis {
+            margin-bottom: 50px;
+        }
+
+        .approaches-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .approach-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .approach-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .approach-card.rejected {
+            opacity: 0.85;
+        }
+
+        .approach-card.selected {
+            background: linear-gradient(135deg, var(--emerald-50) 0%, var(--white) 100%);
+            border: 2px solid var(--emerald-500);
+        }
+
+        .approach-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+        }
+
+        .approach-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+        }
+
+        .rejected .approach-icon {
+            background: var(--red-50);
+        }
+
+        .selected .approach-icon {
+            background: var(--emerald-500);
+        }
+
+        .approach-status {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+
+        .rejected .approach-status {
+            background: var(--red-50);
+            color: var(--red-500);
+        }
+
+        .selected .approach-status {
+            background: var(--emerald-100);
+            color: var(--emerald-700);
+        }
+
+        .approach-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--dark);
+        }
+
+        .approach-example {
+            font-size: 0.8rem;
+            color: var(--gray-500);
+            font-style: italic;
+            margin-bottom: 18px;
+        }
+
+        .approach-section-title {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--gray-500);
+            margin-bottom: 10px;
+            margin-top: 16px;
+        }
+
+        .approach-list {
+            list-style: none;
+        }
+
+        .approach-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.85rem;
+            color: var(--gray-600);
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .approach-list.pros li::before {
+            content: '+';
+            color: var(--emerald-500);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .approach-list.cons li::before {
+            content: '−';
+            color: var(--red-500);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .selected .approach-list.pros li::before {
+            content: '✓';
+        }
+
+        /* Insight Box */
+        .insight-box {
+            background: var(--amber-50);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-top: 28px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .insight-icon {
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .insight-content {
+            font-size: 0.92rem;
+            color: var(--gray-700);
+            line-height: 1.6;
+        }
+
+        .insight-content strong {
+            color: var(--amber-500);
+            font-weight: 700;
+        }
+
+        /* Section 2: Notre Choix */
+        .section-choice {
+            margin-bottom: 50px;
+        }
+
+        .choice-card {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 36px 40px;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .choice-header {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+
+        .choice-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--emerald-500);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .choice-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .choice-subtitle {
+            font-size: 0.9rem;
+            color: var(--emerald-600);
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        .choice-description {
+            font-size: 0.95rem;
+            color: var(--gray-600);
+            line-height: 1.7;
+            margin-bottom: 30px;
+            max-width: 800px;
+        }
+
+        .choice-description strong {
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        /* Postures Grid - Vertical Layout */
+        .postures-vertical {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .posture-row {
+            display: grid;
+            gap: 16px;
+        }
+
+        .posture-row.single {
+            grid-template-columns: 1fr;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .posture-row.double {
+            grid-template-columns: 1fr 1fr;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .posture-item {
+            background: var(--bg-soft);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 16px;
+            padding: 22px 24px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .posture-item:hover {
+            background: var(--emerald-50);
+            border-color: var(--emerald-200);
+        }
+
+        .posture-emoji {
+            width: 50px;
+            height: 50px;
+            background: var(--white);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .posture-content {
+            flex: 1;
+        }
+
+        .posture-role {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--emerald-600);
+            margin-bottom: 4px;
+        }
+
+        .posture-question {
+            font-size: 0.88rem;
+            color: var(--gray-600);
+            line-height: 1.45;
+            font-style: italic;
+        }
+
+        /* Arrow connector */
+        .arrow-down {
+            display: flex;
+            justify-content: center;
+            padding: 8px 0;
+        }
+
+        .arrow-down svg {
+            width: 24px;
+            height: 24px;
+            color: var(--emerald-400);
+        }
+
+        /* Section 3: Différenciateurs */
+        .section-differentiators {
+            /* ... */
+        }
+
+        .diff-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .diff-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 30px 28px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            transition: all 0.3s ease;
+        }
+
+        .diff-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .diff-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--emerald-500);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .diff-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--dark);
+        }
+
+        .diff-description {
+            font-size: 0.88rem;
+            color: var(--gray-600);
+            line-height: 1.65;
+        }
+
+        .diff-description strong {
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .diff-tag {
+            display: inline-block;
+            background: var(--emerald-50);
+            color: var(--emerald-700);
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 6px 12px;
+            border-radius: 6px;
+            margin-top: 16px;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .footer-logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+            color: var(--dark);
+        }
+
+        .footer-logo span {
+            color: var(--emerald-600);
+        }
+
+        .footer-tagline {
+            font-size: 0.8rem;
+            color: var(--gray-500);
+        }
+
+        /* Responsive */
+        @media (max-width: 1000px) {
+            .approaches-grid,
+            .diff-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .posture-row.double {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 35px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="badge">Carte 1 — Réflexion Stratégique</div>
+            <h1 class="main-title">Genèse de <span>l'Ingénierie de Rupture</span></h1>
+            <p class="subtitle">Pourquoi cette architecture ? Nous avons dépassé le simple "catalogue technique" pour concevoir un <strong>système d'accélération de compétences</strong> aligné sur les vrais besoins de l'entreprise.</p>
+        </header>
+
+        <!-- Section 1: Analyse Comparative -->
+        <section class="section-analysis">
+            <div class="section-header">
+                <div class="section-number">1</div>
+                <h2 class="section-title">Analyse Comparative des Approches</h2>
+            </div>
+            <p class="section-intro">Nous avons évalué trois stratégies de structuration des programmes IA. Chacune présente des avantages, mais une seule répond véritablement aux enjeux de transformation à grande échelle.</p>
+
+            <div class="approaches-grid">
+                <!-- Approche Secteur -->
+                <div class="approach-card rejected">
+                    <div class="approach-header">
+                        <div class="approach-icon">🏭</div>
+                        <span class="approach-status">Écartée</span>
+                    </div>
+                    <h3 class="approach-title">Approche Secteur</h3>
+                    <p class="approach-example">"IA pour l'énergie", "IA pour le ferroviaire"...</p>
+                    
+                    <p class="approach-section-title">Avantages</p>
+                    <ul class="approach-list pros">
+                        <li>Contextualisation forte avec cas d'usage spécifiques</li>
+                        <li>Langage métier immédiat</li>
+                        <li>Facilité de vente ("c'est fait pour nous")</li>
+                    </ul>
+                    
+                    <p class="approach-section-title">Limites</p>
+                    <ul class="approach-list cons">
+                        <li><strong>70% de redondance</strong> entre les programmes</li>
+                        <li>Limite le marché par programme</li>
+                        <li>Un DG et un technicien du même secteur n'ont pas les mêmes besoins</li>
+                    </ul>
+                </div>
+
+                <!-- Approche Métier -->
+                <div class="approach-card rejected">
+                    <div class="approach-header">
+                        <div class="approach-icon">👔</div>
+                        <span class="approach-status">Écartée</span>
+                    </div>
+                    <h3 class="approach-title">Approche Métier</h3>
+                    <p class="approach-example">"IA pour les RH", "IA pour les bureaux d'études"...</p>
+                    
+                    <p class="approach-section-title">Avantages</p>
+                    <ul class="approach-list pros">
+                        <li>Transversalité sectorielle (1 programme = plusieurs industries)</li>
+                        <li>Économie de conception</li>
+                        <li>Compétences directement actionnables</li>
+                    </ul>
+                    
+                    <p class="approach-section-title">Limites</p>
+                    <ul class="approach-list cons">
+                        <li>Moins de contextualisation sectorielle</li>
+                        <li>Peut sembler "générique" au client</li>
+                        <li>Ne répond pas au besoin stratégique des dirigeants</li>
+                    </ul>
+                </div>
+
+                <!-- Approche Niveau Décisionnel -->
+                <div class="approach-card selected">
+                    <div class="approach-header">
+                        <div class="approach-icon">⚡</div>
+                        <span class="approach-status">Retenue</span>
+                    </div>
+                    <h3 class="approach-title">Approche Niveau Décisionnel</h3>
+                    <p class="approach-example">"Décider avec l'IA", "Piloter l'IA", "Utiliser l'IA"</p>
+                    
+                    <p class="approach-section-title">Avantages</p>
+                    <ul class="approach-list pros">
+                        <li>Répond au vrai besoin (pas le même pour un DG et un technicien)</li>
+                        <li><strong>Scalable</strong> : tous secteurs, toutes fonctions</li>
+                        <li>Logique de parcours et montée en compétence</li>
+                        <li>Aligné avec les décisions d'achat</li>
+                    </ul>
+                    
+                    <p class="approach-section-title">Prérequis</p>
+                    <ul class="approach-list cons">
+                        <li>Nécessite de contextualiser à la délivrance</li>
+                        <li>Demande une bonne qualification en amont</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <span class="insight-icon">💡</span>
+                <p class="insight-content">
+                    <strong>Constat clé :</strong> Le vrai différenciateur n'est pas le secteur — un RH énergie et un RH ferroviaire ont 90% des mêmes enjeux IA. C'est le <strong>niveau de responsabilité</strong> et la <strong>posture face à l'IA</strong> qui déterminent les besoins réels.
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 2: Notre Choix -->
+        <section class="section-choice">
+            <div class="section-header">
+                <div class="section-number">2</div>
+                <h2 class="section-title">Notre Choix : L'Hybridation Décisionnelle</h2>
+            </div>
+
+            <div class="choice-card">
+                <div class="choice-header">
+                    <div class="choice-icon">🎯</div>
+                    <div>
+                        <h3 class="choice-title">Niveau Décisionnel + Habillage Sectoriel</h3>
+                        <p class="choice-subtitle">La formation alignée sur la posture face à l'IA</p>
+                    </div>
+                </div>
+
+                <p class="choice-description">
+                    Nous structurons les programmes par <strong>niveau de responsabilité</strong> (Décider / Piloter / Produire), puis nous appliquons un <strong>habillage 100% énergie & infrastructures</strong> à la délivrance. Résultat : une architecture scalable avec une contextualisation totale.
+                </p>
+
+                <div class="postures-vertical">
+                    <!-- Ligne 1 : COMEX -->
+                    <div class="posture-row single">
+                        <div class="posture-item">
+                            <div class="posture-emoji">👔</div>
+                            <div class="posture-content">
+                                <p class="posture-role">COMEX</p>
+                                <p class="posture-question">"Faut-il y aller ? Combien ça coûte ? Quels risques ? Quelle gouvernance ?"</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="arrow-down">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 5v14M19 12l-7 7-7-7"/>
+                        </svg>
+                    </div>
+
+                    <!-- Ligne 2 : MANAGER -->
+                    <div class="posture-row single">
+                        <div class="posture-item">
+                            <div class="posture-emoji">📊</div>
+                            <div class="posture-content">
+                                <p class="posture-role">Manager</p>
+                                <p class="posture-question">"Comment je pilote un projet IA ? Comment je fais adopter par mes équipes ?"</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="arrow-down">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 5v14M19 12l-7 7-7-7"/>
+                        </svg>
+                    </div>
+
+                    <!-- Ligne 3 : Opérationnels (2 colonnes) -->
+                    <div class="posture-row double">
+                        <div class="posture-item">
+                            <div class="posture-emoji">⚙️</div>
+                            <div class="posture-content">
+                                <p class="posture-role">Opérationnel Technique</p>
+                                <p class="posture-question">"Comment j'intègre l'IA dans mes process métier quotidiens ?"</p>
+                            </div>
+                        </div>
+                        <div class="posture-item">
+                            <div class="posture-emoji">💼</div>
+                            <div class="posture-content">
+                                <p class="posture-role">Opérationnel Support</p>
+                                <p class="posture-question">"Comment j'automatise mes tâches répétitives ?"</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Différenciateurs ESME -->
+        <section class="section-differentiators">
+            <div class="section-header">
+                <div class="section-number">3</div>
+                <h2 class="section-title">Les Différenciateurs ESME</h2>
+            </div>
+
+            <div class="diff-grid">
+                <div class="diff-card">
+                    <div class="diff-icon">🎯</div>
+                    <h3 class="diff-title">Contextualisation Totale</h3>
+                    <p class="diff-description">
+                        Structure <strong>standardisée pour la scalabilité</strong>, mais habillage <strong>100% énergie & infrastructures</strong> : cas d'usages Smart Grids, éclairage public, maintenance prédictive.
+                    </p>
+                    <span class="diff-tag">Scalable & Sur-Mesure</span>
+                </div>
+
+                <div class="diff-card">
+                    <div class="diff-icon">🛡️</div>
+                    <h3 class="diff-title">IA Responsable "By Design"</h3>
+                    <p class="diff-description">
+                        L'éthique, la <strong>cybersécurité</strong> et le <strong>RGPD</strong> ne sont plus des options — c'est le socle obligatoire de chaque geste technique de P1 à P3.
+                    </p>
+                    <span class="diff-tag">Intégré, Pas Optionnel</span>
+                </div>
+
+                <div class="diff-card">
+                    <div class="diff-icon">🚀</div>
+                    <h3 class="diff-title">L'Ingénieur de Rupture</h3>
+                    <p class="diff-description">
+                        Une fusion entre <strong>l'expertise technique de pointe</strong> et les <strong>soft skills indispensables</strong> : leadership, résolution de problèmes complexes, vision systémique.
+                    </p>
+                    <span class="diff-tag">Profil Hybride</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-logo">ESME <span>Accelerate</span></div>
+            <p class="footer-tagline">Propulsé par IAvenir — Formation IA Certifiée Qualiopi</p>
+        </footer>
+    </div>
+</body>
+</html>
