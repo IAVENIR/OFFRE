@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IAvenir - Présentation</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(-25%); animation-timing-function: cubic-bezier(0.8, 0, 1, 1); }
+      50% { transform: translateY(0); animation-timing-function: cubic-bezier(0, 0, 0.2, 1); }
+    }
+    .animate-bounce { animation: bounce 1s infinite; }
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+<body class="bg-white text-gray-900 overflow-x-hidden">
+  
+  <!-- Header -->
+  <div class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-8 py-4 flex items-center justify-between">
+      <div class="text-xl font-bold text-purple-600">IAvenir</div>
+      <div class="text-sm text-gray-600">Formation IA · Certifié Qualiopi</div>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="min-h-screen relative flex items-center justify-center overflow-hidden bg-gradient-to-br from-purple-50 via-white to-purple-50">
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-0 left-1/4 w-96 h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+      <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-8 text-center pt-20">
+      <h1 class="text-7xl font-black mb-6 text-gray-900">
+        Passez de l'Incertitude<br/>à la Performance IA
+      </h1>
+      
+      <p class="text-3xl mb-4 text-purple-600 font-bold">en 2 à 3 mois</p>
+
+      <p class="text-2xl mb-16 text-gray-600 max-w-4xl mx-auto leading-relaxed">
+        Nous transformons vos équipes pour qu'elles maîtrisent l'IA,<br/>
+        avec des résultats mesurables dès le premier mois
+      </p>
+
+      <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-16">
+        <!-- Point A -->
+        <div class="group relative bg-white p-10 rounded-3xl border-2 border-red-200 shadow-lg">
+          <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 px-4 py-2 bg-red-100 border-2 border-red-200 rounded-full text-red-700 text-sm font-bold">
+            AUJOURD'HUI
+          </div>
+          <div class="w-20 h-20 bg-red-50 rounded-2xl flex items-center justify-center mb-6 mx-auto mt-4">
+            <svg class="w-10 h-10 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+          </div>
+          <h3 class="text-3xl font-bold mb-6 text-gray-800">Votre Situation</h3>
+          <p class="text-gray-600 text-lg italic text-center">
+            À définir ensemble lors de notre échange...
+          </p>
+        </div>
+
+        <!-- Point B -->
+        <div class="group relative bg-gradient-to-br from-purple-600 to-purple-700 p-10 rounded-3xl shadow-2xl">
+          <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 px-4 py-2 bg-blue-400 border-2 border-blue-500 rounded-full text-blue-900 text-sm font-bold">
+            DANS 2-3 MOIS
+          </div>
+          <div class="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-6 mx-auto mt-4">
+            <svg class="w-10 h-10 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          </div>
+          <h3 class="text-3xl font-bold mb-6 text-white">Vos Résultats</h3>
+          <div class="text-left space-y-4">
+            <div class="flex items-start gap-3">
+              <svg class="w-6 h-6 text-blue-300 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+              <div>
+                <p class="font-bold text-white text-lg">+15% à +40% de productivité</p>
+                <p class="text-sm text-purple-100">Gains mesurables sur les tâches quotidiennes</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <svg class="w-6 h-6 text-blue-300 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+              <div>
+                <p class="font-bold text-white text-lg">Équipes autonomes et confiantes</p>
+                <p class="text-sm text-purple-100">Formées sur VOS cas d'usage métier</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <svg class="w-6 h-6 text-blue-300 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+              <div>
+                <p class="font-bold text-white text-lg">ROI mesurable et prouvé</p>
+                <p class="text-sm text-purple-100">Retour sur investissement en quelques mois</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <svg class="w-6 h-6 text-blue-300 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+              <div>
+                <p class="font-bold text-white text-lg">Avantage compétitif durable</p>
+                <p class="text-sm text-purple-100">Une organisation qui maîtrise l'IA</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <svg class="w-12 h-12 mx-auto animate-bounce text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+    </div>
+  </section>
+
+  <!-- Section Méthodologie -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-8">
+      <div class="text-center mb-10">
+        <div class="inline-block mb-3 px-4 py-2 bg-purple-100 border border-purple-200 rounded-full text-purple-700 text-sm font-semibold">
+          Notre Parcours
+        </div>
+        <h2 class="text-5xl font-black mb-4 text-gray-900">La Méthodologie IAvenir</h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-6">
+          Un processus structuré en 3 étapes pour passer de l'incertitude à l'excellence
+        </p>
+        
+        <div class="max-w-3xl mx-auto bg-gradient-to-r from-purple-200 via-purple-400 to-indigo-500 h-2 rounded-full mb-3"></div>
+        <div class="flex justify-between max-w-3xl mx-auto text-sm text-gray-600">
+          <span class="font-semibold">Aujourd'hui</span>
+          <span class="font-semibold text-purple-600">Performance</span>
+          <span class="font-semibold text-indigo-600">Excellence</span>
+        </div>
+      </div>
+
+      <div class="relative max-w-6xl mx-auto">
+        <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-purple-400 via-purple-500 to-indigo-500"></div>
+
+        <!-- Étape 1 -->
+        <div class="relative mb-16">
+          <div class="grid md:grid-cols-2 gap-8 items-start">
+            <div class="md:text-right md:pr-12">
+              <div class="inline-block mb-3 px-4 py-2 bg-purple-100 border border-purple-200 rounded-full text-purple-700 text-sm font-semibold">
+                Étape 1 · 2 à 4 semaines
+              </div>
+              <h3 class="text-3xl font-bold mb-4 text-purple-600">Audit Stratégique</h3>
+              <p class="text-gray-600 mb-6 text-base">
+                Nous identifions précisément où et comment l'IA peut transformer vos processus
+              </p>
+              
+              <div class="space-y-3">
+                <div class="bg-purple-50 p-4 rounded-2xl border border-purple-200 inline-block w-full">
+                  <div class="flex items-center gap-3 md:flex-row-reverse md:justify-end">
+                    <div class="w-10 h-10 bg-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                    </div>
+                    <div class="text-left md:text-right">
+                      <div class="font-bold text-purple-900">Immersion</div>
+                      <div class="text-xs text-gray-600">Compréhension approfondie de votre terrain</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="bg-purple-50 p-4 rounded-2xl border border-purple-200 inline-block w-full">
+                  <div class="flex items-center gap-3 md:flex-row-reverse md:justify-end">
+                    <div class="w-10 h-10 bg-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/></svg>
+                    </div>
+                    <div class="text-left md:text-right">
+                      <div class="font-bold text-purple-900">Consolidation</div>
+                      <div class="text-xs text-gray-600">Analyse structurée des opportunités IA</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="bg-purple-50 p-4 rounded-2xl border border-purple-200 inline-block w-full">
+                  <div class="flex items-center gap-3 md:flex-row-reverse md:justify-end">
+                    <div class="w-10 h-10 bg-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg>
+                    </div>
+                    <div class="text-left md:text-right">
+                      <div class="font-bold text-purple-900">Restitution</div>
+                      <div class="text-xs text-gray-600">Roadmap concrète et priorisée</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="absolute left-1/2 top-0 transform -translate-x-1/2 w-14 h-14 bg-purple-600 rounded-full border-4 border-white shadow-lg z-10 flex items-center justify-center">
+              <span class="text-white font-bold text-lg">1</span>
+            </div>
+
+            <div class="md:pl-12">
+              <div class="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-2xl border-2 border-blue-200">
+                <div class="flex items-center gap-2 mb-4">
+                  <svg class="w-6 h-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+                  <h4 class="text-xl font-bold text-blue-900">Bénéfices</h4>
+                </div>
+                <ul class="space-y-2">
+                  <li class="flex items-start gap-2">
+                    <svg class="w-4 h-4 text-blue-600 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+                    <span class="text-sm text-gray-700">Vision claire de votre potentiel IA</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <svg class="w-4 h-4 text-blue-600 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+                    <span class="text-sm text-gray-700">Recommandations actionnables immédiates</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <svg class="w-4 h-4 text-blue-600 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+                    <span class="text-sm text-gray-700">Stratégie IA alignée sur vos objectifs</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <svg class="w-4 h-4 text-blue-600 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+                    <span class="text-sm text-gray-700">Priorisation des quick wins</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Étape 2 -->
+        <div class="relative mb-16">
+          <div class="grid md:grid-cols-2 gap-8 items-start">
+            <div class="md:pr-12 md:text-right">
+              <div class="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-2xl border-2 border-blue-200">
+                <div class="flex items-center gap-2 mb-4 md:flex-row-reverse md:justify-end">
+                  <svg class="w-6 h-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+                  <h4 class="text-xl font-bold text-blue-900">Bénéfices</h4>
+                </div>
+                <ul class="space-y-2 text-left md:text-right">
+                  <li class="flex items-start gap-2 md:flex-row-reverse md:justify-end">
+                    <svg class="w-4 h-4 text-blue-600 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+                    <span class="text-sm text-gray-700">Équipes opérationnelles immédiatement</span>
+                  </li>
+                  <li class="flex items-start gap-2 md:flex-row-reverse md:justify-end">
+                    <svg class="w-4 h-4 text-blue-600 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+                    <span class="text-sm text-gray-700">Cas d'usage adaptés par métier</span>
+                  </li>
+                  <li class="flex items-start gap-2 md:flex-row-reverse md:justify-end">
+                    <svg class="w-4 h-4 text-blue-600 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+                    <span class="text-sm text-gray-700">Accompagnement post-formation</span>
+                  </li>
+                  <li class="flex items-start gap-2 md:flex-row-reverse md:justify-end">
+                    <svg class="w-4 h-4 text-blue-600 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+                    <span class="text-sm text-gray-700 font-bold">Mesure KPIs à 1 mois</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="absolute left-1/2 top-0 transform -translate-x-1/2 w-14 h-14 bg-purple-600 rounded-full border-4 border-white shadow-lg z-10 flex items-center justify-center">
+              <span class="text-white font-bold text-lg">2</span>
+            </div>
+
+            <div class="md:pl-12">
+              <div class="inline-block mb-3 px-4 py-2 bg-purple-100 border border-purple-200 rounded-full text-purple-700 text-sm font-semibold">
+                Étape 2 · 0,5 à 2 jours + suivi 1 mois
+              </div>
+              <h3 class="text-3xl font-bold mb-4 text-purple-600">Formation Sur-Mesure</h3>
+              <p class="text-gray-600 mb-6 text-base">
+                Vos équipes maîtrisent les outils IA adaptés à leurs cas d'usage métier
+              </p>
+              <div class="bg-purple-50 p-4 rounded-2xl border border-purple-200">
+                <h4 class="font-bold text-purple-900 mb-3">Formation 100% modulable</h4>
+                <div class="space-y-2 text-sm">
+                  <div class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+                    <span class="text-gray-700"><span class="font-semibold">Format :</span> Présentiel, Distanciel</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+                    <span class="text-gray-700"><span class="font-semibold">Durée :</span> 0,5 jour à 2 jours</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+                    <span class="text-gray-700"><span class="font-semibold">Services :</span> Adaptée à chaque métier (18+)</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+                    <span class="text-gray-700"><span class="font-semibold">Outils :</span> Copilot, ChatGPT, Gemini</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Étape 3 -->
+        <div class="relative">
+          <div class="grid md:grid-cols-2 gap-8 items-start">
+            <div class="md:text-right md:pr-12">
+              <div class="inline-block mb-3 px-4 py-2 bg-purple-100 border border-purple-200 rounded-full text-purple-700 text-sm font-semibold">
+                Étape 3 · En continu
+              </div>
+              <h3 class="text-3xl font-bold mb-4 text-purple-600">Missions de Conseil</h3>
+              <p class="text-gray-600 mb-6 text-base">
+                Accompagnement stratégique pour pérenniser votre transformation IA
+              </p>
+              
+              <div class="space-y-3">
+                <div class="bg-purple-50 p-4 rounded-2xl border border-purple-200 inline-block w-full">
+                  <div class="flex items-center gap-3 md:flex-row-reverse md:justify-end">
+                    <div class="w-10 h-10 bg-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
+                    </div>
+                    <div class="text-left md:text-right">
+                      <div class="font-bold text-purple-900">Innovation Continue</div>
+                      <div class="text-xs text-gray-600">Nouveaux cas d'usage</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="bg-purple-50 p-4 rounded-2xl border border-purple-200 inline-block w-full">
+                  <div class="flex items-center gap-3 md:flex-row-reverse md:justify-end">
+                    <div class="w-10 h-10 bg-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+                    </div>
+                    <div class="text-left md:text-right">
+                      <div class="font-bold text-purple-900">Optimisation ROI</div>
+                      <div class="text-xs text-gray-600">Amélioration des performances</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="bg-purple-50 p-4 rounded-2xl border border-purple-200 inline-block w-full">
+                  <div class="flex items-center gap-3 md:flex-row-reverse md:justify-end">
+                    <div class="w-10 h-10 bg-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                    <div class="text-left md:text-right">
+                      <div class="font-bold text-purple-900">Culture IA</div>
+                      <div class="text-xs text-gray-600">Ancrage dans votre ADN</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="absolute left-1/2 top-0 transform -translate-x-1/2 w-14 h-14 bg-purple-600 rounded-full border-4 border-white shadow-lg z-10 flex items-center justify-center">
+              <span class="text-white font-bold text-lg">3</span>
+            </div>
+
+            <div class="md:pl-12">
+              <div class="bg-gradient-to-br from-indigo-50 to-blue-50 p-6 rounded-2xl border-2 border-indigo-200">
+                <div class="flex items-center gap-2 mb-4">
+                  <svg class="w-6 h-6 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+                  <h4 class="text-xl font-bold text-indigo-900">Bénéfices</h4>
+                </div>
+                <ul class="space-y-2">
+                  <li class="flex items-start gap-2">
+                    <svg class="w-4 h-4 text-indigo-600 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+                    <span class="text-sm text-gray-700">Avantage compétitif durable</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <svg class="w-4 h-4 text-indigo-600 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+                    <span class="text-sm text-gray-700">Veille technologique permanente</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <svg class="w-4 h-4 text-indigo-600 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+                    <span class="text-sm text-gray-700">Adaptation aux évolutions IA</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <svg class="w-4 h-4 text-indigo-600 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+                    <span class="text-sm text-gray-700 font-bold">Organisation apprenante</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section Résultats -->
+  <section class="py-16 bg-gradient-to-br from-purple-50 to-white">
+    <div class="max-w-6xl mx-auto px-8">
+      <div class="text-center mb-10">
+        <h2 class="text-3xl font-black mb-8 text-gray-900">Résultats</h2>
+      </div>
+      
+      <div class="grid grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-2xl border-2 border-purple-200 hover:shadow-xl transition-all text-center">
+          <svg class="w-10 h-10 text-purple-600 mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+          <div class="text-3xl font-bold text-purple-600 mb-2">+15-40%</div>
+          <div class="text-gray-700 font-semibold mb-2">Efficacité Opérationnelle</div>
+          <div class="text-xs text-gray-500">Gain de temps mesurable</div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border-2 border-blue-200 hover:shadow-xl transition-all text-center">
+          <svg class="w-10 h-10 text-blue-600 mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+          <div class="text-3xl font-bold text-blue-600 mb-2">Humain</div>
+          <div class="text-gray-700 font-semibold mb-2">Engagement</div>
+          <div class="text-xs text-gray-500">Équipes valorisées</div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border-2 border-indigo-200 hover:shadow-xl transition-all text-center">
+          <svg class="w-10 h-10 text-indigo-600 mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>
+          <div class="text-3xl font-bold text-indigo-600 mb-2">Qualité</div>
+          <div class="text-gray-700 font-semibold mb-2">Innovation</div>
+          <div class="text-xs text-gray-500">Amélioration continue</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Configurateurs -->
+  <section class="py-16 bg-white">
+    <div class="max-w-6xl mx-auto px-8">
+      <div class="text-center mb-10">
+        <div class="inline-block mb-3 px-4 py-2 bg-purple-100 border border-purple-200 rounded-full text-purple-700 text-sm font-semibold">
+          Estimation Instantanée
+        </div>
+        <h2 class="text-4xl font-black mb-4 text-gray-900">Votre Devis En Temps Réel</h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <!-- Audit -->
+        <div id="audit-card" class="bg-gradient-to-br from-purple-50 to-white p-8 rounded-3xl border-2 border-purple-200 shadow-lg transition-all">
+          <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-3">
+              <div id="audit-icon" class="w-10 h-10 rounded-xl flex items-center justify-center bg-purple-600">
+                <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+              </div>
+              <h3 class="text-2xl font-bold text-gray-900">Audit Stratégique</h3>
+            </div>
+            <button id="audit-toggle" onclick="toggleAudit()" class="w-12 h-7 rounded-full transition-all relative bg-purple-600">
+              <div id="audit-toggle-knob" class="w-5 h-5 bg-white rounded-full absolute top-1 transition-all shadow right-1"></div>
+            </button>
+          </div>
+        
+          <div id="audit-content">
+            <div class="mb-6">
+              <label class="block text-base font-semibold mb-4 text-gray-700">
+                Nombre de collaborateurs
+              </label>
+              <input 
+                type="number" 
+                id="company-size"
+                min="1" 
+                max="1000" 
+                value="100"
+                onchange="updateCalculations()"
+                oninput="updateCalculations()"
+                class="w-full p-3 rounded-xl bg-white border-2 border-purple-200 text-gray-900 text-center text-xl font-bold"
+              />
+              <div class="text-center mt-3">
+                <div class="inline-block bg-purple-100 px-4 py-2 rounded-full">
+                  <span class="text-sm text-gray-600">Audit recommandé : </span>
+                  <span id="audit-days" class="text-lg font-bold text-purple-600">5 jours</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl border-2 border-purple-200 shadow-sm">
+              <div class="flex justify-between items-center">
+                <span class="text-xl font-bold text-gray-900">Total Audit</span>
+                <span id="audit-total" class="text-3xl font-bold text-purple-600">6 500€</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Formation -->
+        <div id="formation-card" class="bg-gradient-to-br from-purple-50 to-white p-8 rounded-3xl border-2 border-purple-200 shadow-lg transition-all">
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center gap-3">
+              <div id="formation-icon" class="w-10 h-10 rounded-xl flex items-center justify-center bg-purple-600">
+                <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+              </div>
+              <h3 class="text-2xl font-bold text-gray-900">Formation Sur-Mesure</h3>
+            </div>
+            <button id="formation-toggle" onclick="toggleFormation()" class="w-12 h-7 rounded-full transition-all relative bg-purple-600">
+              <div id="formation-toggle-knob" class="w-5 h-5 bg-white rounded-full absolute top-1 transition-all shadow right-1"></div>
+            </button>
+          </div>
+          <p class="text-sm text-purple-600 mb-6">
+            <svg class="w-4 h-4 inline mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+            Formation certifiée Qualiopi
+          </p>
+
+          <div id="formation-content">
+            <div class="grid md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-base font-semibold mb-3 text-gray-700">Format</label>
+                <div class="grid grid-cols-2 gap-2">
+                  <button id="btn-presentiel" onclick="setFormat('presentiel')" class="p-3 rounded-xl font-semibold transition-all border-2 flex flex-col items-center gap-1 bg-purple-600 text-white border-purple-600">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/></svg>
+                    <span class="text-xs">Présentiel</span>
+                  </button>
+                  <button id="btn-distanciel" onclick="setFormat('distanciel')" class="p-3 rounded-xl font-semibold transition-all border-2 flex flex-col items-center gap-1 bg-white text-gray-700 border-gray-200">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+                    <span class="text-xs">Distanciel</span>
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-base font-semibold mb-3 text-gray-700">Durée en jour(s)</label>
+                <div class="grid grid-cols-3 gap-2">
+                  <button id="btn-dur-05" onclick="setDuration('0.5')" class="p-3 rounded-xl font-semibold transition-all border-2 text-center bg-white text-gray-700 border-gray-200">0.5</button>
+                  <button id="btn-dur-1" onclick="setDuration('1')" class="p-3 rounded-xl font-semibold transition-all border-2 text-center bg-purple-600 text-white border-purple-600">1</button>
+                  <button id="btn-dur-2" onclick="setDuration('2')" class="p-3 rounded-xl font-semibold transition-all border-2 text-center bg-white text-gray-700 border-gray-200">2</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4 grid md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-base font-semibold mb-3 text-gray-700">Collaborateurs</label>
+                <input 
+                  type="number"
+                  id="participants"
+                  min="1"
+                  value="10"
+                  onchange="updateCalculations()"
+                  oninput="updateCalculations()"
+                  class="w-full p-3 rounded-xl bg-white border-2 border-gray-200 text-gray-900"
+                />
+              </div>
+
+              <div>
+                <label class="block text-base font-semibold mb-3 text-gray-700">Sessions</label>
+                <div class="w-full p-3 rounded-xl bg-purple-50 border-2 border-purple-200 text-center">
+                  <div id="sessions-count" class="text-2xl font-bold text-purple-600">1</div>
+                  <div class="text-xs text-gray-500">12 pers. max/session</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4 bg-white p-6 rounded-2xl border-2 border-purple-300 shadow-sm">
+              <div class="space-y-3">
+                <div class="flex justify-between text-gray-700 text-sm">
+                  <span>Prix unitaire :</span>
+                  <span id="unit-price" class="font-semibold">2 900€</span>
+                </div>
+                <div class="flex justify-between text-gray-700 text-sm">
+                  <span>Sessions :</span>
+                  <span id="sessions-mult" class="font-semibold">× 1</span>
+                </div>
+                <div id="discount-row" class="flex justify-between text-green-600 text-sm hidden">
+                  <span id="discount-label">Remise (10%) :</span>
+                  <span id="discount-amount" class="font-semibold">-290€</span>
+                </div>
+                <div class="border-t-2 border-purple-300 pt-3">
+                  <div class="flex justify-between items-center">
+                    <span class="text-xl font-bold text-gray-900">Total</span>
+                    <span id="formation-total" class="text-3xl font-bold text-purple-600">2 900€</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total -->
+      <div class="mt-8 bg-gradient-to-r from-purple-600 to-purple-700 p-8 rounded-3xl shadow-2xl text-center text-white">
+        <svg class="w-12 h-12 mx-auto mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 10h12"/><path d="M4 14h9"/><path d="M19 6a7.7 7.7 0 0 0-5.2-2A7.9 7.9 0 0 0 6 12c0 4.4 3.5 8 7.8 8 2 0 3.8-.8 5.2-2"/></svg>
+        <div class="text-xl font-semibold mb-1">INVESTISSEMENT TOTAL</div>
+        <div id="grand-total" class="text-5xl font-black mb-2">9 400€</div>
+        <div id="total-description" class="text-base text-purple-100">Transformation complète en 2 à 3 mois</div>
+      </div>
+
+      <!-- ROI -->
+      <div id="roi-section" class="mt-8 bg-white p-8 rounded-3xl border-2 border-purple-200 shadow-lg">
+        <div class="text-center mb-6">
+          <svg class="w-10 h-10 mx-auto mb-3 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          <h3 class="text-2xl font-bold text-gray-900 mb-1">ROI Estimé</h3>
+          <p id="roi-subtitle" class="text-sm text-gray-600">Basé sur 10 collaborateur(s)</p>
+        </div>
+
+        <div class="grid grid-cols-3 gap-4">
+          <div class="bg-purple-50 p-4 rounded-2xl border-2 border-purple-200">
+            <div class="text-xs text-gray-600 mb-1">Gains mensuels nets</div>
+            <div id="monthly-gains" class="text-2xl font-bold text-purple-600">1 520€</div>
+          </div>
+          <div class="bg-purple-50 p-4 rounded-2xl border-2 border-purple-200">
+            <div class="text-xs text-gray-600 mb-1">Gains annuels nets</div>
+            <div id="annual-gains" class="text-2xl font-bold text-purple-600">18 240€</div>
+          </div>
+          <div class="bg-gradient-to-br from-blue-50 to-indigo-50 p-4 rounded-2xl border-2 border-blue-200 text-center">
+            <svg class="w-8 h-8 mx-auto mb-2 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <div class="text-xs text-gray-600 mb-1">ROI</div>
+            <div id="roi-months" class="text-3xl font-black text-blue-600">6 mois</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Final -->
+  <section class="py-16 bg-gradient-to-br from-purple-50 via-white to-purple-50">
+    <div class="max-w-5xl mx-auto px-8">
+      <div class="text-center mb-8">
+        <svg class="w-12 h-12 mx-auto mb-4 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg>
+        <h2 class="text-4xl font-black mb-3 text-gray-900">
+          Prêt à Transformer Votre Organisation ?
+        </h2>
+      </div>
+
+      <div class="flex justify-center gap-8 text-sm text-gray-600">
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+          <span>Certifié Qualiopi</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span>50+ Entreprises</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          <span>ROI Mesurable</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-50 border-t border-gray-200 py-8">
+    <div class="max-w-6xl mx-auto px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="text-center md:text-left">
+          <div class="font-bold text-lg text-purple-600">IAvenir</div>
+          <div class="text-sm text-gray-600">Formation & Conseil en IA · Certifié Qualiopi</div>
+        </div>
+        <div class="text-center md:text-right text-sm text-gray-600">
+          <div class="font-semibold text-gray-800">Mathieu Legeas - Fondateur</div>
+          <div>mathieu.legeas@iavenir-formation.fr · 07 61 60 22 77</div>
+          <div>www.iavenir-formation.fr</div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // État
+    let includeAudit = true;
+    let includeFormation = true;
+    let format = 'presentiel';
+    let duration = '1';
+
+    // Fonctions de calcul
+    function getAuditDays(size) {
+      if (size <= 50) return 3;
+      if (size <= 100) return 5;
+      if (size <= 200) return 7;
+      if (size <= 500) return 9;
+      return 10;
+    }
+
+    function getAuditTotal(size) {
+      const days = getAuditDays(size);
+      const baseCost = days * 1000;
+      const backoffice = baseCost * 0.3;
+      return baseCost + backoffice;
+    }
+
+    function getFormationData(dur, participants) {
+      let basePrice = 0;
+      switch(dur) {
+        case '0.5': basePrice = 1400; break;
+        case '1': basePrice = 2900; break;
+        case '2': basePrice = 4800; break;
+      }
+      const sessions = Math.ceil(participants / 12);
+      let totalBeforeDiscount = basePrice * sessions;
+      let discount = 0;
+      if (sessions >= 6) discount = 0.20;
+      else if (sessions >= 4) discount = 0.15;
+      else if (sessions >= 2) discount = 0.10;
+      const discountAmount = totalBeforeDiscount * discount;
+      const final = totalBeforeDiscount - discountAmount;
+      return { basePrice, sessions, totalBeforeDiscount, discount, discountAmount, final };
+    }
+
+    // Toggle functions
+    function toggleAudit() {
+      includeAudit = !includeAudit;
+      const card = document.getElementById('audit-card');
+      const content = document.getElementById('audit-content');
+      const toggle = document.getElementById('audit-toggle');
+      const knob = document.getElementById('audit-toggle-knob');
+      const icon = document.getElementById('audit-icon');
+      
+      if (includeAudit) {
+        card.classList.remove('border-gray-200', 'opacity-60');
+        card.classList.add('border-purple-200');
+        toggle.classList.remove('bg-gray-300');
+        toggle.classList.add('bg-purple-600');
+        knob.classList.remove('left-1');
+        knob.classList.add('right-1');
+        icon.classList.remove('bg-gray-400');
+        icon.classList.add('bg-purple-600');
+        content.style.display = 'block';
+      } else {
+        card.classList.add('border-gray-200', 'opacity-60');
+        card.classList.remove('border-purple-200');
+        toggle.classList.add('bg-gray-300');
+        toggle.classList.remove('bg-purple-600');
+        knob.classList.add('left-1');
+        knob.classList.remove('right-1');
+        icon.classList.add('bg-gray-400');
+        icon.classList.remove('bg-purple-600');
+        content.style.display = 'none';
+      }
+      updateCalculations();
+    }
+
+    function toggleFormation() {
+      includeFormation = !includeFormation;
+      const card = document.getElementById('formation-card');
+      const content = document.getElementById('formation-content');
+      const toggle = document.getElementById('formation-toggle');
+      const knob = document.getElementById('formation-toggle-knob');
+      const icon = document.getElementById('formation-icon');
+      const roiSection = document.getElementById('roi-section');
+      
+      if (includeFormation) {
+        card.classList.remove('border-gray-200', 'opacity-60');
+        card.classList.add('border-purple-200');
+        toggle.classList.remove('bg-gray-300');
+        toggle.classList.add('bg-purple-600');
+        knob.classList.remove('left-1');
+        knob.classList.add('right-1');
+        icon.classList.remove('bg-gray-400');
+        icon.classList.add('bg-purple-600');
+        content.style.display = 'block';
+        roiSection.style.display = 'block';
+      } else {
+        card.classList.add('border-gray-200', 'opacity-60');
+        card.classList.remove('border-purple-200');
+        toggle.classList.add('bg-gray-300');
+        toggle.classList.remove('bg-purple-600');
+        knob.classList.add('left-1');
+        knob.classList.remove('right-1');
+        icon.classList.add('bg-gray-400');
+        icon.classList.remove('bg-purple-600');
+        content.style.display = 'none';
+        roiSection.style.display = 'none';
+      }
+      updateCalculations();
+    }
+
+    function setFormat(f) {
+      format = f;
+      const btnP = document.getElementById('btn-presentiel');
+      const btnD = document.getElementById('btn-distanciel');
+      
+      if (f === 'presentiel') {
+        btnP.className = 'p-3 rounded-xl font-semibold transition-all border-2 flex flex-col items-center gap-1 bg-purple-600 text-white border-purple-600';
+        btnD.className = 'p-3 rounded-xl font-semibold transition-all border-2 flex flex-col items-center gap-1 bg-white text-gray-700 border-gray-200';
+      } else {
+        btnD.className = 'p-3 rounded-xl font-semibold transition-all border-2 flex flex-col items-center gap-1 bg-purple-600 text-white border-purple-600';
+        btnP.className = 'p-3 rounded-xl font-semibold transition-all border-2 flex flex-col items-center gap-1 bg-white text-gray-700 border-gray-200';
+      }
+    }
+
+    function setDuration(d) {
+      duration = d;
+      const btn05 = document.getElementById('btn-dur-05');
+      const btn1 = document.getElementById('btn-dur-1');
+      const btn2 = document.getElementById('btn-dur-2');
+      
+      btn05.className = 'p-3 rounded-xl font-semibold transition-all border-2 text-center ' + (d === '0.5' ? 'bg-purple-600 text-white border-purple-600' : 'bg-white text-gray-700 border-gray-200');
+      btn1.className = 'p-3 rounded-xl font-semibold transition-all border-2 text-center ' + (d === '1' ? 'bg-purple-600 text-white border-purple-600' : 'bg-white text-gray-700 border-gray-200');
+      btn2.className = 'p-3 rounded-xl font-semibold transition-all border-2 text-center ' + (d === '2' ? 'bg-purple-600 text-white border-purple-600' : 'bg-white text-gray-700 border-gray-200');
+      
+      updateCalculations();
+    }
+
+    function formatNumber(n) {
+      return n.toLocaleString('fr-FR');
+    }
+
+    function updateCalculations() {
+      const companySize = parseInt(document.getElementById('company-size').value) || 1;
+      const participants = parseInt(document.getElementById('participants').value) || 1;
+
+      // Audit
+      const auditDays = getAuditDays(companySize);
+      const auditTotal = getAuditTotal(companySize);
+      document.getElementById('audit-days').textContent = auditDays + ' jours';
+      document.getElementById('audit-total').textContent = formatNumber(auditTotal) + '€';
+
+      // Formation
+      const formData = getFormationData(duration, participants);
+      document.getElementById('sessions-count').textContent = formData.sessions;
+      document.getElementById('unit-price').textContent = formatNumber(formData.basePrice) + '€';
+      document.getElementById('sessions-mult').textContent = '× ' + formData.sessions;
+      
+      const discountRow = document.getElementById('discount-row');
+      if (formData.discount > 0) {
+        discountRow.classList.remove('hidden');
+        document.getElementById('discount-label').textContent = 'Remise (' + (formData.discount * 100) + '%) :';
+        document.getElementById('discount-amount').textContent = '-' + formatNumber(formData.discountAmount) + '€';
+      } else {
+        discountRow.classList.add('hidden');
+      }
+      document.getElementById('formation-total').textContent = formatNumber(formData.final) + '€';
+
+      // Grand Total
+      let grandTotal = 0;
+      if (includeAudit) grandTotal += auditTotal;
+      if (includeFormation) grandTotal += formData.final;
+      document.getElementById('grand-total').textContent = formatNumber(grandTotal) + '€';
+
+      // Description
+      let desc = '';
+      if (includeAudit && includeFormation) desc = 'Transformation complète en 2 à 3 mois';
+      else if (includeAudit) desc = 'Audit stratégique uniquement';
+      else if (includeFormation) desc = 'Formation sur-mesure uniquement';
+      else desc = 'Sélectionnez une prestation';
+      document.getElementById('total-description').textContent = desc;
+
+      // ROI
+      document.getElementById('roi-subtitle').textContent = 'Basé sur ' + participants + ' collaborateur(s)';
+      
+      const avgSalary = 3500;
+      const minTimeSaved = 2;
+      const maxTimeSaved = includeAudit ? 5 : 2;
+      const avgTimeSaved = includeAudit ? 3.5 : 2;
+      const adoptionMultiplier = 0.75;
+      const maturityBonus = 1.15;
+      const licenseCostPerUser = 25;
+      const hourlyRate = avgSalary / 151.67;
+      
+      const adjustedAvgTime = avgTimeSaved * adoptionMultiplier * maturityBonus;
+      const avgWeeklyGains = participants * adjustedAvgTime * hourlyRate;
+      const avgMonthlyGains = avgWeeklyGains * 4.33;
+      const monthlyLicenseCost = licenseCostPerUser * participants;
+      const netAvgMonthlyGains = avgMonthlyGains - monthlyLicenseCost;
+      const avgAnnualGains = netAvgMonthlyGains * 12;
+      const avgPayback = grandTotal / netAvgMonthlyGains;
+      
+      document.getElementById('monthly-gains').textContent = formatNumber(Math.round(netAvgMonthlyGains)) + '€';
+      document.getElementById('annual-gains').textContent = formatNumber(Math.round(avgAnnualGains)) + '€';
+      document.getElementById('roi-months').textContent = Math.ceil(avgPayback) + ' mois';
+    }
+
+    // Init
+    updateCalculations();
+  </script>
+</body>
+</html>
