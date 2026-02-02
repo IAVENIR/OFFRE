@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IAvenir - Présentation Commerciale</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            iavenir: {
+              50: '#f5f3ff',
+              100: '#ede9fe',
+              200: '#ddd6fe',
+              300: '#c4b5fd',
+              400: '#a78bfa',
+              500: '#8B5CF6',
+              600: '#7c3aed',
+              700: '#6d28d9',
+              800: '#5b21b6',
+              900: '#4c1d95'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <div id="app"></div>
+
+  <script>
+    // État global
+    const state = {
+      includeAudit: true,
+      includeFormation: true,
+      auditConfig: { collaborateurs: 100 },
+      formationConfig: { 
+        format: 'presentiel', 
+        duration: 1, 
+        participants: 10 
+      }
+    };
+
+    // Icônes SVG
+    const icons = {
+      search: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>`,
+      graduationCap: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>`,
+      lightbulb: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>`,
+      check: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>`,
+      trendingUp: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>`,
+      clock: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`,
+      users: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>`,
+      award: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>`,
+      barChart: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>`,
+      heart: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>`,
+      star: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>`,
+      phone: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>`,
+      mail: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>`,
+      globe: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>`,
+      building: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>`,
+      monitor: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>`,
+      alertCircle: `<svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`,
+      chevronDown: `<svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>`
+    };
+
+    // Calcul du nombre de jours d'audit selon le nombre de collaborateurs
+    function calculateAuditDays(collaborateurs) {
+      if (collaborateurs <= 50) return 3;
+      if (collaborateurs <= 100) return 5;
+      if (collaborateurs <= 200) return 7;
+      if (collaborateurs <= 500) return 9;
+      return 10;
+    }
+
+    // Fonctions de calcul
+    function calculateAudit() {
+      const days = calculateAuditDays(state.auditConfig.collaborateurs);
+      const total = (days * 1000) + 1500;
+      return { days, total };
+    }
+
+    function calculateFormation() {
+      const prices = { 0.5: 1400, 1: 2900, 2: 4900 };
+      const pricePerSession = prices[state.formationConfig.duration];
+      const sessions = Math.ceil(state.formationConfig.participants / 12);
+      const total = pricePerSession * sessions;
+      
+      let discount = 0;
+      if (sessions >= 6) discount = 0.20;
+      else if (sessions >= 4) discount = 0.15;
+      else if (sessions >= 2) discount = 0.10;
+      
+      const discountAmount = total * discount;
+      const final = total - discountAmount;
+      
+      return { pricePerSession, sessions, total, discount, discountAmount, final };
+    }
+
+    function calculateROI() {
+      const avgSalary = 3500;
+      const participants = state.formationConfig.participants;
+      const minTimeSaved = 2;
+      const maxTimeSaved = state.includeAudit ? 5 : 2;
+      const avgTimeSaved = state.includeAudit ? 3.5 : 2;
+      
+      const adoptionMultiplier = 0.75;
+      const maturityBonus = 1.15;
+      const licenseCostPerUser = 25;
+      
+      const hourlyRate = avgSalary / 151.67;
+      const adjustedAvgTime = avgTimeSaved * adoptionMultiplier * maturityBonus;
+      const avgWeeklyGains = participants * adjustedAvgTime * hourlyRate;
+      const monthlyLicenseCost = licenseCostPerUser * participants;
+      const avgMonthlyGains = (avgWeeklyGains * 4.33) - monthlyLicenseCost;
+      
+      const totalInvestment = (state.includeAudit ? calculateAudit().total : 0) + (state.includeFormation ? calculateFormation().final : 0);
+      const avgPayback = avgMonthlyGains > 0 ? totalInvestment / avgMonthlyGains : 0;
+      
+      return { minTimeSaved, maxTimeSaved, avgMonthlyGains, totalInvestment, avgPayback, monthlyLicenseCost };
+    }
+
+    function formatPrice(n) {
+      return new Intl.NumberFormat('fr-FR').format(Math.round(n)) + ' €';
+    }
+
+    // Fonction de rendu
+    function render() {
+      const audit = calculateAudit();
+      const formation = calculateFormation();
+      const roi = calculateROI();
+      const totalDevis = (state.includeAudit ? audit.total : 0) + (state.includeFormation ? formation.final : 0);
+      
+      document.getElementById('app').innerHTML = `
+        <!-- Navigation -->
+        <nav class="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-sm shadow-sm z-50">
+          <div class="max-w-7xl mx-auto px-6 py-3">
+            <div class="flex items-center justify-between">
+              <div class="text-2xl font-bold text-iavenir-500">IAvenir</div>
+              <div class="hidden md:flex items-center gap-6 text-sm">
+                <a href="#methodologie" class="text-gray-600 hover:text-iavenir-500 transition">Méthodologie</a>
+                <a href="#resultats" class="text-gray-600 hover:text-iavenir-500 transition">Résultats</a>
+                <a href="#configurateur" class="text-gray-600 hover:text-iavenir-500 transition">Configurateur</a>
+                <a href="#action" class="bg-iavenir-500 text-white px-4 py-2 rounded-full hover:bg-iavenir-600 transition">Passer à l'action</a>
+              </div>
+            </div>
+          </div>
+        </nav>
+
+        <!-- Hero avec Point A / Point B - fond neutre -->
+        <section class="bg-white pt-24 pb-16">
+          <div class="max-w-6xl mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gray-900">
+              Transformez votre entreprise<br>grâce à l'IA
+            </h1>
+            <p class="text-xl text-gray-600 mb-12 max-w-2xl mx-auto">
+              De l'audit stratégique à la montée en compétences de vos équipes,<br>
+              nous vous accompagnons à chaque étape.
+            </p>
+            
+            <!-- Point A / Point B -->
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-12">
+              <!-- Point A -->
+              <div class="bg-gray-50 p-8 rounded-2xl border-2 border-gray-200">
+                <div class="inline-block mb-4 px-4 py-2 bg-gray-200 rounded-full text-gray-700 text-sm font-bold">
+                  POINT A · AUJOURD'HUI
+                </div>
+                <div class="w-16 h-16 bg-gray-200 rounded-xl flex items-center justify-center mb-4 mx-auto text-gray-500">
+                  ${icons.alertCircle}
+                </div>
+                <h3 class="text-2xl font-bold mb-4 text-gray-800">Votre Situation</h3>
+                <p class="text-gray-500 text-lg italic">
+                  À définir ensemble lors de notre échange...
+                </p>
+              </div>
+
+              <!-- Point B -->
+              <div class="bg-iavenir-500 p-8 rounded-2xl shadow-xl text-white">
+                <div class="inline-block mb-4 px-4 py-2 bg-white/20 rounded-full text-white text-sm font-bold">
+                  POINT B · DANS 2-3 MOIS
+                </div>
+                <div class="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center mb-4 mx-auto">
+                  ${icons.trendingUp}
+                </div>
+                <h3 class="text-2xl font-bold mb-4">Vos Résultats</h3>
+                <div class="text-left space-y-3">
+                  <div class="flex items-start gap-3">
+                    <span class="mt-1">${icons.check}</span>
+                    <div>
+                      <p class="font-bold">+15% à +40% de productivité</p>
+                      <p class="text-sm text-white/80">Gains mesurables sur les tâches quotidiennes</p>
+                    </div>
+                  </div>
+                  <div class="flex items-start gap-3">
+                    <span class="mt-1">${icons.check}</span>
+                    <div>
+                      <p class="font-bold">Équipes autonomes et confiantes</p>
+                      <p class="text-sm text-white/80">Formées sur VOS cas d'usage métier</p>
+                    </div>
+                  </div>
+                  <div class="flex items-start gap-3">
+                    <span class="mt-1">${icons.check}</span>
+                    <div>
+                      <p class="font-bold">ROI mesurable et prouvé</p>
+                      <p class="text-sm text-white/80">Retour sur investissement en quelques mois</p>
+                    </div>
+                  </div>
+                  <div class="flex items-start gap-3">
+                    <span class="mt-1">${icons.check}</span>
+                    <div>
+                      <p class="font-bold">Avantage compétitif durable</p>
+                      <p class="text-sm text-white/80">Une organisation qui maîtrise l'IA</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="animate-bounce text-gray-400">
+              ${icons.chevronDown}
+            </div>
+          </div>
+        </section>
+
+        <!-- Méthodologie -->
+        <section id="methodologie" class="py-16 bg-gray-50">
+          <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-12">
+              <h2 class="text-3xl font-bold text-gray-900 mb-3">Notre Méthodologie</h2>
+              <p class="text-gray-600 max-w-2xl mx-auto">Un processus structuré en 3 étapes pour une transformation IA réussie</p>
+              
+              <!-- Frise Aujourd'hui -> IA Performance -> IA Excellence -->
+              <div class="mt-8 max-w-2xl mx-auto">
+                <div class="bg-gradient-to-r from-gray-300 via-iavenir-400 to-iavenir-600 h-2 rounded-full mb-3"></div>
+                <div class="flex justify-between text-sm">
+                  <span class="font-semibold text-gray-600">Aujourd'hui</span>
+                  <span class="font-semibold text-iavenir-500">IA Performance</span>
+                  <span class="font-semibold text-iavenir-700">IA Excellence</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="relative">
+              <!-- Ligne verticale -->
+              <div class="absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-gray-300 via-iavenir-400 to-iavenir-600 hidden md:block"></div>
+              
+              <div class="space-y-12">
+                <!-- Étape 1 - Audit -->
+                <div class="relative">
+                  <div class="grid md:grid-cols-2 gap-8 items-start">
+                    <div class="md:text-right md:pr-12">
+                      <div class="inline-block mb-3 px-3 py-1 bg-iavenir-100 border border-iavenir-200 rounded-full text-iavenir-700 text-sm font-semibold">
+                        Étape 1 · 3 à 10 jours
+                      </div>
+                      <h3 class="text-3xl font-bold mb-4 text-iavenir-600">Audit Stratégique</h3>
+                      <p class="text-gray-600 mb-6">Analyse approfondie de votre organisation pour identifier les opportunités IA à fort impact.</p>
+                      
+                      <div class="space-y-3">
+                        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                          <div class="flex items-center gap-3 md:flex-row-reverse md:justify-end">
+                            <div class="w-10 h-10 bg-iavenir-500 rounded-lg flex items-center justify-center text-white">${icons.search}</div>
+                            <div class="text-left md:text-right">
+                              <div class="font-bold text-gray-900">Immersion</div>
+                              <div class="text-sm text-gray-600">Observation terrain, entretiens équipes</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                          <div class="flex items-center gap-3 md:flex-row-reverse md:justify-end">
+                            <div class="w-10 h-10 bg-iavenir-500 rounded-lg flex items-center justify-center text-white">${icons.barChart}</div>
+                            <div class="text-left md:text-right">
+                              <div class="font-bold text-gray-900">Consolidation</div>
+                              <div class="text-sm text-gray-600">Analyse des données, priorisation</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                          <div class="flex items-center gap-3 md:flex-row-reverse md:justify-end">
+                            <div class="w-10 h-10 bg-iavenir-500 rounded-lg flex items-center justify-center text-white">${icons.lightbulb}</div>
+                            <div class="text-left md:text-right">
+                              <div class="font-bold text-gray-900">Restitution</div>
+                              <div class="text-sm text-gray-600">Plan d'action détaillé + quick wins</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="absolute left-1/2 top-0 transform -translate-x-1/2 w-14 h-14 bg-iavenir-500 rounded-full border-4 border-white shadow-lg z-10 flex items-center justify-center hidden md:flex">
+                      <span class="text-white font-bold text-xl">1</span>
+                    </div>
+                    
+                    <div class="md:pl-12">
+                      <div class="bg-gradient-to-br from-indigo-50 to-violet-50 p-6 rounded-2xl border-2 border-indigo-200">
+                        <div class="flex items-center gap-3 mb-4">
+                          <div class="text-indigo-600">${icons.award}</div>
+                          <h4 class="text-xl font-bold text-indigo-900">Bénéfices</h4>
+                        </div>
+                        <ul class="space-y-2">
+                          <li class="flex items-start gap-2"><span class="text-indigo-500 mt-1">${icons.check}</span><span class="text-gray-700">Vision claire des opportunités</span></li>
+                          <li class="flex items-start gap-2"><span class="text-indigo-500 mt-1">${icons.check}</span><span class="text-gray-700">ROI estimé par cas d'usage</span></li>
+                          <li class="flex items-start gap-2"><span class="text-indigo-500 mt-1">${icons.check}</span><span class="text-gray-700">Roadmap personnalisée</span></li>
+                          <li class="flex items-start gap-2"><span class="text-indigo-500 mt-1">${icons.check}</span><span class="text-gray-700 font-bold">Gains rapides identifiés</span></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Étape 2 - Formation -->
+                <div class="relative">
+                  <div class="grid md:grid-cols-2 gap-8 items-start">
+                    <div class="md:text-right md:pr-12 md:order-2">
+                      <div class="bg-gradient-to-br from-indigo-50 to-violet-50 p-6 rounded-2xl border-2 border-indigo-200">
+                        <div class="flex items-center gap-3 mb-4">
+                          <div class="text-indigo-600">${icons.award}</div>
+                          <h4 class="text-xl font-bold text-indigo-900">Bénéfices</h4>
+                        </div>
+                        <ul class="space-y-2">
+                          <li class="flex items-start gap-2"><span class="text-indigo-500 mt-1">${icons.check}</span><span class="text-gray-700">Équipes autonomes rapidement</span></li>
+                          <li class="flex items-start gap-2"><span class="text-indigo-500 mt-1">${icons.check}</span><span class="text-gray-700">Adoption immédiate des outils</span></li>
+                          <li class="flex items-start gap-2"><span class="text-indigo-500 mt-1">${icons.check}</span><span class="text-gray-700">Cas pratiques métier</span></li>
+                          <li class="flex items-start gap-2"><span class="text-indigo-500 mt-1">${icons.check}</span><span class="text-gray-700 font-bold">Financement OPCO possible</span></li>
+                        </ul>
+                      </div>
+                    </div>
+                    
+                    <div class="absolute left-1/2 top-0 transform -translate-x-1/2 w-14 h-14 bg-iavenir-500 rounded-full border-4 border-white shadow-lg z-10 flex items-center justify-center hidden md:flex">
+                      <span class="text-white font-bold text-xl">2</span>
+                    </div>
+                    
+                    <div class="md:pl-12 md:order-1">
+                      <div class="inline-block mb-3 px-3 py-1 bg-iavenir-100 border border-iavenir-200 rounded-full text-iavenir-700 text-sm font-semibold">
+                        Étape 2 · 0.5 à 2 jours
+                      </div>
+                      <h3 class="text-3xl font-bold mb-4 text-iavenir-600">Formation sur-mesure</h3>
+                      <p class="text-gray-600 mb-6">Montée en compétences de vos équipes avec des formations adaptées à vos cas d'usage.</p>
+                      
+                      <div class="space-y-3">
+                        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                          <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-iavenir-500 rounded-lg flex items-center justify-center text-white">${icons.building}</div>
+                            <div>
+                              <div class="font-bold text-gray-900">Présentiel</div>
+                              <div class="text-sm text-gray-600">Dans vos locaux, immersion totale</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                          <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-iavenir-500 rounded-lg flex items-center justify-center text-white">${icons.monitor}</div>
+                            <div>
+                              <div class="font-bold text-gray-900">Distanciel</div>
+                              <div class="text-sm text-gray-600">Sessions interactives en visio</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Étape 3 - Conseil -->
+                <div class="relative">
+                  <div class="grid md:grid-cols-2 gap-8 items-start">
+                    <div class="md:text-right md:pr-12">
+                      <div class="inline-block mb-3 px-3 py-1 bg-iavenir-100 border border-iavenir-200 rounded-full text-iavenir-700 text-sm font-semibold">
+                        Étape 3 · En continu
+                      </div>
+                      <h3 class="text-3xl font-bold mb-4 text-iavenir-600">Missions de Conseil</h3>
+                      <p class="text-gray-600 mb-6">Accompagnement stratégique pour optimiser et pérenniser votre transformation IA.</p>
+                      
+                      <div class="space-y-3">
+                        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                          <div class="flex items-center gap-3 md:flex-row-reverse md:justify-end">
+                            <div class="w-10 h-10 bg-iavenir-600 rounded-lg flex items-center justify-center text-white">${icons.lightbulb}</div>
+                            <div class="text-left md:text-right">
+                              <div class="font-bold text-gray-900">Innovation Continue</div>
+                              <div class="text-sm text-gray-600">Identification de nouveaux cas d'usage</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                          <div class="flex items-center gap-3 md:flex-row-reverse md:justify-end">
+                            <div class="w-10 h-10 bg-iavenir-600 rounded-lg flex items-center justify-center text-white">${icons.barChart}</div>
+                            <div class="text-left md:text-right">
+                              <div class="font-bold text-gray-900">Optimisation ROI</div>
+                              <div class="text-sm text-gray-600">Analyse et amélioration des performances</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                          <div class="flex items-center gap-3 md:flex-row-reverse md:justify-end">
+                            <div class="w-10 h-10 bg-iavenir-600 rounded-lg flex items-center justify-center text-white">${icons.users}</div>
+                            <div class="text-left md:text-right">
+                              <div class="font-bold text-gray-900">Culture IA</div>
+                              <div class="text-sm text-gray-600">Ancrage des pratiques dans votre ADN</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="absolute left-1/2 top-0 transform -translate-x-1/2 w-14 h-14 bg-iavenir-700 rounded-full border-4 border-white shadow-lg z-10 flex items-center justify-center hidden md:flex">
+                      <span class="text-white font-bold text-xl">3</span>
+                    </div>
+                    
+                    <div class="md:pl-12">
+                      <div class="bg-gradient-to-br from-indigo-50 to-violet-50 p-6 rounded-2xl border-2 border-indigo-200">
+                        <div class="flex items-center gap-3 mb-4">
+                          <div class="text-indigo-600">${icons.award}</div>
+                          <h4 class="text-xl font-bold text-indigo-900">Bénéfices</h4>
+                        </div>
+                        <ul class="space-y-2">
+                          <li class="flex items-start gap-2"><span class="text-indigo-500 mt-1">${icons.check}</span><span class="text-gray-700">Avantage compétitif durable</span></li>
+                          <li class="flex items-start gap-2"><span class="text-indigo-500 mt-1">${icons.check}</span><span class="text-gray-700">Veille technologique permanente</span></li>
+                          <li class="flex items-start gap-2"><span class="text-indigo-500 mt-1">${icons.check}</span><span class="text-gray-700">Adaptation aux évolutions IA</span></li>
+                          <li class="flex items-start gap-2"><span class="text-indigo-500 mt-1">${icons.check}</span><span class="text-gray-700 font-bold">Organisation apprenante</span></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Résultats -->
+        <section id="resultats" class="py-16 bg-white">
+          <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-12">
+              <h2 class="text-3xl font-bold text-gray-900 mb-3">Résultats pour l'entreprise</h2>
+              <p class="text-gray-600">Ce que vous pouvez attendre de notre accompagnement</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+              <div class="bg-gray-50 p-6 rounded-2xl border border-gray-200 text-center">
+                <div class="w-12 h-12 bg-iavenir-100 rounded-xl flex items-center justify-center mx-auto mb-4 text-iavenir-600">${icons.clock}</div>
+                <div class="text-3xl font-bold text-iavenir-600 mb-2">2-5h</div>
+                <div class="text-gray-700 font-semibold mb-2">gagnées / personne / semaine</div>
+                <div class="text-sm text-gray-500">Temps libéré pour les tâches stratégiques</div>
+              </div>
+              <div class="bg-gray-50 p-6 rounded-2xl border border-gray-200 text-center">
+                <div class="w-12 h-12 bg-iavenir-100 rounded-xl flex items-center justify-center mx-auto mb-4 text-iavenir-600">${icons.heart}</div>
+                <div class="text-3xl font-bold text-iavenir-600 mb-2">Humain</div>
+                <div class="text-gray-700 font-semibold mb-2">Engagement & bien-être</div>
+                <div class="text-sm text-gray-500">Équipes valorisées sur des tâches à forte valeur ajoutée</div>
+              </div>
+              <div class="bg-gray-50 p-6 rounded-2xl border border-gray-200 text-center">
+                <div class="w-12 h-12 bg-iavenir-100 rounded-xl flex items-center justify-center mx-auto mb-4 text-iavenir-600">${icons.star}</div>
+                <div class="text-3xl font-bold text-iavenir-600 mb-2">98%</div>
+                <div class="text-gray-700 font-semibold mb-2">Taux de satisfaction</div>
+                <div class="text-sm text-gray-500">Nos clients recommandent IAvenir</div>
+              </div>
+            </div>
+            
+            <div class="text-center">
+              <div class="inline-flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-full text-gray-700 text-sm font-medium">
+                ${icons.award}
+                <span>+50 entreprises nous font déjà confiance</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Configurateur -->
+        <section id="configurateur" class="py-16 bg-gray-50">
+          <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-12">
+              <h2 class="text-3xl font-bold text-gray-900 mb-3">Configurez votre projet</h2>
+              <p class="text-gray-600">Cliquez sur les boutons pour inclure ou exclure les services</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+              <!-- Configurateur Audit -->
+              <div class="bg-white p-6 rounded-2xl border-2 ${state.includeAudit ? 'border-iavenir-500 shadow-lg' : 'border-gray-200'} transition-all">
+                <div class="flex items-center justify-between mb-6">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 ${state.includeAudit ? 'bg-iavenir-500' : 'bg-gray-300'} rounded-lg flex items-center justify-center text-white transition-all">${icons.search}</div>
+                    <h3 class="text-xl font-bold text-gray-900">Audit Stratégique</h3>
+                  </div>
+                  <button onclick="toggleAudit()" class="w-14 h-8 rounded-full transition-all relative ${state.includeAudit ? 'bg-iavenir-500' : 'bg-gray-300'}">
+                    <div class="w-6 h-6 bg-white rounded-full absolute top-1 transition-all shadow ${state.includeAudit ? 'right-1' : 'left-1'}"></div>
+                  </button>
+                </div>
+                
+                ${state.includeAudit ? `
+                <div class="space-y-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Nombre de collaborateurs dans l'entreprise</label>
+                    <input type="number" id="auditCollaborateurs" value="${state.auditConfig.collaborateurs}" min="1" max="5000" class="w-full p-3 rounded-xl border-2 border-gray-200 text-center text-xl font-bold focus:border-iavenir-500 focus:outline-none">
+                  </div>
+                  
+                  <div class="bg-gray-50 p-4 rounded-xl">
+                    <div class="flex justify-between items-center mb-2">
+                      <span class="text-gray-600">Durée recommandée</span>
+                      <span class="font-bold text-iavenir-700">${audit.days} jours</span>
+                    </div>
+                    <div class="border-t border-gray-200 pt-2 mt-2">
+                      <div class="flex justify-between items-center">
+                        <span class="font-bold text-gray-900">Total Audit</span>
+                        <span class="text-2xl font-bold text-iavenir-600">${formatPrice(audit.total)}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                ` : `
+                <div class="text-center py-8 text-gray-400">
+                  <p>Cliquez sur le bouton pour inclure l'audit</p>
+                </div>
+                `}
+              </div>
+              
+              <!-- Configurateur Formation -->
+              <div class="bg-white p-6 rounded-2xl border-2 ${state.includeFormation ? 'border-iavenir-500 shadow-lg' : 'border-gray-200'} transition-all">
+                <div class="flex items-center justify-between mb-6">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 ${state.includeFormation ? 'bg-iavenir-500' : 'bg-gray-300'} rounded-lg flex items-center justify-center text-white transition-all">${icons.graduationCap}</div>
+                    <div>
+                      <h3 class="text-xl font-bold text-gray-900">Formation sur-mesure</h3>
+                      <p class="text-xs text-iavenir-600">🎓 Certifiée Qualiopi</p>
+                    </div>
+                  </div>
+                  <button onclick="toggleFormation()" class="w-14 h-8 rounded-full transition-all relative ${state.includeFormation ? 'bg-iavenir-500' : 'bg-gray-300'}">
+                    <div class="w-6 h-6 bg-white rounded-full absolute top-1 transition-all shadow ${state.includeFormation ? 'right-1' : 'left-1'}"></div>
+                  </button>
+                </div>
+                
+                ${state.includeFormation ? `
+                <div class="space-y-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Format</label>
+                    <div class="grid grid-cols-2 gap-2">
+                      <button onclick="updateFormationFormat('presentiel')" class="py-3 px-3 rounded-lg text-sm font-medium transition flex items-center justify-center gap-2 ${state.formationConfig.format === 'presentiel' ? 'bg-iavenir-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}">
+                        <span class="w-5 h-5">${icons.building}</span>
+                        Présentiel
+                      </button>
+                      <button onclick="updateFormationFormat('distanciel')" class="py-3 px-3 rounded-lg text-sm font-medium transition flex items-center justify-center gap-2 ${state.formationConfig.format === 'distanciel' ? 'bg-iavenir-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}">
+                        <span class="w-5 h-5">${icons.monitor}</span>
+                        Distanciel
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Durée</label>
+                    <div class="grid grid-cols-3 gap-2">
+                      <button onclick="updateFormationDuration(0.5)" class="py-2 px-2 rounded-lg text-sm font-medium transition text-center ${state.formationConfig.duration === 0.5 ? 'bg-iavenir-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}">
+                        0.5 jour<br><span class="text-xs opacity-75">1 400 €</span>
+                      </button>
+                      <button onclick="updateFormationDuration(1)" class="py-2 px-2 rounded-lg text-sm font-medium transition text-center ${state.formationConfig.duration === 1 ? 'bg-iavenir-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}">
+                        1 jour<br><span class="text-xs opacity-75">2 900 €</span>
+                      </button>
+                      <button onclick="updateFormationDuration(2)" class="py-2 px-2 rounded-lg text-sm font-medium transition text-center ${state.formationConfig.duration === 2 ? 'bg-iavenir-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}">
+                        2 jours<br><span class="text-xs opacity-75">4 900 €</span>
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Nombre de participants à former</label>
+                    <input type="number" id="formationParticipants" value="${state.formationConfig.participants}" min="1" max="500" class="w-full p-3 rounded-xl border-2 border-gray-200 text-center text-xl font-bold focus:border-iavenir-500 focus:outline-none">
+                  </div>
+                  
+                  <div class="bg-gray-50 p-4 rounded-xl">
+                    <div class="flex justify-between items-center mb-2">
+                      <span class="text-gray-600">Sessions nécessaires</span>
+                      <span class="font-bold text-iavenir-700">${formation.sessions} session${formation.sessions > 1 ? 's' : ''}</span>
+                    </div>
+                    <div class="text-xs text-gray-500 mb-2">12 participants max par session</div>
+                    <div class="flex justify-between items-center mb-2">
+                      <span class="text-gray-600">Prix / session</span>
+                      <span class="font-medium">${formatPrice(formation.pricePerSession)}</span>
+                    </div>
+                    ${formation.discount > 0 ? `
+                    <div class="flex justify-between items-center mb-2 text-green-600">
+                      <span>Remise volume (-${Math.round(formation.discount * 100)}%)</span>
+                      <span class="font-medium">-${formatPrice(formation.discountAmount)}</span>
+                    </div>
+                    ` : ''}
+                    <div class="border-t border-gray-200 pt-2 mt-2">
+                      <div class="flex justify-between items-center">
+                        <span class="font-bold text-gray-900">Total Formation</span>
+                        <span class="text-2xl font-bold text-iavenir-600">${formatPrice(formation.final)}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                ` : `
+                <div class="text-center py-8 text-gray-400">
+                  <p>Cliquez sur le bouton pour inclure la formation</p>
+                </div>
+                `}
+              </div>
+            </div>
+            
+            <!-- Total Devis -->
+            ${(state.includeAudit || state.includeFormation) ? `
+            <div class="mt-8 bg-iavenir-500 p-6 rounded-2xl text-white text-center">
+              <div class="text-lg mb-2">Investissement total estimé</div>
+              <div class="text-4xl font-bold">${formatPrice(totalDevis)}</div>
+              <div class="text-iavenir-200 text-sm mt-2">HT - Hors frais de déplacement éventuels</div>
+            </div>
+            ` : ''}
+            
+            <!-- Calculateur ROI -->
+            ${state.includeFormation ? `
+            <div class="mt-10 bg-white p-8 rounded-2xl border-2 border-gray-200 shadow-lg">
+              <div class="text-center mb-6">
+                <div class="w-12 h-12 bg-iavenir-100 rounded-xl flex items-center justify-center mx-auto mb-3 text-iavenir-600">${icons.trendingUp}</div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-1">Votre ROI Estimé</h3>
+                <p class="text-gray-600 text-sm">Basé sur ${state.formationConfig.participants} collaborateur(s) formé(s)</p>
+              </div>
+              
+              <div class="grid md:grid-cols-3 gap-6 mb-6">
+                <div class="bg-gray-50 p-4 rounded-xl text-center">
+                  <div class="text-sm text-gray-600 mb-1">Temps gagné / pers. / sem.</div>
+                  <div class="text-2xl font-bold text-iavenir-600">
+                    ${roi.minTimeSaved === roi.maxTimeSaved ? `${roi.minTimeSaved}h` : `${roi.minTimeSaved}-${roi.maxTimeSaved}h`}
+                  </div>
+                  ${!state.includeAudit ? '<div class="text-xs text-gray-500">(jusqu\'à 5h avec audit)</div>' : ''}
+                </div>
+                <div class="bg-gray-50 p-4 rounded-xl text-center">
+                  <div class="text-sm text-gray-600 mb-1">Gains nets / mois</div>
+                  <div class="text-2xl font-bold text-iavenir-600">${formatPrice(roi.avgMonthlyGains)}</div>
+                  <div class="text-xs text-gray-500">après coût licences</div>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-xl text-center">
+                  <div class="text-sm text-gray-600 mb-1">Retour sur invest.</div>
+                  <div class="text-2xl font-bold text-iavenir-600">${roi.avgPayback > 0 ? roi.avgPayback.toFixed(1) + ' mois' : '-'}</div>
+                </div>
+              </div>
+              
+              <div class="bg-gray-50 p-4 rounded-xl">
+                <div class="text-sm font-semibold text-gray-700 mb-2">Hypothèses de calcul</div>
+                <ul class="text-xs text-gray-600 space-y-1">
+                  <li>• Salaire moyen chargé : 3 500 €/mois</li>
+                  <li>• Taux d'adoption : 75%</li>
+                  <li>• Bonus maturité (avec formation) : +15%</li>
+                  <li>• Coût licences IA : 25 €/utilisateur/mois</li>
+                </ul>
+                <div class="mt-3 pt-3 border-t border-gray-200">
+                  <div class="text-sm font-semibold text-gray-700 mb-1">Non pris en compte (bonus)</div>
+                  <ul class="text-xs text-gray-500 space-y-1">
+                    <li>• Gains humains (satisfaction, motivation)</li>
+                    <li>• Prise en charge OPCO possible</li>
+                    <li>• Amélioration qualité des livrables</li>
+                    <li>• Avantage compétitif</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            ` : ''}
+          </div>
+        </section>
+
+        <!-- CTA - fond gris foncé -->
+        <section id="action" class="py-16 bg-gray-800 text-white">
+          <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-10">
+              <h2 class="text-3xl font-bold mb-3">Prêt à passer à l'action ?</h2>
+              <p class="text-gray-400">Voici les prochaines étapes de notre collaboration</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+              <!-- Prochaines étapes -->
+              <div class="bg-gray-700/50 p-6 rounded-2xl border border-gray-600">
+                <h3 class="text-lg font-bold mb-6 flex items-center gap-2">
+                  ${icons.clock}
+                  Prochaines étapes
+                </h3>
+                
+                <div class="text-center mb-4">
+                  <div class="inline-flex items-center gap-2 bg-iavenir-500 text-white px-4 py-2 rounded-full font-semibold text-sm">
+                    <span class="w-5 h-5 bg-white text-iavenir-600 rounded-full flex items-center justify-center text-xs font-bold">1</span>
+                    Point dans 1 semaine
+                  </div>
+                </div>
+                
+                <div class="flex justify-center mb-3">
+                  <div class="w-0.5 h-4 bg-gray-600"></div>
+                </div>
+                
+                <div class="text-center mb-3">
+                  <div class="inline-block bg-gray-600 text-white px-3 py-1 rounded-lg text-xs font-medium">
+                    On avance ensemble ?
+                  </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-3">
+                  <div class="text-center">
+                    <div class="text-xs text-gray-400 mb-2">↻ Pas maintenant</div>
+                    <div class="bg-gray-600/50 p-2 rounded-lg text-xs">
+                      On reste en contact
+                    </div>
+                  </div>
+                  <div class="text-center">
+                    <div class="text-xs text-iavenir-300 mb-2">✓ On avance</div>
+                    <div class="space-y-1">
+                      <div class="bg-gray-600/50 p-1.5 rounded text-xs">Signature</div>
+                      <div class="bg-gray-600/50 p-1.5 rounded text-xs">Kick-off</div>
+                      ${state.includeAudit ? '<div class="bg-gray-600/50 p-1.5 rounded text-xs">Audit</div>' : ''}
+                      ${state.includeFormation ? '<div class="bg-gray-600/50 p-1.5 rounded text-xs">Formation</div>' : ''}
+                      <div class="bg-iavenir-500/50 p-1.5 rounded text-xs font-semibold">Résultats ✓</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Récapitulatif Devis -->
+              <div class="bg-gray-700/50 p-6 rounded-2xl border border-gray-600">
+                <h3 class="text-lg font-bold mb-6 flex items-center gap-2">
+                  ${icons.barChart}
+                  Récapitulatif Devis
+                </h3>
+                
+                <div class="space-y-4">
+                  ${state.includeAudit ? `
+                  <div class="flex justify-between items-center pb-3 border-b border-gray-600">
+                    <div>
+                      <div class="font-semibold">Audit Stratégique</div>
+                      <div class="text-xs text-gray-400">${audit.days} jours</div>
+                    </div>
+                    <div class="text-lg font-bold text-iavenir-300">${formatPrice(audit.total)}</div>
+                  </div>
+                  ` : ''}
+                  
+                  ${state.includeFormation ? `
+                  <div class="flex justify-between items-center pb-3 border-b border-gray-600">
+                    <div>
+                      <div class="font-semibold">Formation</div>
+                      <div class="text-xs text-gray-400">${formation.sessions} session${formation.sessions > 1 ? 's' : ''} · ${state.formationConfig.participants} pers.</div>
+                    </div>
+                    <div class="text-lg font-bold text-iavenir-300">${formatPrice(formation.final)}</div>
+                  </div>
+                  ` : ''}
+                  
+                  ${(state.includeAudit || state.includeFormation) ? `
+                  <div class="flex justify-between items-center pt-2">
+                    <div class="font-bold text-lg">TOTAL</div>
+                    <div class="text-2xl font-bold text-white">${formatPrice(totalDevis)}</div>
+                  </div>
+                  <div class="text-xs text-gray-400 text-center">HT - Hors frais de déplacement</div>
+                  ` : `
+                  <div class="text-center text-gray-400 py-4">
+                    Sélectionnez des services
+                  </div>
+                  `}
+                </div>
+              </div>
+              
+              <!-- Contact -->
+              <div class="bg-gray-700/50 p-6 rounded-2xl border border-gray-600">
+                <h3 class="text-lg font-bold mb-6 flex items-center gap-2">
+                  ${icons.users}
+                  Votre contact
+                </h3>
+                
+                <div class="space-y-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-iavenir-500 rounded-full flex items-center justify-center text-lg font-bold">
+                      ML
+                    </div>
+                    <div>
+                      <div class="font-bold">Mathieu Legeas</div>
+                      <div class="text-gray-400 text-sm">Fondateur</div>
+                    </div>
+                  </div>
+                  
+                  <div class="space-y-2 pt-2">
+                    <a href="tel:+33761602277" class="flex items-center gap-2 text-sm text-gray-300 hover:text-white transition">
+                      <span class="w-8 h-8 bg-gray-600 rounded-lg flex items-center justify-center">${icons.phone}</span>
+                      07 61 60 22 77
+                    </a>
+                    <a href="mailto:mathieu.legeas@iavenir-formation.fr" class="flex items-center gap-2 text-sm text-gray-300 hover:text-white transition">
+                      <span class="w-8 h-8 bg-gray-600 rounded-lg flex items-center justify-center">${icons.mail}</span>
+                      <span class="truncate text-xs">mathieu.legeas@iavenir-formation.fr</span>
+                    </a>
+                    <a href="https://www.iavenir-formation.fr" target="_blank" class="flex items-center gap-2 text-sm text-gray-300 hover:text-white transition">
+                      <span class="w-8 h-8 bg-gray-600 rounded-lg flex items-center justify-center">${icons.globe}</span>
+                      www.iavenir-formation.fr
+                    </a>
+                  </div>
+                  
+                  <div class="pt-3 border-t border-gray-600">
+                    <div class="flex items-center gap-2 text-xs text-gray-400">
+                      ${icons.award}
+                      Organisme certifié Qualiopi
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-gray-900 text-gray-400 py-6 border-t border-gray-800">
+          <div class="max-w-6xl mx-auto px-6 text-center">
+            <div class="text-xl font-bold text-white mb-1">IAvenir</div>
+            <p class="text-sm">Formation et conseil en Intelligence Artificielle</p>
+            <p class="text-xs mt-2">© 2025 IAvenir - Tous droits réservés</p>
+          </div>
+        </footer>
+      `;
+      
+      attachEvents();
+    }
+
+    // Fonctions de mise à jour
+    function toggleAudit() {
+      state.includeAudit = !state.includeAudit;
+      render();
+    }
+
+    function toggleFormation() {
+      state.includeFormation = !state.includeFormation;
+      render();
+    }
+
+    function updateFormationFormat(format) {
+      state.formationConfig.format = format;
+      render();
+    }
+
+    function updateFormationDuration(duration) {
+      state.formationConfig.duration = duration;
+      render();
+    }
+
+    function attachEvents() {
+      const auditInput = document.getElementById('auditCollaborateurs');
+      if (auditInput) {
+        auditInput.addEventListener('change', (e) => {
+          state.auditConfig.collaborateurs = parseInt(e.target.value) || 1;
+          render();
+        });
+      }
+      
+      const formationInput = document.getElementById('formationParticipants');
+      if (formationInput) {
+        formationInput.addEventListener('change', (e) => {
+          state.formationConfig.participants = parseInt(e.target.value) || 1;
+          render();
+        });
+      }
+    }
+
+    window.toggleAudit = toggleAudit;
+    window.toggleFormation = toggleFormation;
+    window.updateFormationFormat = updateFormationFormat;
+    window.updateFormationDuration = updateFormationDuration;
+
+    render();
+  </script>
+</body>
+</html>
