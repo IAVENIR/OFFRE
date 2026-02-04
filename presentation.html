@@ -103,18 +103,37 @@
     function calculateROI() {
       const avgSalary = 3500;
       const participants = state.formationConfig.participants;
-      const avgTimeSaved = state.includeAudit ? 3.5 : 2;
-      const adoptionMultiplier = 0.75;
-      const maturityBonus = 1.15;
       const licenseCostPerUser = 25;
       const hourlyRate = avgSalary / 151.67;
-      const adjustedAvgTime = avgTimeSaved * adoptionMultiplier * maturityBonus;
-      const avgWeeklyGains = participants * adjustedAvgTime * hourlyRate;
+      
+      // Calcul du temps gagné selon les nouvelles règles
+      let timeSaved = 0;
+      let timeSavedDisplay = '0h';
+      
+      if (state.includeFormation) {
+        // Heures gagnées par la formation selon durée
+        const formationHours = { 0.5: 1, 1: 2, 2: 3 };
+        const formationTime = formationHours[state.formationConfig.duration] || 2;
+        
+        if (state.includeAudit) {
+          // Audit + Formation: +2h bonus de l'audit
+          timeSaved = 2 + formationTime;
+          timeSavedDisplay = timeSaved + 'h';
+        } else {
+          // Formation seule
+          timeSaved = formationTime;
+          timeSavedDisplay = timeSaved + 'h';
+        }
+      }
+      
+      // Calcul des gains
+      const avgWeeklyGains = participants * timeSaved * hourlyRate;
       const monthlyLicenseCost = licenseCostPerUser * participants;
       const avgMonthlyGains = (avgWeeklyGains * 4.33) - monthlyLicenseCost;
       const totalInvestment = (state.includeAudit ? calculateAudit().total : 0) + (state.includeFormation ? calculateFormation().final : 0);
       const avgPayback = avgMonthlyGains > 0 ? totalInvestment / avgMonthlyGains : 0;
-      return { avgMonthlyGains, totalInvestment, avgPayback, monthlyLicenseCost };
+      
+      return { avgMonthlyGains, totalInvestment, avgPayback, monthlyLicenseCost, timeSaved, timeSavedDisplay };
     }
 
     function formatPrice(n) {
@@ -286,7 +305,6 @@
                     <ul class="space-y-3 text-gray-700">
                       <li class="flex items-start gap-2"><span class="text-green-600">✓</span> Programme 100% adapté</li>
                       <li class="flex items-start gap-2"><span class="text-green-600">✓</span> Objectifs mesurables</li>
-                      <li class="flex items-start gap-2"><span class="text-green-600">✓</span> Engagement de résultats</li>
                       <li class="flex items-start gap-2"><span class="text-green-600">✓</span> Devis détaillé sous 48h</li>
                     </ul>
                   </div>
@@ -593,10 +611,7 @@
       html += '<div class="grid md:grid-cols-3 gap-6 mb-6">';
       html += '<div class="bg-iavenir-50 p-4 rounded-xl text-center">';
       html += '<div class="text-sm text-gray-600 mb-1">Temps gagné / pers. / sem.</div>';
-      html += '<div class="text-2xl font-bold text-iavenir-600">' + (state.includeAudit ? '2-5h' : '2h') + '</div>';
-      if (!state.includeAudit) {
-        html += '<div class="text-xs text-gray-500">(jusqu\'à 5h avec audit)</div>';
-      }
+      html += '<div class="text-2xl font-bold text-iavenir-600">' + roi.timeSavedDisplay + '</div>';
       html += '</div>';
       html += '<div class="bg-iavenir-50 p-4 rounded-xl text-center">';
       html += '<div class="text-sm text-gray-600 mb-1">Gains nets / mois</div>';
@@ -691,7 +706,6 @@
         <section class="py-12 bg-gray-50">
           <div class="max-w-5xl mx-auto px-6">
             <div class="text-center mb-8">
-              <p class="text-sm font-semibold text-iavenir-600 uppercase tracking-wide mb-2">Engagement de résultats</p>
               <h2 class="text-2xl font-bold text-gray-900">Votre parcours sur 12 mois</h2>
             </div>
             <div class="relative">
@@ -1010,7 +1024,7 @@
       // ROI compact
       let roiHTML = '';
       if (state.includeFormation) {
-        roiHTML = '<div style="display:flex;gap:8px;margin-bottom:10px;"><div style="flex:1;background:#f9fafb;padding:6px;text-align:center;border-radius:4px;border:1px solid #e5e7eb;"><div style="font-size:8px;color:#6b7280;">Temps gagne/pers./sem.</div><div style="font-size:13px;font-weight:bold;color:#8B5CF6;">' + (state.includeAudit ? '2-5h' : '2h') + '</div></div><div style="flex:1;background:#f9fafb;padding:6px;text-align:center;border-radius:4px;border:1px solid #e5e7eb;"><div style="font-size:8px;color:#6b7280;">Gains nets/mois</div><div style="font-size:13px;font-weight:bold;color:#8B5CF6;">' + formatPrice(roi.avgMonthlyGains) + '</div></div><div style="flex:1;background:#f9fafb;padding:6px;text-align:center;border-radius:4px;border:1px solid #e5e7eb;"><div style="font-size:8px;color:#6b7280;">Retour sur invest.</div><div style="font-size:13px;font-weight:bold;color:#8B5CF6;">' + (roi.avgPayback > 0 ? Math.floor(roi.avgPayback) + ' mois' : '-') + '</div></div></div>';
+        roiHTML = '<div style="display:flex;gap:8px;margin-bottom:10px;"><div style="flex:1;background:#f9fafb;padding:6px;text-align:center;border-radius:4px;border:1px solid #e5e7eb;"><div style="font-size:8px;color:#6b7280;">Temps gagne/pers./sem.</div><div style="font-size:13px;font-weight:bold;color:#8B5CF6;">' + roi.timeSavedDisplay + '</div></div><div style="flex:1;background:#f9fafb;padding:6px;text-align:center;border-radius:4px;border:1px solid #e5e7eb;"><div style="font-size:8px;color:#6b7280;">Gains nets/mois</div><div style="font-size:13px;font-weight:bold;color:#8B5CF6;">' + formatPrice(roi.avgMonthlyGains) + '</div></div><div style="flex:1;background:#f9fafb;padding:6px;text-align:center;border-radius:4px;border:1px solid #e5e7eb;"><div style="font-size:8px;color:#6b7280;">Retour sur invest.</div><div style="font-size:13px;font-weight:bold;color:#8B5CF6;">' + (roi.avgPayback > 0 ? Math.floor(roi.avgPayback) + ' mois' : '-') + '</div></div></div>';
       }
       
       // Prochaines étapes
@@ -1043,6 +1057,19 @@
       // ROI
       (state.includeFormation ? '<div style="margin-bottom:6px;"><div style="font-size:10px;font-weight:bold;color:#8B5CF6;margin-bottom:6px;">📈 ROI Estime</div>' + roiHTML + '</div>' : '') +
       '</div>' +
+      
+      // Frise temporelle - Parcours sur 12 mois
+      '<div style="margin-bottom:10px;background:#f9fafb;padding:10px;border-radius:6px;border:1px solid #e5e7eb;">' +
+      '<div style="font-size:10px;font-weight:bold;color:#1f2937;margin-bottom:8px;text-align:center;">📅 Votre parcours sur 12 mois</div>' +
+      '<div style="position:relative;display:flex;justify-content:space-between;align-items:flex-start;padding:0 5px;">' +
+      '<div style="position:absolute;top:12px;left:20px;right:20px;height:2px;background:linear-gradient(to right,#8B5CF6,#a78bfa,#c4b5fd);"></div>' +
+      (state.includeAudit ? '<div style="text-align:center;z-index:1;"><div style="width:24px;height:24px;background:#8B5CF6;border-radius:50%;margin:0 auto 4px;display:flex;align-items:center;justify-content:center;"><span style="color:white;font-size:10px;">🔍</span></div><div style="font-size:7px;font-weight:bold;color:#4b5563;">Audit</div></div>' : '') +
+      (state.includeFormation ? '<div style="text-align:center;z-index:1;"><div style="width:24px;height:24px;background:#8B5CF6;border-radius:50%;margin:0 auto 4px;display:flex;align-items:center;justify-content:center;"><span style="color:white;font-size:10px;">🎓</span></div><div style="font-size:7px;font-weight:bold;color:#4b5563;">Formation</div></div>' : '') +
+      '<div style="text-align:center;z-index:1;"><div style="width:24px;height:24px;background:white;border:2px solid #8B5CF6;border-radius:50%;margin:0 auto 4px;display:flex;align-items:center;justify-content:center;"><span style="font-size:7px;color:#8B5CF6;font-weight:bold;">M+1</span></div><div style="font-size:7px;color:#4b5563;">Suivi KPI</div></div>' +
+      '<div style="text-align:center;z-index:1;"><div style="width:24px;height:24px;background:white;border:2px solid #8B5CF6;border-radius:50%;margin:0 auto 4px;display:flex;align-items:center;justify-content:center;"><span style="font-size:7px;color:#8B5CF6;font-weight:bold;">M+6</span></div><div style="font-size:7px;color:#4b5563;">Comite IA</div></div>' +
+      '<div style="text-align:center;z-index:1;"><div style="width:24px;height:24px;background:white;border:2px solid #8B5CF6;border-radius:50%;margin:0 auto 4px;display:flex;align-items:center;justify-content:center;"><span style="font-size:7px;color:#8B5CF6;font-weight:bold;">M+9</span></div><div style="font-size:7px;color:#4b5563;">Comite IA</div></div>' +
+      '<div style="text-align:center;z-index:1;"><div style="width:24px;height:24px;background:#8B5CF6;border-radius:50%;margin:0 auto 4px;display:flex;align-items:center;justify-content:center;"><span style="color:white;font-size:10px;">🏆</span></div><div style="font-size:7px;font-weight:bold;color:#4b5563;">Bilan annuel</div></div>' +
+      '</div></div>' +
       
       // 2 colonnes en bas: Prochaines étapes + Contact
       '<div style="display:flex;gap:12px;">' +
