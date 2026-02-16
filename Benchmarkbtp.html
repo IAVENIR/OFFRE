@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benchmark IA BTP - IAvenir</title>
+    <link rel="icon" type="image/png" href="data:image/png;base64,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">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f5f3ff 0%, #ffffff 50%, #eef2ff 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            padding: 40px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #1f2937;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+        
+        .info-box {
+            background: #f5f3ff;
+            border: 2px solid #ddd6fe;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 30px;
+        }
+        
+        .info-box h3 {
+            color: #6b21a8;
+            margin-bottom: 12px;
+            font-size: 1rem;
+        }
+        
+        .info-box ul {
+            list-style: none;
+            color: #6b21a8;
+        }
+        
+        .info-box li {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .btn-primary {
+            width: 100%;
+            background: linear-gradient(135deg, #8B5CF6, #6366f1);
+            color: white;
+            padding: 16px;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary:disabled {
+            background: #e5e7eb;
+            color: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8B5CF6, #6366f1);
+            transition: width 0.3s;
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+        
+        .dimension-tag {
+            color: #8B5CF6;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+        
+        .question-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 24px;
+        }
+        
+        .option-btn {
+            width: 100%;
+            padding: 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 16px;
+            background: white;
+            cursor: pointer;
+            margin-bottom: 12px;
+            text-align: left;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .option-btn:hover {
+            border-color: #8B5CF6;
+        }
+        
+        .option-btn.selected {
+            border-color: #8B5CF6;
+            background: #f5f3ff;
+        }
+        
+        .radio {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #d1d5db;
+            border-radius: 50%;
+            margin-right: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .option-btn.selected .radio {
+            border-color: #8B5CF6;
+            background: #8B5CF6;
+        }
+        
+        .radio-dot {
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            display: none;
+        }
+        
+        .option-btn.selected .radio-dot {
+            display: block;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 24px;
+        }
+        
+        .btn-secondary {
+            padding: 12px 24px;
+            border: 1px solid #ddd6fe;
+            border-radius: 12px;
+            background: white;
+            color: #8B5CF6;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-secondary:hover {
+            background: #f5f3ff;
+        }
+        
+        .result-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .result-icon {
+            font-size: 4rem;
+            margin-bottom: 16px;
+        }
+        
+        .result-badge {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        .result-score {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+        
+        .result-secteur {
+            font-size: 1.2rem;
+            color: #6b7280;
+            margin-bottom: 20px;
+        }
+        
+        .result-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #1f2937;
+        }
+        
+        .dimensions-grid {
+            display: grid;
+            gap: 16px;
+            margin: 30px 0;
+        }
+        
+        .dimension-item {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 12px;
+        }
+        
+        .dimension-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        
+        .dimension-name {
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        .dimension-score {
+            font-weight: bold;
+        }
+        
+        .bar-container {
+            width: 100%;
+            height: 12px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .bar-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s;
+        }
+        
+        .bar-above {
+            background: linear-gradient(90deg, #10b981, #059669);
+        }
+        
+        .bar-below {
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+        }
+        
+        .cta-box {
+            background: linear-gradient(135deg, #8B5CF6, #6366f1);
+            color: white;
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .cta-box h2 {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+        
+        .cta-box p {
+            color: #ddd6fe;
+            margin-bottom: 24px;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-cta {
+            padding: 14px 32px;
+            border-radius: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+        
+        .btn-cta-secondary {
+            border: 2px solid white;
+            color: white;
+        }
+        
+        .btn-cta-secondary:hover {
+            background: white;
+            color: #8B5CF6;
+        }
+        
+        .footer {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 24px;
+        }
+        
+        .footer a {
+            color: #8B5CF6;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            .card {
+                padding: 24px;
+            }
+            .result-score {
+                font-size: 2.5rem;
+            }
+            .result-stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- WELCOME -->
+        <div id="welcome" class="card">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div style="display: inline-block; width: 80px; height: 80px; background: linear-gradient(135deg, #8B5CF6, #6366f1); border-radius: 24px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px;">
+                    <span style="font-size: 40px;">🏗️</span>
+                </div>
+            </div>
+            <h1>Benchmark IA - Secteur BTP</h1>
+            <p class="subtitle">Où en êtes-vous sur la maturité IA dans le BTP ?<br><small style="color: #9ca3af;">2 minutes • Comparaison avec 127 entreprises du secteur</small></p>
+            
+            <div class="info-box">
+                <h3>✨ Votre résultat personnalisé</h3>
+                <ul>
+                    <li>✓ Score de maturité IA sur 100</li>
+                    <li>✓ Comparaison vs moyenne BTP (56/100)</li>
+                    <li>✓ Classement (TOP 10%, TOP 25%...)</li>
+                    <li>✓ Analyse par dimension</li>
+                </ul>
+            </div>
+            
+            <button class="btn-primary" onclick="startQuestions()">Commencer le benchmark →</button>
+            
+            <div class="footer">
+                Par <strong style="color: #8B5CF6;">IAvenir</strong> • Conseil & Formation IA<br>
+                📧 <a href="mailto:mathieu.legeas@iavenir-formation.fr">mathieu.legeas@iavenir-formation.fr</a> • 📱 07 61 60 22 77
+            </div>
+        </div>
+        
+        <!-- QUESTIONS -->
+        <div id="questions" class="card hidden">
+            <div class="question-header">
+                <span id="question-counter"></span>
+                <span style="color: #8B5CF6; font-weight: 600;">Construction & BTP</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+            
+            <div class="dimension-tag" id="dimension"></div>
+            <h2 class="question-title" id="question"></h2>
+            
+            <div id="options"></div>
+            
+            <div class="nav-buttons">
+                <button class="btn-secondary hidden" id="btn-prev" onclick="prevQuestion()">← Précédent</button>
+                <div></div>
+                <button class="btn-primary" id="btn-next" onclick="nextQuestion()" disabled style="width: auto; padding: 12px 24px;">Suivant →</button>
+            </div>
+        </div>
+        
+        <!-- RESULTS -->
+        <div id="results" class="card hidden">
+            <div class="result-header">
+                <div class="result-icon" id="result-icon"></div>
+                <div class="result-badge" id="result-badge"></div>
+                <div class="result-score" id="result-score"></div>
+                <div class="result-secteur">Secteur : Construction & BTP</div>
+                <div class="result-stats">
+                    <div class="stat">
+                        <div class="stat-label">Moyenne BTP</div>
+                        <div class="stat-value">56/100</div>
+                    </div>
+                    <div style="width: 1px; background: #e5e7eb;"></div>
+                    <div class="stat">
+                        <div class="stat-label">Classement</div>
+                        <div class="stat-value" id="classement"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <h2 style="text-align: center; margin-bottom: 24px;">Analyse par dimension</h2>
+            <div class="dimensions-grid" id="dimensions-grid"></div>
+            
+            <div style="background: #f5f3ff; border-radius: 16px; padding: 32px; margin: 30px 0;">
+                <h2 style="text-align: center; margin-bottom: 24px; color: #1f2937;">🎯 Vos premiers leviers d'action</h2>
+                <div id="leviers-grid" style="display: grid; gap: 16px;"></div>
+            </div>
+            
+            <div class="cta-box">
+                <h2>Envie d'améliorer votre score ? 🚀</h2>
+                <p>IAvenir vous accompagne à performer grâce à l'IA</p>
+                <div class="cta-buttons">
+                    <a href="https://iavenir-formation.fr" target="_blank" class="btn-cta btn-cta-secondary">Découvrir IAvenir</a>
+                </div>
+                <p style="font-size: 0.85rem; margin-top: 20px;">
+                    📧 <a href="mailto:mathieu.legeas@iavenir-formation.fr" style="color: white; text-decoration: underline;">mathieu.legeas@iavenir-formation.fr</a> • 📱 07 61 60 22 77
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const moyenneBTP = 56;
+        
+        const questions = [
+            {
+                id: 'vision',
+                dimension: 'Vision Stratégique',
+                question: "L'IA fait-elle partie de votre stratégie d'entreprise ?",
+                options: [
+                    { score: 0, text: "Pas encore à l'agenda" },
+                    { score: 5, text: "On en parle mais rien de formalisé" },
+                    { score: 10, text: "Quelques initiatives lancées" },
+                    { score: 15, text: "Stratégie IA définie avec objectifs clairs" },
+                    { score: 20, text: "Stratégie IA pilotée avec KPIs et budget dédié" }
+                ]
+            },
+            {
+                id: 'adoption',
+                dimension: 'Adoption Terrain',
+                question: "Quel pourcentage de vos équipes utilise l'IA au quotidien ?",
+                options: [
+                    { score: 0, text: "Moins de 10%" },
+                    { score: 5, text: "10-25%" },
+                    { score: 10, text: "25-50%" },
+                    { score: 15, text: "50-75%" },
+                    { score: 20, text: "Plus de 75%" }
+                ]
+            },
+            {
+                id: 'formation',
+                dimension: 'Formation & Compétences',
+                question: "Vos équipes sont-elles formées à l'IA ?",
+                options: [
+                    { score: 0, text: "Aucune formation à ce jour" },
+                    { score: 5, text: "Sensibilisation ponctuelle" },
+                    { score: 10, text: "Formation de base déployée" },
+                    { score: 15, text: "Formation continue sur plusieurs niveaux" },
+                    { score: 20, text: "Programme complet avec certification" }
+                ]
+            },
+            {
+                id: 'gouvernance',
+                dimension: 'Gouvernance & Sécurité',
+                question: "Avez-vous un cadre pour encadrer l'usage de l'IA ?",
+                options: [
+                    { score: 0, text: "Aucun cadre défini" },
+                    { score: 5, text: "Quelques recommandations informelles" },
+                    { score: 10, text: "Charte IA en cours de rédaction" },
+                    { score: 15, text: "Charte IA déployée avec process de validation" },
+                    { score: 20, text: "Gouvernance complète avec comité dédié" }
+                ]
+            },
+            {
+                id: 'mesure',
+                dimension: "Mesure d'Impact",
+                question: "Mesurez-vous le ROI de vos initiatives IA ?",
+                options: [
+                    { score: 0, text: "Aucune mesure" },
+                    { score: 5, text: "Perception qualitative seulement" },
+                    { score: 10, text: "Quelques indicateurs de suivi" },
+                    { score: 15, text: "KPIs définis et suivis régulièrement" },
+                    { score: 20, text: "Dashboard ROI complet avec optimisation continue" }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = {};
+
+        function startQuestions() {
+            document.getElementById('welcome').classList.add('hidden');
+            document.getElementById('questions').classList.remove('hidden');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById('question-counter').textContent = `Question ${currentQuestion + 1} / ${questions.length}`;
+            document.getElementById('progress').style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
+            document.getElementById('dimension').textContent = q.dimension;
+            document.getElementById('question').textContent = q.question;
+            
+            const optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = '';
+            q.options.forEach((opt) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn' + (answers[q.id]?.score === opt.score ? ' selected' : '');
+                btn.onclick = () => selectOption(q.id, opt);
+                btn.innerHTML = `
+                    <div class="radio"><div class="radio-dot"></div></div>
+                    <span>${opt.text}</span>
+                `;
+                optionsDiv.appendChild(btn);
+            });
+            
+            document.getElementById('btn-prev').classList.toggle('hidden', currentQuestion === 0);
+            document.getElementById('btn-next').disabled = !answers[q.id];
+            document.getElementById('btn-next').textContent = currentQuestion < questions.length - 1 ? 'Suivant →' : 'Voir les résultats →';
+        }
+
+        function selectOption(questionId, option) {
+            answers[questionId] = option;
+            showQuestion();
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion();
+            }
+        }
+
+        function showResults() {
+            const totalScore = Object.values(answers).reduce((sum, a) => sum + a.score, 0);
+            const percentile = totalScore < moyenneBTP 
+                ? Math.round(50 * (totalScore / moyenneBTP))
+                : Math.round(50 + 50 * ((totalScore - moyenneBTP) / (100 - moyenneBTP)));
+            
+            let ranking;
+            if (percentile >= 90) ranking = { label: 'TOP 10%', color: '#10b981', icon: '🏆' };
+            else if (percentile >= 75) ranking = { label: 'TOP 25%', color: '#3b82f6', icon: '⭐' };
+            else if (percentile >= 50) ranking = { label: 'Au-dessus de la moyenne', color: '#8B5CF6', icon: '📈' };
+            else if (percentile >= 25) ranking = { label: 'En progression', color: '#f59e0b', icon: '🎯' };
+            else ranking = { label: 'À développer', color: '#ef4444', icon: '🚀' };
+            
+            document.getElementById('questions').classList.add('hidden');
+            document.getElementById('results').classList.remove('hidden');
+            
+            document.getElementById('result-icon').textContent = ranking.icon;
+            const badge = document.getElementById('result-badge');
+            badge.textContent = ranking.label;
+            badge.style.backgroundColor = ranking.color + '33';
+            badge.style.color = ranking.color;
+            
+            document.getElementById('result-score').textContent = `Votre Score : ${totalScore}/100`;
+            
+            const classementEl = document.getElementById('classement');
+            classementEl.textContent = `TOP ${100 - percentile}%`;
+            classementEl.style.color = ranking.color;
+            
+            const dimensionsGrid = document.getElementById('dimensions-grid');
+            const dimensionsData = [];
+            
+            questions.forEach(q => {
+                const score = (answers[q.id].score / 20) * 100;
+                const isAbove = score >= (moyenneBTP / questions.length);
+                
+                dimensionsData.push({ question: q, score: score, isAbove: isAbove });
+                
+                const div = document.createElement('div');
+                div.className = 'dimension-item';
+                div.innerHTML = `
+                    <div class="dimension-header">
+                        <span class="dimension-name">${q.dimension}</span>
+                        <span class="dimension-score" style="color: ${isAbove ? '#10b981' : '#f59e0b'}">${Math.round(score)}%</span>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-fill ${isAbove ? 'bar-above' : 'bar-below'}" style="width: ${score}%"></div>
+                    </div>
+                `;
+                dimensionsGrid.appendChild(div);
+            });
+            
+            const leviers = {
+                'Vision Stratégique': {
+                    icon: '🎯',
+                    title: 'Structurer votre vision IA',
+                    actions: [
+                        'Réaliser un audit stratégique pour identifier les opportunités BTP',
+                        'Définir 3-5 cas d\'usage prioritaires (chantier, planification, sécurité)',
+                        'Construire une roadmap IA avec quick wins à 90 jours'
+                    ]
+                },
+                'Adoption Terrain': {
+                    icon: '👥',
+                    title: 'Accélérer l\'adoption sur les chantiers',
+                    actions: [
+                        'Identifier et former vos chefs de chantier champions IA',
+                        'Mettre en place des ateliers pratiques sur cas d\'usage terrain',
+                        'Créer une communauté de pratique BTP pour partager les succès'
+                    ]
+                },
+                'Formation & Compétences': {
+                    icon: '⚡',
+                    title: 'Former vos équipes BTP',
+                    actions: [
+                        'Déployer une formation certifiée adaptée aux métiers du BTP',
+                        'Organiser des ateliers 80/20 sur chantier pilote',
+                        'Mettre en place un programme de montée en compétence continue'
+                    ]
+                },
+                'Gouvernance & Sécurité': {
+                    icon: '🛡️',
+                    title: 'Sécuriser votre démarche IA BTP',
+                    actions: [
+                        'Élaborer une charte IA adaptée aux enjeux du BTP',
+                        'Former vos équipes aux enjeux RGPD et sécurité chantier',
+                        'Mettre en place un processus de validation des outils'
+                    ]
+                },
+                'Mesure d\'Impact': {
+                    icon: '📊',
+                    title: 'Piloter la performance BTP',
+                    actions: [
+                        'Définir des KPIs BTP pertinents (délais, coûts, sécurité)',
+                        'Mettre en place un système de mesure du ROI par chantier',
+                        'Organiser des revues mensuelles pour optimiser l\'impact'
+                    ]
+                }
+            };
+            
+            const weakDimensions = dimensionsData
+                .sort((a, b) => a.score - b.score)
+                .slice(0, 2);
+            
+            const leviersGrid = document.getElementById('leviers-grid');
+            weakDimensions.forEach(dim => {
+                const levier = leviers[dim.question.dimension];
+                const div = document.createElement('div');
+                div.style.cssText = 'background: white; padding: 24px; border-radius: 16px; border-left: 4px solid #8B5CF6;';
+                div.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                        <span style="font-size: 2rem;">${levier.icon}</span>
+                        <div>
+                            <h3 style="font-size: 1.1rem; font-weight: bold; color: #1f2937; margin-bottom: 4px;">${levier.title}</h3>
+                            <div style="font-size: 0.85rem; color: #8B5CF6; font-weight: 600;">${dim.question.dimension} • ${Math.round(dim.score)}%</div>
+                        </div>
+                    </div>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        ${levier.actions.map(action => `
+                            <li style="padding: 8px 0; color: #4b5563; font-size: 0.95rem; display: flex; align-items: start;">
+                                <span style="color: #8B5CF6; margin-right: 12px; font-weight: bold;">→</span>
+                                <span>${action}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                `;
+                leviersGrid.appendChild(div);
+            });
+        }
+    </script>
+</body>
+</html>
