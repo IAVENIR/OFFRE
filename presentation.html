@@ -8,7 +8,7 @@
   <style>
     html{scroll-behavior:smooth}
     @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-    .animate-bounce{animation:bounce 2s infinite}
+    .animate-bounce{animation:bounce 2s hinfinite}
     @keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
     .fade-in{animation:fadeIn .4s ease both}
   </style>
@@ -45,7 +45,7 @@ const ic={
 
 function fmt(n){return new Intl.NumberFormat('fr-FR').format(Math.round(n))+' €'}
 function calcAudit(){const c=state.auditConfig.collaborateurs,t=Math.floor(Math.max(0,c-1)/10),total=6500+t*2500,days=c<=10?3:c<=20?4:c<=40?6:8;return{days,total}}
-function calcFormation(){const prices={0.5:1400,1:2900,2:4900},base=prices[state.formationConfig.duration]||2900,s=state.formationConfig.sessions||1,disc=s>=5?.15:s>=3?.10:s>=2?.05:0,sub=base*s,discAmt=sub*disc;return{base,sessions:s,disc,discAmt,final:sub-discAmt}}
+function calcFormation(){const prices={0.5:1400,1:2400,2:4300},base=prices[state.formationConfig.duration]||2400,s=state.formationConfig.sessions||1,disc=s>=5?.15:s>=3?.10:s>=2?.05:0,sub=base*s,discAmt=sub*disc;return{base,sessions:s,disc,discAmt,final:sub-discAmt}}
 function calcDeploy(){const j=state.deploiementConfig.jours||20;return{jours:j,total:j*PRIX_CONSULTANT}}
 function calcROI(){const p=state.formationConfig.participants,rate=3500/151.67,h={0.5:1,1:2,2:3}[state.formationConfig.duration]||2,bonus=state.includeAudit?2:0,saved=h+bonus,monthly=(p*saved*rate*4.33)-(25*p),invest=(state.includeAudit?calcAudit().total:0)+(state.includeFormation?calcFormation().final:0);return{saved,monthly,invest,payback:monthly>0?invest/monthly:0}}
 
