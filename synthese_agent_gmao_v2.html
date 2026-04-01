@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent IA Maintenance — Synthèse technique</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple: #8B5CF6;
+    --purple-dark: #6D28D9;
+    --purple-deeper: #4C1D95;
+    --purple-light: #EDE9FE;
+    --purple-mid: #C4B5FD;
+    --teal: #0D9488;
+    --teal-light: #CCFBF1;
+    --teal-dark: #115E59;
+    --coral: #EA580C;
+    --coral-light: #FFF7ED;
+    --blue: #2563EB;
+    --blue-light: #EFF6FF;
+    --amber: #D97706;
+    --amber-light: #FFFBEB;
+    --slate-50: #F8FAFC;
+    --slate-100: #F1F5F9;
+    --slate-200: #E2E8F0;
+    --slate-300: #CBD5E1;
+    --slate-400: #94A3B8;
+    --slate-500: #64748B;
+    --slate-600: #475569;
+    --slate-700: #334155;
+    --slate-800: #1E293B;
+    --slate-900: #0F172A;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #fff;
+    color: var(--slate-800);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .header {
+    background: var(--slate-900);
+    padding: 2.5rem 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .header-left h1 { font-size: 1.6rem; font-weight: 700; color: #fff; letter-spacing: -0.02em; }
+  .header-left p { color: var(--purple-mid); font-size: 0.95rem; margin-top: 0.2rem; }
+  .header-badge {
+    background: var(--purple);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .main { max-width: 1200px; margin: 0 auto; padding: 2.5rem 2rem; }
+
+  .section-label {
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--purple); margin-bottom: 0.4rem;
+  }
+  .section-title {
+    font-size: 1.35rem; font-weight: 700; color: var(--slate-900);
+    letter-spacing: -0.01em; margin-bottom: 1.5rem;
+  }
+
+  /* ── Architecture cards ── */
+  .arch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 3rem; }
+  .arch-card { border: 1px solid var(--slate-200); border-radius: 16px; overflow: hidden; background: #fff; }
+  .arch-header { padding: 1.2rem 1.5rem; display: flex; align-items: center; gap: 0.8rem; }
+  .arch-header.opt1 { background: linear-gradient(135deg, var(--teal-dark), var(--teal)); }
+  .arch-header.opt2 { background: linear-gradient(135deg, var(--purple-deeper), var(--purple)); }
+  .arch-number {
+    width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2);
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 1rem; flex-shrink: 0;
+  }
+  .arch-header-text h3 { font-size: 1rem; font-weight: 600; color: #fff; }
+  .arch-header-text p { font-size: 0.78rem; color: rgba(255,255,255,0.8); margin-top: 0.1rem; }
+  .arch-body { padding: 1.2rem 1.5rem 1.5rem; }
+  .arch-body svg { width: 100%; height: auto; display: block; }
+  .arch-meta { display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
+  .arch-tag {
+    font-size: 0.7rem; font-weight: 500; padding: 0.25rem 0.7rem;
+    border-radius: 20px; background: var(--slate-100); color: var(--slate-600);
+  }
+  .arch-tag.duration { background: var(--purple-light); color: var(--purple-dark); }
+  .arch-tag.coverage { background: var(--teal-light); color: var(--teal-dark); }
+
+  /* ── Tables ── */
+  .tables-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+  .reco-badge {
+    display: inline-block; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; background: var(--teal); color: #fff;
+    padding: 0.2rem 0.6rem; border-radius: 4px; margin-left: 0.4rem; vertical-align: middle;
+  }
+  .explain-box {
+    background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 12px;
+    padding: 1.2rem 1.5rem; margin-bottom: 3rem; font-size: 0.82rem; color: var(--slate-600); line-height: 1.65;
+  }
+  .explain-box strong { color: var(--slate-800); }
+  .explain-box .explain-title {
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--purple); margin-bottom: 0.5rem;
+  }
+  .explain-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-top: 0.8rem; }
+  .explain-item { border-left: 3px solid var(--slate-200); padding-left: 0.8rem; }
+  .explain-item.reco { border-left-color: var(--teal); }
+  .explain-item h5 { font-size: 0.8rem; font-weight: 600; color: var(--slate-800); margin-bottom: 0.2rem; }
+  .explain-item p { font-size: 0.75rem; color: var(--slate-500); margin: 0; }
+  .table-card { border: 1px solid var(--slate-200); border-radius: 16px; overflow: hidden; }
+  .table-card-header {
+    padding: 1rem 1.5rem; background: var(--slate-50); border-bottom: 1px solid var(--slate-200);
+  }
+  .table-card-header h4 { font-size: 0.9rem; font-weight: 600; color: var(--slate-800); }
+  .table-card-header p { font-size: 0.75rem; color: var(--slate-500); margin-top: 0.15rem; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+  thead th {
+    background: var(--slate-900); color: #fff; text-align: left; padding: 0.7rem 1rem;
+    font-weight: 500; font-size: 0.73rem; letter-spacing: 0.02em;
+  }
+  tbody td { padding: 0.6rem 1rem; border-bottom: 1px solid var(--slate-100); vertical-align: top; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:nth-child(even) { background: var(--slate-50); }
+  .cell-label { font-weight: 600; color: var(--slate-700); }
+  .cell-highlight { font-weight: 600; color: var(--purple-dark); }
+  .cell-small { font-size: 0.72rem; color: var(--slate-500); margin-top: 0.15rem; }
+  .total-row td {
+    background: var(--purple-light) !important; font-weight: 600;
+    color: var(--purple-deeper); border-bottom: none;
+  }
+  .optional-tag {
+    display: inline-block; font-size: 0.6rem; font-weight: 600; letter-spacing: 0.04em;
+    text-transform: uppercase; background: var(--amber-light); color: var(--amber);
+    padding: 0.15rem 0.45rem; border-radius: 4px; margin-left: 0.3rem; vertical-align: middle;
+  }
+
+  /* ── Full-width table ── */
+  .full-table-card {
+    border: 1px solid var(--slate-200); border-radius: 16px; overflow: hidden; margin-bottom: 2rem;
+  }
+
+  /* ── Year projection cards ── */
+  .year-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 3rem; }
+  .year-card {
+    border: 1px solid var(--slate-200); border-radius: 14px; padding: 1.3rem 1.5rem;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .year-card.y1 { border-color: var(--purple); background: var(--purple-light); }
+  .year-card .year-label {
+    font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--slate-500); margin-bottom: 0.3rem;
+  }
+  .year-card.y1 .year-label { color: var(--purple-dark); }
+  .year-card .year-amount {
+    font-size: 1.5rem; font-weight: 700; color: var(--slate-800);
+    letter-spacing: -0.02em;
+  }
+  .year-card.y1 .year-amount { color: var(--purple-deeper); }
+  .year-card .year-detail {
+    font-size: 0.72rem; color: var(--slate-500); margin-top: 0.3rem; line-height: 1.4;
+  }
+  .year-card.y1 .year-detail { color: var(--purple-dark); }
+  .year-card .year-badge {
+    position: absolute; top: 10px; right: 10px; font-size: 0.55rem; font-weight: 600;
+    background: var(--purple); color: #fff; padding: 0.15rem 0.5rem; border-radius: 10px;
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+
+  /* ── Questions ── */
+  .questions-section {
+    background: var(--slate-900); border-radius: 16px; padding: 2rem 2.5rem; margin-bottom: 2rem;
+  }
+  .questions-section .section-label { color: var(--purple-mid); }
+  .questions-section .section-title { color: #fff; margin-bottom: 1.2rem; }
+  .q-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .q-item { display: flex; gap: 0.7rem; align-items: flex-start; }
+  .q-num {
+    width: 24px; height: 24px; min-width: 24px; border-radius: 50%;
+    background: var(--purple); color: #fff; display: flex;
+    align-items: center; justify-content: center; font-size: 0.65rem;
+    font-weight: 700; margin-top: 0.1rem;
+  }
+  .q-text { font-size: 0.82rem; color: var(--slate-300); line-height: 1.5; }
+
+  .footer { text-align: center; padding: 2rem; border-top: 1px solid var(--slate-200); margin-top: 1rem; }
+  .footer-brand { font-size: 1.1rem; font-weight: 700; color: var(--purple); }
+  .footer-sub { font-size: 0.78rem; color: var(--slate-500); margin-top: 0.25rem; }
+
+  @media print {
+    body { font-size: 10pt; }
+    .main { padding: 0.5rem; }
+    .arch-grid, .tables-grid, .q-grid, .year-grid { gap: 0.8rem; }
+    .questions-section { break-inside: avoid; }
+  }
+  @media (max-width: 800px) {
+    .arch-grid, .tables-grid, .q-grid { grid-template-columns: 1fr; }
+    .year-grid { grid-template-columns: 1fr; }
+    .explain-grid { grid-template-columns: 1fr; }
+    .header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Agent IA de diagnostic maintenance</h1>
+    <p>Connecté à la GMAO Kimoce — Synthèse technique & préconisations</p>
+  </div>
+  <div class="header-badge">IAvenir — Conseil IA</div>
+</div>
+
+<div class="main">
+
+<!-- ═══ ARCHITECTURES ═══ -->
+<div class="section-label">Architectures proposées</div>
+<div class="section-title">Deux scénarios, une même fondation</div>
+
+<div class="arch-grid">
+
+  <!-- ── Option 1 ── -->
+  <div class="arch-card">
+    <div class="arch-header opt1">
+      <div class="arch-number">1</div>
+      <div class="arch-header-text">
+        <h3>API Kimoce seule</h3>
+        <p>Historique maintenance en temps réel</p>
+      </div>
+    </div>
+    <div class="arch-body">
+      <svg viewBox="0 0 480 310" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+            <path d="M2 1.5L8 5L2 8.5" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round"/>
+          </marker>
+        </defs>
+        <rect x="24" y="30" width="120" height="52" rx="10" fill="#CCFBF1" stroke="#0D9488" stroke-width="1"/>
+        <text x="84" y="52" text-anchor="middle" font-family="DM Sans" font-size="11" font-weight="600" fill="#115E59">Technicien</text>
+        <text x="84" y="68" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#0D9488">Question libre</text>
+        <line x1="144" y1="56" x2="176" y2="56" stroke="#94A3B8" stroke-width="1.2" marker-end="url(#a1)"/>
+        <rect x="178" y="24" width="130" height="64" rx="10" fill="#EDE9FE" stroke="#8B5CF6" stroke-width="1"/>
+        <text x="243" y="48" text-anchor="middle" font-family="DM Sans" font-size="11" font-weight="600" fill="#4C1D95">Agent LLM</text>
+        <text x="243" y="63" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#6D28D9">Analyse → appel API</text>
+        <text x="243" y="76" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#6D28D9">→ synthèse</text>
+        <line x1="308" y1="56" x2="334" y2="56" stroke="#94A3B8" stroke-width="1.2" marker-end="url(#a1)"/>
+        <text x="321" y="48" text-anchor="middle" font-family="DM Sans" font-size="8" fill="#94A3B8">API</text>
+        <rect x="336" y="30" width="120" height="52" rx="10" fill="#CCFBF1" stroke="#0D9488" stroke-width="1"/>
+        <text x="396" y="52" text-anchor="middle" font-family="DM Sans" font-size="11" font-weight="600" fill="#115E59">GMAO Kimoce</text>
+        <text x="396" y="68" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#0D9488">Données live</text>
+        <path d="M396 82 L396 108 L84 108 L84 82" fill="none" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#a1)"/>
+        <text x="240" y="120" text-anchor="middle" font-family="DM Sans" font-size="8" fill="#94A3B8">Réponse avec citations tickets Kimoce</text>
+        <rect x="24" y="150" width="432" height="1" fill="#E2E8F0"/>
+        <text x="240" y="170" text-anchor="middle" font-family="DM Sans" font-size="9" font-weight="600" fill="#475569">Données accessibles via l'API</text>
+        <rect x="24" y="184" width="100" height="38" rx="6" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="0.5"/>
+        <text x="74" y="207" text-anchor="middle" font-family="DM Sans" font-size="8.5" fill="#475569">Interventions</text>
+        <rect x="134" y="184" width="100" height="38" rx="6" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="0.5"/>
+        <text x="184" y="207" text-anchor="middle" font-family="DM Sans" font-size="8.5" fill="#475569">Équipements</text>
+        <rect x="244" y="184" width="100" height="38" rx="6" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="0.5"/>
+        <text x="294" y="207" text-anchor="middle" font-family="DM Sans" font-size="8.5" fill="#475569">Pièces détachées</text>
+        <rect x="354" y="184" width="100" height="38" rx="6" fill="#F1F5F9" stroke="#CBD5E1" stroke-width="0.5"/>
+        <text x="404" y="207" text-anchor="middle" font-family="DM Sans" font-size="8.5" fill="#475569">Commentaires</text>
+        <rect x="24" y="240" width="432" height="50" rx="8" fill="#FFFBEB" stroke="#D97706" stroke-width="0.5"/>
+        <text x="34" y="258" font-family="DM Sans" font-size="8" font-weight="600" fill="#92400E">Exemple :</text>
+        <text x="34" y="272" font-family="DM Sans" font-size="8" fill="#78350F">"Dernières pannes groupe froid site Marseille ?"</text>
+        <text x="34" y="283" font-family="DM Sans" font-size="7.5" fill="#92400E">→ GET /interventions?site=marseille&amp;equip=groupe_froid&amp;limit=10</text>
+      </svg>
+      <div class="arch-meta">
+        <span class="arch-tag duration">~2 mois · 40 jours</span>
+        <span class="arch-tag coverage">Couverture : 60-70 %</span>
+        <span class="arch-tag">MVP rapide</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Option 2 ── -->
+  <div class="arch-card">
+    <div class="arch-header opt2">
+      <div class="arch-number">2</div>
+      <div class="arch-header-text">
+        <h3>API + RAG docs + Recherche web</h3>
+        <p>Chaîne de priorité avec fallback progressif</p>
+      </div>
+    </div>
+    <div class="arch-body">
+      <svg viewBox="0 0 480 310" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+            <path d="M2 1.5L8 5L2 8.5" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round"/>
+          </marker>
+        </defs>
+        <rect x="24" y="10" width="100" height="44" rx="8" fill="#CCFBF1" stroke="#0D9488" stroke-width="1"/>
+        <text x="74" y="30" text-anchor="middle" font-family="DM Sans" font-size="10" font-weight="600" fill="#115E59">Technicien</text>
+        <text x="74" y="43" text-anchor="middle" font-family="DM Sans" font-size="8" fill="#0D9488">Question libre</text>
+        <line x1="124" y1="32" x2="156" y2="32" stroke="#94A3B8" stroke-width="1.2" marker-end="url(#a2)"/>
+        <rect x="158" y="6" width="298" height="52" rx="10" fill="#EDE9FE" stroke="#8B5CF6" stroke-width="1"/>
+        <text x="307" y="28" text-anchor="middle" font-family="DM Sans" font-size="11" font-weight="600" fill="#4C1D95">Agent orchestrateur</text>
+        <text x="307" y="44" text-anchor="middle" font-family="DM Sans" font-size="8.5" fill="#6D28D9">Analyse la question → décide quelles sources interroger</text>
+        <!-- Branch 1: Kimoce -->
+        <line x1="240" y1="58" x2="240" y2="82" stroke="#0D9488" stroke-width="1.2" marker-end="url(#a2)"/>
+        <rect x="24" y="84" width="140" height="50" rx="8" fill="#CCFBF1" stroke="#0D9488" stroke-width="1"/>
+        <rect x="24" y="84" width="140" height="16" rx="8" fill="#0D9488"/>
+        <rect x="24" y="92" width="140" height="8" fill="#0D9488"/>
+        <text x="94" y="95" text-anchor="middle" font-family="DM Sans" font-size="7.5" font-weight="600" fill="#fff">PRIORITÉ 1</text>
+        <text x="94" y="113" text-anchor="middle" font-family="DM Sans" font-size="10" font-weight="600" fill="#115E59">API Kimoce</text>
+        <text x="94" y="126" text-anchor="middle" font-family="DM Sans" font-size="8" fill="#0D9488">Données temps réel</text>
+        <line x1="164" y1="109" x2="240" y2="88" stroke="#0D9488" stroke-width="0.8"/>
+        <!-- Branch 2: RAG -->
+        <line x1="307" y1="58" x2="307" y2="82" stroke="#8B5CF6" stroke-width="1.2" marker-end="url(#a2)"/>
+        <rect x="178" y="84" width="140" height="50" rx="8" fill="#EDE9FE" stroke="#8B5CF6" stroke-width="1"/>
+        <rect x="178" y="84" width="140" height="16" rx="8" fill="#8B5CF6"/>
+        <rect x="178" y="92" width="140" height="8" fill="#8B5CF6"/>
+        <text x="248" y="95" text-anchor="middle" font-family="DM Sans" font-size="7.5" font-weight="600" fill="#fff">PRIORITÉ 2</text>
+        <text x="248" y="113" text-anchor="middle" font-family="DM Sans" font-size="10" font-weight="600" fill="#4C1D95">RAG documentaire</text>
+        <text x="248" y="126" text-anchor="middle" font-family="DM Sans" font-size="8" fill="#6D28D9">Notices, procédures</text>
+        <!-- Branch 3: Web -->
+        <line x1="380" y1="58" x2="380" y2="82" stroke="#EA580C" stroke-width="1.2" marker-end="url(#a2)"/>
+        <rect x="334" y="84" width="122" height="50" rx="8" fill="#FFF7ED" stroke="#EA580C" stroke-width="1"/>
+        <rect x="334" y="84" width="122" height="16" rx="8" fill="#EA580C"/>
+        <rect x="334" y="92" width="122" height="8" fill="#EA580C"/>
+        <text x="395" y="95" text-anchor="middle" font-family="DM Sans" font-size="7.5" font-weight="600" fill="#fff">PRIORITÉ 3</text>
+        <text x="395" y="113" text-anchor="middle" font-family="DM Sans" font-size="10" font-weight="600" fill="#9A3412">Recherche web</text>
+        <text x="395" y="126" text-anchor="middle" font-family="DM Sans" font-size="8" fill="#EA580C">Sur validation user</text>
+        <!-- Convergence -->
+        <line x1="94" y1="134" x2="94" y2="158" stroke="#CBD5E1" stroke-width="0.8"/>
+        <line x1="248" y1="134" x2="248" y2="158" stroke="#CBD5E1" stroke-width="0.8"/>
+        <line x1="395" y1="134" x2="395" y2="158" stroke="#CBD5E1" stroke-width="0.8"/>
+        <line x1="94" y1="158" x2="395" y2="158" stroke="#CBD5E1" stroke-width="0.8"/>
+        <line x1="240" y1="158" x2="240" y2="172" stroke="#CBD5E1" stroke-width="0.8" marker-end="url(#a2)"/>
+        <rect x="80" y="174" width="320" height="44" rx="8" fill="#EDE9FE" stroke="#8B5CF6" stroke-width="1"/>
+        <text x="240" y="194" text-anchor="middle" font-family="DM Sans" font-size="10" font-weight="600" fill="#4C1D95">Synthèse + citations par source</text>
+        <text x="240" y="208" text-anchor="middle" font-family="DM Sans" font-size="7.5" fill="#6D28D9">Kimoce #4521 · Notice Carrier p.47 · google.com</text>
+        <rect x="80" y="232" width="320" height="36" rx="8" fill="#FFFBEB" stroke="#D97706" stroke-width="0.5"/>
+        <text x="240" y="248" text-anchor="middle" font-family="DM Sans" font-size="8" fill="#92400E">Si sources insuffisantes →</text>
+        <text x="240" y="260" text-anchor="middle" font-family="DM Sans" font-size="8" font-weight="600" fill="#78350F">"Veux-tu que je fasse une recherche web pour compléter ?"</text>
+        <path d="M80 196 L50 196 L50 32 L24 32" fill="none" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#a2)"/>
+        <text x="42" y="120" text-anchor="middle" font-family="DM Sans" font-size="7" fill="#94A3B8" transform="rotate(-90, 42, 120)">Réponse</text>
+      </svg>
+      <div class="arch-meta">
+        <span class="arch-tag duration">~4 mois · 60-80 jours</span>
+        <span class="arch-tag coverage">Couverture : 90-95 %</span>
+        <span class="arch-tag">Solution pérenne</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ COÛTS & LICENCES ═══ -->
+<div class="section-label">Estimation financière</div>
+<div class="section-title">Coûts récurrents & licences</div>
+<p style="font-size:0.82rem; color:var(--slate-500); margin:-1rem 0 1.5rem;">Base : 200 techniciens · 5 à 10 questions/jour · 22 jours ouvrés/mois</p>
+
+<div class="tables-grid">
+
+  <!-- ── Coûts récurrents ── -->
+  <div class="table-card">
+    <div class="table-card-header">
+      <h4>Coûts récurrents mensuels — Infrastructure & consommation IA</h4>
+      <p>Indépendants du chemin de licence choisi (chemin Azure OpenAI API recommandé)</p>
+    </div>
+    <table>
+      <thead>
+        <tr><th style="width:50%">Poste</th><th>Option 1</th><th>Option 2</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="cell-label">Tokens LLM (GPT-5 mini)</td>
+          <td>~100 à 160 €</td>
+          <td>~135 à 225 €</td>
+        </tr>
+        <tr>
+          <td class="cell-label">Azure AI Search (Basic)</td>
+          <td>—</td>
+          <td class="cell-highlight">~67 €/mois</td>
+        </tr>
+        <tr>
+          <td class="cell-label">Stockage docs (Azure Blob)</td>
+          <td>—</td>
+          <td>~5 à 18 €</td>
+        </tr>
+        <tr>
+          <td class="cell-label">Google Custom Search API<div class="cell-small">Recherche web contrôlée</div></td>
+          <td>—</td>
+          <td>~10 à 45 €</td>
+        </tr>
+        <tr>
+          <td>
+            <span class="cell-label">Hébergement backend Azure</span>
+            <span class="optional-tag">Optionnel</span>
+            <div class="cell-small">Uniquement si intégration plateforme web custom</div>
+          </td>
+          <td style="color:var(--slate-400);">~45 à 135 €</td>
+          <td style="color:var(--slate-400);">~90 à 180 €</td>
+        </tr>
+        <tr>
+          <td>
+            <span class="cell-label">Monitoring & logs</span>
+            <span class="optional-tag">Optionnel</span>
+            <div class="cell-small">Inclus si ChatGPT ou Copilot Studio</div>
+          </td>
+          <td style="color:var(--slate-400);">~10 à 25 €</td>
+          <td style="color:var(--slate-400);">~18 à 45 €</td>
+        </tr>
+        <tr class="total-row">
+          <td>Total mensuel (hors options)</td>
+          <td class="cell-highlight">~100 à 160 €</td>
+          <td class="cell-highlight">~217 à 355 €</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ── Licences : 3 chemins ── -->
+<div class="full-table-card" style="margin-bottom:1rem;">
+  <div class="table-card-header">
+    <h4>Choix de la plateforme — 3 chemins possibles</h4>
+    <p>Chaque chemin implique un modèle de licence et de facturation différent pour le builder (référent) et les utilisateurs (techniciens)</p>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Rôle</th>
+        <th style="width:26%">Chemin A<br/><span style="font-weight:400; opacity:0.7;">Azure OpenAI API</span> <span style="background:#0D9488; color:#fff; font-size:0.55rem; padding:0.1rem 0.4rem; border-radius:3px; margin-left:0.2rem;">RECOMMANDÉ</span></th>
+        <th style="width:26%">Chemin B<br/><span style="font-weight:400; opacity:0.7;">Microsoft Copilot Studio</span></th>
+        <th style="width:26%">Chemin C<br/><span style="font-weight:400; opacity:0.7;">ChatGPT Business</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="cell-label">Builder<div class="cell-small">1-2 référents internes<br/>Configure l'agent, les prompts</div></td>
+        <td>
+          <strong>Abonnement Azure</strong><br/>
+          <span style="color:var(--teal-dark); font-weight:600;">0 € de licence</span>
+          <div class="cell-small">Accès au portail Azure<br/>Configuration via code ou no-code</div>
+        </td>
+        <td>
+          <strong>Copilot Studio User</strong><br/>
+          <span style="color:var(--teal-dark); font-weight:600;">0 € de licence</span>
+          <div class="cell-small">Attribuée par l'admin Microsoft<br/>+ tenant Azure requis pour les crédits</div>
+        </td>
+        <td>
+          <strong>ChatGPT Business</strong><br/>
+          <span style="color:var(--coral); font-weight:600;">$25-30/mois par référent</span>
+          <div class="cell-small">Crée les Custom GPT<br/>Configure les Actions API</div>
+        </td>
+      </tr>
+      <tr>
+        <td class="cell-label">200 techniciens<div class="cell-small">Interrogent l'agent au quotidien</div></td>
+        <td>
+          <strong>Aucune licence user</strong><br/>
+          <span style="color:var(--teal-dark); font-weight:600;">0 €/user</span>
+          <div class="cell-small">Accès via la plateforme web existante<br/>Coût = tokens consommés uniquement</div>
+        </td>
+        <td>
+          <strong>Aucune licence user</strong><br/>
+          <span style="color:var(--teal-dark); font-weight:600;">0 €/user</span>
+          <div class="cell-small">Accès via Teams ou iframe web<br/>Coût = Copilot Credits à l'usage</div>
+        </td>
+        <td>
+          <strong>ChatGPT Business × 200</strong><br/>
+          <span style="color:var(--coral); font-weight:600;">$25/user/mois</span>
+          <div class="cell-small">= $5 000/mois (annuel)<br/>= $6 000/mois (mensuel)</div>
+        </td>
+      </tr>
+      <tr>
+        <td class="cell-label">Coût de consommation<div class="cell-small">Facturation à l'usage de l'agent</div></td>
+        <td>
+          <strong>Tokens API</strong><br/>
+          <span style="color:var(--teal-dark); font-weight:600;">~100 à 160 €/mois</span>
+          <div class="cell-small">GPT-5 mini : $0,25/1M input<br/>$2/1M output — très économique</div>
+        </td>
+        <td>
+          <strong>Copilot Credits</strong><br/>
+          <span style="color:var(--amber); font-weight:600;">~900 à 3 300 €/mois</span>
+          <div class="cell-small">$200/pack de 25 000 crédits<br/>~7-10 crédits par conversation</div>
+        </td>
+        <td>
+          <strong>Inclus dans la licence</strong><br/>
+          <span style="color:var(--slate-500);">0 € supplémentaire</span>
+          <div class="cell-small">Usage illimité dans les limites<br/>du plan Business</div>
+        </td>
+      </tr>
+      <tr>
+        <td class="cell-label">Prérequis technique</td>
+        <td>
+          <div class="cell-small">Abonnement Azure actif<br/>Azure OpenAI Service activé<br/>Développement backend léger</div>
+        </td>
+        <td>
+          <div class="cell-small">Abonnement Azure actif<br/>Licence Power Platform<br/>No-code / low-code</div>
+        </td>
+        <td>
+          <div class="cell-small">Workspace ChatGPT Business<br/>200 licences utilisateur<br/>No-code (GPT Builder)</div>
+        </td>
+      </tr>
+      <tr class="total-row">
+        <td style="font-size:0.85rem;">Coût plateforme total / mois</td>
+        <td style="font-size:0.95rem;" class="cell-highlight">~100 à 160 € <span class="reco-badge">le moins cher</span></td>
+        <td class="cell-highlight">~900 à 3 300 €</td>
+        <td class="cell-highlight">~4 600 à 5 500 €</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ── Note explicative ── -->
+<div class="explain-box">
+  <div class="explain-title">Comprendre la différence entre les 3 chemins</div>
+  <div class="explain-grid">
+    <div class="explain-item reco">
+      <h5>A · Azure OpenAI API</h5>
+      <p>On appelle directement le modèle GPT via l'API Azure. <strong>Pas de licence par utilisateur</strong> — les techniciens accèdent à l'agent via la plateforme web existante. On paie uniquement les tokens consommés (quelques centimes par question). C'est le chemin le plus économique et le plus flexible, mais il nécessite un développement backend léger.</p>
+    </div>
+    <div class="explain-item">
+      <h5>B · Copilot Studio</h5>
+      <p>L'agent est construit dans l'interface no-code Microsoft. <strong>La licence builder est gratuite</strong>, mais chaque réponse de l'agent consomme des <strong>Copilot Credits</strong> — vendus en packs prépayés de 25 000 à $200/mois. C'est le « carburant » : la licence ouvre l'atelier, les crédits alimentent la machine. Plus facile à construire, mais plus cher à l'usage à grande échelle.</p>
+    </div>
+    <div class="explain-item">
+      <h5>C · ChatGPT Business</h5>
+      <p>Chaque technicien a besoin d'un <strong>compte ChatGPT Business à $25/mois</strong> pour accéder au Custom GPT. L'usage est ensuite inclus dans la licence. C'est le chemin le plus simple (zéro développement), mais le plus coûteux : $5 000/mois fixes pour 200 users, même si l'agent n'est utilisé qu'une fois par jour. Pertinent uniquement si les licences sont déjà en place pour d'autres usages.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ BUDGET TOTAL ═══ -->
+<div class="section-label">Budget prévisionnel</div>
+<div class="section-title">Investissement année 1 — Prestation + infrastructure</div>
+<p style="font-size:0.82rem; color:var(--slate-500); margin:-1rem 0 1.5rem;">Chemin recommandé : API Azure OpenAI (tokens) — sans licences ChatGPT Business par user, sans Copilot Credits</p>
+
+<div class="full-table-card">
+  <div class="table-card-header">
+    <h4>Budget Année 1</h4>
+    <p>Prestation IAvenir + coûts récurrents d'infrastructure sur 12 mois</p>
+  </div>
+  <table>
+    <thead>
+      <tr><th style="width:40%"></th><th>Option 1 — API seule</th><th>Option 2 — API + RAG + Web</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="cell-label">Prestation IAvenir (Conseil IA)</td>
+        <td>~2 mois · 40 jours<br/><strong style="font-size:1rem; color:var(--purple-dark);">~25 000 €</strong></td>
+        <td>~4 mois · 60-80 jours<br/><strong style="font-size:1rem; color:var(--purple-dark);">~50 000 €</strong></td>
+      </tr>
+      <tr>
+        <td class="cell-label">Infrastructure récurrente (×12 mois)<div class="cell-small">Tokens + Azure (hors options)</div></td>
+        <td>100 à 160 € × 12 = <strong>1 200 à 1 920 €</strong></td>
+        <td>217 à 355 € × 12 = <strong>2 604 à 4 260 €</strong></td>
+      </tr>
+      <tr class="total-row">
+        <td style="font-size:0.88rem;">BUDGET TOTAL ANNÉE 1</td>
+        <td style="font-size:1.05rem;" class="cell-highlight">~26 200 à 27 000 €</td>
+        <td style="font-size:1.05rem;" class="cell-highlight">~52 600 à 54 300 €</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══ PROJECTION Y1 / Y2 / Y3 ═══ -->
+<div class="section-label">Projection sur 3 ans</div>
+<div class="section-title">Un investissement initial, puis un coût récurrent très faible</div>
+
+<!-- Option 1 -->
+<p style="font-size:0.85rem; font-weight:600; color:var(--teal-dark); margin-bottom:0.8rem;">Option 1 — API Kimoce seule</p>
+<div class="year-grid">
+  <div class="year-card y1">
+    <div class="year-badge">Lancement</div>
+    <div class="year-label">Année 1</div>
+    <div class="year-amount">~27 000 €</div>
+    <div class="year-detail">25 000 € prestation IAvenir<br/>+ ~2 000 € infra récurrente</div>
+  </div>
+  <div class="year-card">
+    <div class="year-label">Année 2</div>
+    <div class="year-amount" style="color:var(--teal-dark);">~1 600 €</div>
+    <div class="year-detail">Infrastructure seule<br/>Tokens + monitoring</div>
+  </div>
+  <div class="year-card">
+    <div class="year-label">Année 3</div>
+    <div class="year-amount" style="color:var(--teal-dark);">~1 600 €</div>
+    <div class="year-detail">Infrastructure seule<br/>Coût stable et prévisible</div>
+  </div>
+</div>
+
+<!-- Option 2 -->
+<p style="font-size:0.85rem; font-weight:600; color:var(--purple-dark); margin-bottom:0.8rem;">Option 2 — API + RAG documentaire + Recherche web</p>
+<div class="year-grid" style="margin-bottom:3rem;">
+  <div class="year-card y1">
+    <div class="year-badge">Lancement</div>
+    <div class="year-label">Année 1</div>
+    <div class="year-amount">~53 500 €</div>
+    <div class="year-detail">50 000 € prestation IAvenir<br/>+ ~3 500 € infra récurrente</div>
+  </div>
+  <div class="year-card">
+    <div class="year-label">Année 2</div>
+    <div class="year-amount" style="color:var(--purple-dark);">~3 500 €</div>
+    <div class="year-detail">Infrastructure seule<br/>Tokens + Azure Search + stockage</div>
+  </div>
+  <div class="year-card">
+    <div class="year-label">Année 3</div>
+    <div class="year-amount" style="color:var(--purple-dark);">~3 500 €</div>
+    <div class="year-detail">Infrastructure seule<br/>Coût stable et prévisible</div>
+  </div>
+</div>
+
+<!-- ═══ QUESTIONS ═══ -->
+<div class="questions-section">
+  <div class="section-label">Prise de décision</div>
+  <div class="section-title">Questions clés à clarifier ensemble</div>
+  <div class="q-grid">
+    <div class="q-item">
+      <div class="q-num">1</div>
+      <div class="q-text"><strong>API Kimoce :</strong> quels endpoints sont disponibles ? Recherche full-text dans les commentaires, ou filtres structurés uniquement ?</div>
+    </div>
+    <div class="q-item">
+      <div class="q-num">2</div>
+      <div class="q-text"><strong>Volume de données :</strong> combien d'interventions dans Kimoce ? Quelle profondeur historique ? Quel débit API supporté ?</div>
+    </div>
+    <div class="q-item">
+      <div class="q-num">3</div>
+      <div class="q-text"><strong>Qualité des données :</strong> les comptes rendus techniciens sont-ils structurés et exploitables, ou très hétérogènes ?</div>
+    </div>
+    <div class="q-item">
+      <div class="q-num">4</div>
+      <div class="q-text"><strong>Documentation technique :</strong> volume, formats, centralisation (SharePoint, serveur fichiers) ? Besoin réel des techniciens sur les notices ?</div>
+    </div>
+    <div class="q-item">
+      <div class="q-num">5</div>
+      <div class="q-text"><strong>Droits d'accès :</strong> un technicien doit-il voir uniquement les interventions de son périmètre (site, zone, contrat) ?</div>
+    </div>
+    <div class="q-item">
+      <div class="q-num">6</div>
+      <div class="q-text"><strong>Environnement Azure :</strong> le client dispose-t-il d'un tenant Azure actif ? Contraintes d'hébergement France / souveraineté ?</div>
+    </div>
+    <div class="q-item">
+      <div class="q-num">7</div>
+      <div class="q-text"><strong>Licences existantes :</strong> quel plan ChatGPT est en place (Business, Enterprise, Pro) ? Licences M365 Copilot actives ?</div>
+    </div>
+    <div class="q-item">
+      <div class="q-num">8</div>
+      <div class="q-text"><strong>Référent interne :</strong> qui maintiendra l'agent (mise à jour docs, prompts) ? Quel niveau de transfert de compétences souhaité ?</div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-brand">IAvenir</div>
+  <div class="footer-sub">Formation & Conseil IA pour le BTP et l'industrie · iavenir-formation.fr · Document confidentiel — Mars 2026</div>
+</div>
+
+</body>
+</html>
