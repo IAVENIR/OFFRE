@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESME Accelerate — Carte des Programmes IA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --white: #ffffff; --bg-light: #f8faf9; --bg-soft: #f0f5f3;
+            --emerald-500: #10b981; --emerald-600: #059669; --emerald-700: #047857; --emerald-50: #ecfdf5; --emerald-100: #d1fae5;
+            --violet-500: #8b5cf6; --violet-600: #7c3aed; --violet-50: #f5f3ff; --violet-100: #ede9fe;
+            --blue-500: #3b82f6; --blue-50: #eff6ff;
+            --amber-500: #f59e0b; --amber-600: #d97706; --amber-50: #fffbeb; --amber-100: #fef3c7;
+            --dark: #1a1a2e; --dark-soft: #2d2d44;
+            --gray-400: #9ca3af; --gray-500: #6b7280; --gray-600: #4b5563; --gray-700: #374151;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg-light); color: var(--dark); min-height: 100vh; line-height: 1.6; }
+        .container { max-width: 1300px; margin: 0 auto; padding: 45px 40px; }
+        .header { text-align: center; margin-bottom: 40px; }
+        .badge { display: inline-flex; align-items: center; gap: 8px; background: var(--emerald-50); border: 1px solid var(--emerald-100); padding: 8px 20px; border-radius: 50px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--emerald-600); margin-bottom: 18px; }
+        .badge::before { content: ''; width: 8px; height: 8px; background: var(--emerald-500); border-radius: 50%; }
+        .main-title { font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 800; line-height: 1.2; margin-bottom: 12px; color: var(--dark); }
+        .main-title span { color: var(--emerald-600); }
+        .subtitle { font-size: 1rem; font-weight: 400; color: var(--gray-600); }
+        .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: stretch; }
+        .block { background: var(--white); border-radius: 24px; padding: 30px; box-shadow: 0 4px 25px rgba(0,0,0,0.06); border: 1px solid rgba(0,0,0,0.04); display: flex; flex-direction: column; }
+        .block-header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--bg-soft); }
+        .block-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+        .block-left .block-icon { background: var(--emerald-500); }
+        .block-right .block-icon { background: linear-gradient(135deg, var(--amber-500), var(--amber-600)); }
+        .block-title { font-size: 1.2rem; font-weight: 700; color: var(--dark); }
+        .block-subtitle { font-size: 0.78rem; color: var(--gray-500); margin-top: 3px; }
+        .programs-list { flex: 1; }
+
+        /* Clickable program items */
+        .program-item { display: flex; gap: 14px; padding: 18px 0; border-bottom: 1px solid var(--bg-soft); cursor: pointer; border-radius: 12px; transition: background 0.15s ease; margin: 0 -12px; padding-left: 12px; padding-right: 12px; }
+        .program-item:hover { background: var(--bg-soft); }
+        .program-item:last-of-type { border-bottom: none; }
+        .program-badge { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 800; flex-shrink: 0; }
+        .program-item.p1 .program-badge { background: var(--violet-50); color: var(--violet-600); border: 2px solid var(--violet-100); }
+        .program-item.p2 .program-badge { background: var(--emerald-50); color: var(--emerald-600); border: 2px solid var(--emerald-100); }
+        .program-content { flex: 1; min-width: 0; }
+        .program-header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
+        .program-title { font-size: 0.98rem; font-weight: 700; color: var(--dark); }
+        .program-duration { font-size: 0.72rem; color: var(--gray-500); background: var(--bg-soft); padding: 4px 10px; border-radius: 12px; font-weight: 500; }
+        .program-audience { font-size: 0.8rem; color: var(--emerald-600); margin-bottom: 6px; font-weight: 500; }
+        .program-impact { font-size: 0.82rem; color: var(--gray-600); line-height: 1.5; }
+        .program-cta { font-size: 0.75rem; font-weight: 600; margin-top: 8px; display: inline-flex; align-items: center; gap: 4px; }
+        .program-item.p1 .program-cta { color: var(--violet-600); }
+        .program-item.p2 .program-cta { color: var(--emerald-600); }
+        .program-cta::after { content: '→'; font-size: 0.9rem; }
+
+        /* Socle */
+        .socle-transverse { background: linear-gradient(135deg, var(--amber-50) 0%, var(--white) 100%); border: 1px solid var(--amber-100); border-radius: 14px; padding: 18px 20px; margin-top: 20px; display: flex; align-items: center; gap: 14px; }
+        .socle-icon { width: 44px; height: 44px; background: linear-gradient(135deg, var(--amber-500), #ef4444); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+        .socle-content h4 { font-size: 0.88rem; font-weight: 700; margin-bottom: 3px; color: var(--amber-600); }
+        .socle-content p { font-size: 0.8rem; color: var(--gray-600); line-height: 1.45; }
+
+        /* Workshop */
+        .block-right-content { flex: 1; display: flex; flex-direction: column; }
+        .workshop-card { background: var(--bg-soft); border-radius: 16px; padding: 24px; flex: 1; display: flex; flex-direction: column; }
+        .workshop-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+        .workshop-emoji { width: 42px; height: 42px; background: var(--white); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .workshop-title-wrap h4 { font-size: 1.05rem; font-weight: 700; color: var(--dark); }
+        .workshop-title-wrap span { font-size: 0.75rem; color: var(--amber-600); font-weight: 600; }
+        .workshop-description { font-size: 0.88rem; color: var(--gray-600); line-height: 1.6; margin-bottom: 16px; }
+        .workshop-description strong { color: var(--dark); }
+        .workshop-features { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+        .workshop-tag { display: inline-flex; align-items: center; gap: 6px; background: var(--white); padding: 6px 12px; border-radius: 8px; font-size: 0.78rem; color: var(--gray-700); font-weight: 500; border: 1px solid rgba(0,0,0,0.05); }
+        .workshop-tag span { font-size: 0.85rem; }
+
+        /* Funnel */
+        .workshop-funnel { background: linear-gradient(135deg, var(--emerald-50) 0%, var(--white) 100%); border: 2px solid var(--emerald-100); border-radius: 14px; padding: 20px; margin-top: auto; }
+        .funnel-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .funnel-icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--emerald-500), var(--emerald-600)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+        .funnel-header h4 { font-size: 0.92rem; font-weight: 700; color: var(--emerald-700); }
+        .funnel-description { font-size: 0.82rem; color: var(--gray-600); line-height: 1.55; margin-bottom: 14px; }
+        .funnel-arrow { display: flex; align-items: center; gap: 10px; justify-content: center; }
+        .funnel-step { display: flex; align-items: center; gap: 6px; background: var(--white); padding: 8px 14px; border-radius: 10px; font-size: 0.78rem; font-weight: 600; color: var(--dark); box-shadow: 0 2px 6px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.05); }
+        .funnel-step .step-badge { width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 800; flex-shrink: 0; }
+        .funnel-step.fp1 .step-badge { background: var(--violet-50); color: var(--violet-600); border: 1.5px solid var(--violet-100); }
+        .funnel-step.fp2 .step-badge { background: var(--emerald-50); color: var(--emerald-600); border: 1.5px solid var(--emerald-100); }
+        .funnel-connector { font-size: 0.9rem; color: var(--gray-400); font-weight: 600; }
+
+        /* Modal */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(26,26,46,0.6); backdrop-filter: blur(4px); z-index: 1000; justify-content: center; align-items: center; padding: 40px; }
+        .modal-overlay.active { display: flex; }
+        .modal { background: var(--white); border-radius: 24px; max-width: 680px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 36px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); position: relative; }
+        .modal-close { position: absolute; top: 16px; right: 20px; width: 36px; height: 36px; border-radius: 10px; border: none; background: var(--bg-soft); cursor: pointer; font-size: 1.1rem; color: var(--gray-500); display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
+        .modal-close:hover { background: var(--emerald-50); color: var(--emerald-600); }
+        .modal-emoji { font-size: 2rem; margin-bottom: 12px; }
+        .modal-title { font-size: 1.4rem; font-weight: 800; color: var(--dark); margin-bottom: 4px; }
+        .modal-subtitle { font-size: 0.9rem; color: var(--emerald-600); font-weight: 600; margin-bottom: 6px; }
+        .modal-meta { font-size: 0.82rem; color: var(--gray-500); margin-bottom: 20px; }
+        .modal-section-title { font-size: 0.92rem; font-weight: 700; color: var(--emerald-600); margin-bottom: 10px; margin-top: 24px; text-transform: uppercase; letter-spacing: 0.04em; }
+        .modal-obj { font-size: 0.85rem; color: var(--gray-600); line-height: 1.6; padding: 6px 0 6px 16px; border-left: 3px solid var(--emerald-100); margin-bottom: 6px; }
+        .modal-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .modal-table th { background: var(--emerald-600); color: var(--white); font-size: 0.75rem; font-weight: 700; padding: 10px 14px; text-align: left; text-transform: uppercase; letter-spacing: 0.04em; }
+        .modal-table th:first-child { border-radius: 10px 0 0 0; }
+        .modal-table th:last-child { border-radius: 0 10px 0 0; }
+        .modal-table td { font-size: 0.82rem; padding: 10px 14px; color: var(--gray-600); border-bottom: 1px solid var(--bg-soft); }
+        .modal-table tr:nth-child(even) td { background: var(--bg-soft); }
+        .modal-table tr:last-child td:first-child { border-radius: 0 0 0 10px; }
+        .modal-table tr:last-child td:last-child { border-radius: 0 0 10px 0; }
+
+        /* Footer */
+        .footer { margin-top: 40px; text-align: center; padding-top: 25px; border-top: 1px solid rgba(0,0,0,0.06); }
+        .footer-logo { font-size: 1.3rem; font-weight: 800; margin-bottom: 6px; color: var(--dark); }
+        .footer-logo span { color: var(--emerald-600); }
+        .footer-tagline { font-size: 0.78rem; color: var(--gray-500); }
+
+        @media (max-width: 900px) {
+            .main-grid { grid-template-columns: 1fr; }
+            .container { padding: 30px 20px; }
+            .funnel-arrow { flex-direction: column; }
+            .modal { margin: 20px; padding: 24px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="badge">Carte 2 — Dispositif Opérationnel</div>
+            <h1 class="main-title">La Carte des <span>Programmes IA</span></h1>
+            <p class="subtitle">Votre dispositif de transformation opérationnelle</p>
+        </header>
+
+        <div class="main-grid">
+            <!-- BLOC GAUCHE -->
+            <div class="block block-left">
+                <div class="block-header">
+                    <div class="block-icon">📚</div>
+                    <div>
+                        <h2 class="block-title">Le Socle de Compétences</h2>
+                        <p class="block-subtitle">Formations structurées · ½ à 1 journée</p>
+                    </div>
+                </div>
+                <div class="programs-list">
+                    <div class="program-item p1" onclick="openModal('modal-p1')">
+                        <div class="program-badge">P1</div>
+                        <div class="program-content">
+                            <div class="program-header-row">
+                                <span class="program-title">IA Stratégie & Décision</span>
+                                <span class="program-duration">½ journée</span>
+                            </div>
+                            <p class="program-audience">COMEX · CODIR · Top Management</p>
+                            <p class="program-impact">Vision stratégique, arbitrage des investissements, feuille de route IA</p>
+                            <div class="program-cta">Voir le programme</div>
+                        </div>
+                    </div>
+                    <div class="program-item p2" onclick="openModal('modal-p2')">
+                        <div class="program-badge">P2</div>
+                        <div class="program-content">
+                            <div class="program-header-row">
+                                <span class="program-title">IA Maîtrise & Métiers</span>
+                                <span class="program-duration">1 jour</span>
+                            </div>
+                            <p class="program-audience">Managers · Opérationnels — 8 familles métiers : BE, Travaux, Maintenance, Commerce, Supports...</p>
+                            <p class="program-impact">Maîtrise d'un outil IA, prompt engineering et intégration dans les processus quotidiens</p>
+                            <div class="program-cta">Voir le programme</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="socle-transverse">
+                    <div class="socle-icon">🛡️</div>
+                    <div class="socle-content">
+                        <h4>Socle Transverse — IA Responsable</h4>
+                        <p>Sécurité des données, éthique industrielle et RGPD intégrés dans chaque module P1→P2</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BLOC DROITE -->
+            <div class="block block-right">
+                <div class="block-header">
+                    <div class="block-icon">🚀</div>
+                    <div>
+                        <h2 class="block-title">L'Accélérateur d'Innovation</h2>
+                        <p class="block-subtitle">Créer la rupture et engager la transformation</p>
+                    </div>
+                </div>
+                <div class="block-right-content">
+                    <div class="workshop-card">
+                        <div class="workshop-header">
+                            <div class="workshop-emoji">💡</div>
+                            <div class="workshop-title-wrap">
+                                <h4>Bootcamp de Rupture — Thématique</h4>
+                                <span>½ journée ou 1 journée</span>
+                            </div>
+                        </div>
+                        <p class="workshop-description">
+                            <strong>Un bootcamp = une thématique sectorielle.</strong> Échange engageant sur l'innovation de l'IA dans un secteur ou une industrie précise. L'objectif : créer la rupture avec les dirigeants et responsables présents, et engager la transformation opérationnelle.
+                        </p>
+                        <div class="workshop-features">
+                            <div class="workshop-tag"><span>🎯</span> Une thématique ciblée</div>
+                            <div class="workshop-tag"><span>👥</span> Dirigeants & Responsables</div>
+                            <div class="workshop-tag"><span>⚡</span> Créer la rupture</div>
+                            <div class="workshop-tag"><span>🔗</span> Engager vers P1 & P2</div>
+                        </div>
+                    </div>
+                    <div class="workshop-funnel">
+                        <div class="funnel-header">
+                            <div class="funnel-icon">🎯</div>
+                            <h4>Du déclic à l'action</h4>
+                        </div>
+                        <p class="funnel-description">
+                            Le Bootcamp crée l'engagement. Les formations P1 et P2 transforment cet engagement en compétences opérationnelles à tous les niveaux de l'organisation.
+                        </p>
+                        <div class="funnel-arrow">
+                            <div class="funnel-step" style="background: linear-gradient(135deg, var(--amber-50), var(--white)); border-color: var(--amber-100);">
+                                <span style="font-size: 1rem;">💡</span> Bootcamp
+                            </div>
+                            <span class="funnel-connector">→</span>
+                            <div class="funnel-step fp1">
+                                <span class="step-badge">P1</span> Stratégie & Décision
+                            </div>
+                            <span class="funnel-connector">→</span>
+                            <div class="funnel-step fp2">
+                                <span class="step-badge">P2</span> Maîtrise & Métiers
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="footer-logo">ESME <span>Accelerate</span></div>
+            <p class="footer-tagline">Formation & Conseil en Intelligence Artificielle</p>
+        </footer>
+    </div>
+
+    <!-- MODAL P1 -->
+    <div class="modal-overlay" id="modal-p1" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal(event, true)">✕</button>
+            <div class="modal-emoji">🎯</div>
+            <div class="modal-title">IA Stratégie & Décision</div>
+            <div class="modal-subtitle">Comprendre l'IA pour décider</div>
+            <div class="modal-meta">½ journée (3h30) · COMEX · CODIR · Top Management · Niveau Découverte</div>
+            <div class="modal-section-title">Objectif général</div>
+            <div class="modal-obj">Disposer des clés de décision pour engager une stratégie IA dans son organisation.</div>
+            <div class="modal-section-title">Objectifs pédagogiques</div>
+            <div class="modal-obj">Comprendre ce qu'est l'IA générative, un LLM et ce que ça change pour son activité</div>
+            <div class="modal-obj">Évaluer les investissements, les risques et le ROI d'un projet IA</div>
+            <div class="modal-obj">Définir une feuille de route IA priorisée pour son organisation</div>
+            <div class="modal-section-title">Programme de la matinée</div>
+            <table class="modal-table">
+                <thead><tr><th>Horaire</th><th>Séquence</th><th>Format</th><th>Durée</th></tr></thead>
+                <tbody>
+                    <tr><td>9h00 – 9h15</td><td>Accueil et auto-positionnement</td><td>Tour de table</td><td>15 min</td></tr>
+                    <tr><td>9h15 – 10h45</td><td>Comprendre l'IA pour décider — Fondamentaux, LLM, limites, démonstrations live</td><td>Présentation interactive</td><td>1h30</td></tr>
+                    <tr><td>10h45 – 11h00</td><td>Pause</td><td>☕</td><td>15 min</td></tr>
+                    <tr><td>11h00 – 11h45</td><td>Arbitrer : investissements, risques et ROI — Coûts, gains, gouvernance</td><td>Séquence décisionnelle</td><td>45 min</td></tr>
+                    <tr><td>11h45 – 12h15</td><td>Construire sa feuille de route IA — Priorisation et jalons</td><td>Exercice collectif</td><td>30 min</td></tr>
+                    <tr><td>12h15 – 12h30</td><td>Évaluation des acquis</td><td>Questionnaire</td><td>15 min</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- MODAL P2 -->
+    <div class="modal-overlay" id="modal-p2" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal(event, true)">✕</button>
+            <div class="modal-emoji">📚</div>
+            <div class="modal-title">IA Maîtrise & Métiers</div>
+            <div class="modal-subtitle">Intégrer l'IA dans ses processus métier quotidiens</div>
+            <div class="modal-meta">1 journée (7h) · Managers · Opérationnels · Niveau Découverte</div>
+            <div class="modal-section-title">Objectif général</div>
+            <div class="modal-obj">Maîtriser un outil d'IA générative et l'intégrer dans ses processus métier quotidiens, en toute autonomie.</div>
+            <div class="modal-section-title">Objectifs pédagogiques</div>
+            <div class="modal-obj">Comprendre l'intelligence artificielle générative et le prompt engineering</div>
+            <div class="modal-obj">Identifier les cas d'usage adaptés à son activité métier</div>
+            <div class="modal-obj">Produire des livrables concrets avec l'IA sur ses propres cas professionnels</div>
+            <div class="modal-section-title">Programme de la journée</div>
+            <table class="modal-table">
+                <thead><tr><th>Horaire</th><th>Séquence</th><th>Format</th><th>Durée</th></tr></thead>
+                <tbody>
+                    <tr><td>9h00 – 9h15</td><td>Accueil et auto-positionnement</td><td>Tour de table</td><td>15 min</td></tr>
+                    <tr><td>9h15 – 10h45</td><td>Découvrir l'intelligence artificielle — Fondamentaux, LLM, limites, panorama outils</td><td>Présentation interactive</td><td>1h30</td></tr>
+                    <tr><td>10h45 – 11h00</td><td>Pause</td><td>☕</td><td>15 min</td></tr>
+                    <tr><td>11h00 – 12h30</td><td>Prompt Engineering — Méthode structurée, exercices pratiques, techniques avancées</td><td>Exercices pratiques</td><td>1h30</td></tr>
+                    <tr><td>12h30 – 13h30</td><td>Déjeuner</td><td>🍽️</td><td>1h</td></tr>
+                    <tr><td>13h30 – 14h00</td><td>Brainstorming : identifier ses cas d'usage IA</td><td>Séquence participative</td><td>30 min</td></tr>
+                    <tr><td>14h00 – 15h30</td><td>Prise en main et cas pratiques métier — Atelier guidé sur poste</td><td>Atelier guidé</td><td>1h30</td></tr>
+                    <tr><td>15h30 – 15h45</td><td>Pause</td><td>☕</td><td>15 min</td></tr>
+                    <tr><td>15h45 – 16h15</td><td>Restitution collective</td><td>Présentation par groupes</td><td>30 min</td></tr>
+                    <tr><td>16h15 – 16h30</td><td>Enjeux RGPD et environnementaux</td><td>Sensibilisation</td><td>15 min</td></tr>
+                    <tr><td>16h30 – 17h00</td><td>Clôture et évaluation des acquis</td><td>Clôture</td><td>30 min</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; }
+        function closeModal(event, forceClose) {
+            if (forceClose || event.target.classList.contains('modal-overlay')) {
+                document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+                document.body.style.overflow = '';
+            }
+        }
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(e, true); });
+    </script>
+</body>
+</html>
