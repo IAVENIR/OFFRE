@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESME Accelerate — Carte des Programmes IA · FIRALP</title>
+    <title>ESME Executive Education — Carte des Programmes IA · FIRALP</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -51,7 +51,7 @@
         .phase-subtitle { font-size: 0.78rem; color: var(--gray-500); margin-top: 3px; }
 
         /* Engagement grid */
-        .engagement-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+        .engagement-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .card { background: var(--bg-soft); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; }
         .card-badge { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 12px; font-size: 0.75rem; font-weight: 800; margin-bottom: 14px; flex-shrink: 0; }
         .card-p1 .card-badge { background: var(--violet-50); color: var(--violet-600); border: 2px solid var(--violet-100); }
@@ -237,19 +237,6 @@
                     </div>
                     <div class="card-cta">Voir le programme</div>
                 </div>
-                <div class="card card-boot card-clickable" onclick="openModal('modal-chantier')">
-                    <div class="card-emoji">🏗️</div>
-                    <div class="card-title">Bootcamp Productivité Chantier</div>
-                    <div class="card-duration">½ journée</div>
-                    <p class="card-audience">Encadrement · Opérationnels</p>
-                    <p class="card-desc">L'ingénieur travaux augmenté par l'IA. Documentation technique, prévention sécurité, pilotage — démonstrations sur scénarios chantier.</p>
-                    <div class="card-tags">
-                        <div class="card-tag"><span>🔧</span> Travaux</div>
-                        <div class="card-tag"><span>🛡️</span> QHSE</div>
-                        <div class="card-tag"><span>📈</span> Pilotage</div>
-                    </div>
-                    <div class="card-cta">Voir le programme</div>
-                </div>
             </div>
         </div>
 
@@ -304,7 +291,7 @@
         </div>
 
         <footer class="footer">
-            <div class="footer-logo">ESME <span>Accelerate</span></div>
+            <div class="footer-logo">ESME <span>Executive Education</span></div>
             <p class="footer-tagline">Formation & Conseil en Intelligence Artificielle</p>
             <p class="footer-confidential">Document confidentiel — Proposition FIRALP</p>
         </footer>
@@ -418,43 +405,6 @@
                     <tr><td>10h45 – 11h00</td><td>Pause</td><td>☕</td><td>15 min</td></tr>
                     <tr><td>11h00 – 11h45</td><td>Comment s'y prendre ? — Cadre de décision, erreurs à éviter, gouvernance</td><td>Séquence décisionnelle</td><td>45 min</td></tr>
                     <tr><td>11h45 – 12h15</td><td>Vos cas d'usage — Identification et qualification collective</td><td>Exercice collectif</td><td>30 min</td></tr>
-                    <tr><td>12h15 – 12h30</td><td>Évaluation des acquis</td><td>Questionnaire</td><td>15 min</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- ═══════════════════════════════════════ -->
-    <!-- MODAL — BOOTCAMP PRODUCTIVITÉ CHANTIER -->
-    <!-- ═══════════════════════════════════════ -->
-    <div class="modal-overlay" id="modal-chantier" onclick="closeModal(event)">
-        <div class="modal" onclick="event.stopPropagation()">
-            <button class="modal-close" onclick="closeModal(event, true)">✕</button>
-            <div class="modal-emoji">🏗️</div>
-            <div class="modal-title">Bootcamp Productivité Chantier</div>
-            <div class="modal-subtitle">L'ingénieur travaux augmenté par l'IA</div>
-            <div class="modal-meta">½ journée (3h30) · Encadrement & Opérationnels · Niveau Découverte</div>
-
-            <div class="modal-section-title">Objectif général</div>
-            <div class="modal-obj">Comprendre comment l'IA peut augmenter les capacités des équipes terrain et identifier les premiers cas d'usage applicables sur chantier.</div>
-
-            <div class="modal-section-title">Objectifs pédagogiques</div>
-            <div class="modal-obj">Découvrir les assistants IA dédiés aux métiers du chantier à travers des démonstrations concrètes</div>
-            <div class="modal-obj">Comprendre comment l'IA peut assister un ingénieur travaux sur la documentation, le juridique et la prévention</div>
-            <div class="modal-obj">Évaluer la faisabilité d'un projet IA à partir des données existantes dans l'entreprise</div>
-            <div class="modal-obj">Définir ses premiers cas d'usage prioritaires pour le terrain</div>
-
-            <div class="modal-section-title">Programme de la matinée</div>
-            <table class="modal-table">
-                <thead>
-                    <tr><th>Horaire</th><th>Séquence</th><th>Format</th><th>Durée</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>9h00 – 9h15</td><td>Accueil et auto-positionnement</td><td>Tour de table</td><td>15 min</td></tr>
-                    <tr><td>9h15 – 10h30</td><td>L'IA au service du chantier — Direction Travaux, Direction Juridique, Direction QHSE</td><td>Démos pré-configurées</td><td>1h15</td></tr>
-                    <tr><td>10h30 – 10h45</td><td>Pause</td><td>☕</td><td>15 min</td></tr>
-                    <tr><td>10h45 – 11h30</td><td>Comment s'y prendre ? — Cadre de décision, erreurs à éviter, gouvernance</td><td>Séquence décisionnelle</td><td>45 min</td></tr>
-                    <tr><td>11h30 – 12h15</td><td>Vos cas d'usage — Identification et priorisation collective</td><td>Exercice collectif</td><td>45 min</td></tr>
                     <tr><td>12h15 – 12h30</td><td>Évaluation des acquis</td><td>Questionnaire</td><td>15 min</td></tr>
                 </tbody>
             </table>
