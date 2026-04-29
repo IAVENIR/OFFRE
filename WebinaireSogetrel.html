@@ -1,0 +1,2041 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maîtriser l'ingénierie du prompt — IAvenir × Sogetrel</title>
+<style>
+:root {
+  --violet: #6B21A8;
+  --violet-dark: #4C1D95;
+  --violet-light: #E9D5FF;
+  --violet-vlight: #F5F3FF;
+  --gris: #1F2937;
+  --gris-soft: #4B5563;
+  --gris-light: #F3F4F6;
+  --gris-lighter: #E5E7EB;
+  --blanc: #FFFFFF;
+  --orange: #EA580C;
+  --vert: #059669;
+  --rouge: #DC2626;
+  --nav-height: 48px;
+ 
+  /* Couleurs des 6 briques */
+  --c-r: #6B21A8;   /* Rôle — violet */
+  --c-c: #0EA5E9;   /* Contexte — bleu */
+  --c-t: #F97316;   /* Tâche — orange */
+  --c-f: #10B981;   /* Format — vert */
+  --c-c2: #EAB308;  /* Contraintes — ambre */
+  --c-e: #EC4899;   /* Exemple — rose */
+ 
+  /* Versions claires pour fonds */
+  --c-r-l: #F3E8FF;
+  --c-c-l: #E0F2FE;
+  --c-t-l: #FFEDD5;
+  --c-f-l: #D1FAE5;
+  --c-c2-l: #FEF3C7;
+  --c-e-l: #FCE7F3;
+}
+ 
+* { margin: 0; padding: 0; box-sizing: border-box; }
+ 
+html, body {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--gris);
+  background: var(--blanc);
+  overflow: hidden;
+}
+ 
+/* ============ BANDEAU DE PROGRESSION (5 BLOCS) ============ */
+.progress-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-height);
+  background: var(--blanc);
+  border-bottom: 1px solid var(--gris-lighter);
+  display: flex;
+  align-items: center;
+  z-index: 100;
+  padding: 0 2vw;
+  transition: transform 0.3s ease;
+}
+ 
+.progress-nav.hidden { transform: translateY(-100%); }
+ 
+.nav-item {
+  flex: 1;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--gris-soft);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0 1vw;
+  position: relative;
+  transition: color 0.3s;
+  cursor: pointer;
+}
+ 
+.nav-item.active { color: var(--violet); }
+ 
+.nav-item.active::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 15%;
+  right: 15%;
+  height: 3px;
+  background: var(--violet);
+  border-radius: 2px;
+}
+ 
+.nav-item.passed { color: var(--violet-dark); opacity: 0.7; }
+ 
+.progress-bar {
+  position: fixed;
+  top: var(--nav-height);
+  left: 0;
+  height: 3px;
+  background: var(--violet);
+  transition: width 0.4s ease;
+  z-index: 99;
+}
+ 
+/* ============ STRUCTURE SLIDES ============ */
+.presentation {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  padding-top: var(--nav-height);
+  overflow: hidden;
+}
+ 
+.slide {
+  position: absolute;
+  top: var(--nav-height);
+  left: 0;
+  width: 100%;
+  height: calc(100% - var(--nav-height));
+  padding: 4vh 6vw;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-y: auto;
+}
+ 
+.slide.active { opacity: 1; visibility: visible; }
+ 
+.slide-content {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+ 
+/* ============ TYPOGRAPHIE ============ */
+h1 {
+  font-size: clamp(2.4rem, 4.5vw, 4rem);
+  font-weight: 800;
+  color: var(--violet-dark);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 2vh;
+}
+ 
+h2 {
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 700;
+  color: var(--violet);
+  line-height: 1.2;
+  margin-bottom: 3vh;
+}
+ 
+h3 {
+  font-size: clamp(1.2rem, 1.8vw, 1.6rem);
+  font-weight: 600;
+  color: var(--violet-dark);
+  line-height: 1.3;
+  margin-bottom: 1vh;
+}
+ 
+p {
+  font-size: clamp(1rem, 1.4vw, 1.3rem);
+  line-height: 1.6;
+  color: var(--gris);
+}
+ 
+.subtitle {
+  font-size: clamp(1.05rem, 1.5vw, 1.4rem);
+  color: var(--gris-soft);
+  font-weight: 400;
+  line-height: 1.4;
+}
+ 
+.quote {
+  font-size: clamp(1.5rem, 2.4vw, 2.2rem);
+  font-style: italic;
+  color: var(--violet-dark);
+  line-height: 1.4;
+  font-weight: 500;
+}
+ 
+/* ============ COUVERTURE ============ */
+.cover {
+  background: linear-gradient(135deg, var(--violet) 0%, var(--violet-dark) 100%);
+  color: white;
+  padding-left: 10vw !important;
+  padding-top: calc(var(--nav-height) + 5vh) !important;
+  align-items: flex-start;
+}
+ 
+.slide.cover .slide-content { max-width: none; margin: 0; }
+ 
+.cover h1 {
+  color: white;
+  font-size: clamp(2.8rem, 5.5vw, 5rem);
+  margin-bottom: 2vh;
+}
+ 
+.cover .subtitle {
+  color: rgba(255,255,255,0.9);
+  font-size: clamp(1.2rem, 2vw, 1.8rem);
+  margin-bottom: 5vh;
+}
+ 
+.cover .meta {
+  color: rgba(255,255,255,0.75);
+  font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+  margin-top: 2vh;
+  line-height: 1.8;
+}
+ 
+.cover-brand {
+  position: absolute;
+  bottom: 5vh;
+  left: 10vw;
+  display: flex;
+  align-items: center;
+  gap: 2vw;
+}
+ 
+.cover-brand-item {
+  color: rgba(255,255,255,0.85);
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+ 
+.cover-separator { width: 1px; height: 24px; background: rgba(255,255,255,0.4); }
+ 
+/* ============ GRIDS ============ */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 3vw; align-items: center; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2vw; }
+.grid-6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1.2vw; }
+.grid-4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2vw; }
+ 
+/* ============ CARDS GENERIC ============ */
+.card {
+  background: var(--violet-vlight);
+  border-left: 5px solid var(--violet);
+  padding: 2vh 1.5vw;
+  border-radius: 8px;
+}
+ 
+.card-title {
+  font-size: clamp(1.05rem, 1.55vw, 1.35rem);
+  font-weight: 700;
+  color: var(--violet-dark);
+  margin-bottom: 1vh;
+}
+ 
+.card-body {
+  font-size: clamp(0.9rem, 1.25vw, 1.1rem);
+  color: var(--gris);
+  line-height: 1.5;
+}
+ 
+/* ============ BRIQUES R·C·T·F·C·E (6 couleurs distinctes) ============ */
+.brique {
+  background: var(--blanc);
+  padding: 2vh 0.8vw;
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.4s ease;
+  opacity: 0.3;
+  filter: grayscale(100%);
+  border: 2px solid var(--gris-lighter);
+}
+ 
+.brique.on {
+  opacity: 1;
+  filter: none;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+ 
+.brique-r.on { border-color: var(--c-r); background: linear-gradient(180deg, var(--blanc) 70%, var(--c-r-l) 100%); }
+.brique-c.on { border-color: var(--c-c); background: linear-gradient(180deg, var(--blanc) 70%, var(--c-c-l) 100%); }
+.brique-t.on { border-color: var(--c-t); background: linear-gradient(180deg, var(--blanc) 70%, var(--c-t-l) 100%); }
+.brique-f.on { border-color: var(--c-f); background: linear-gradient(180deg, var(--blanc) 70%, var(--c-f-l) 100%); }
+.brique-c2.on { border-color: var(--c-c2); background: linear-gradient(180deg, var(--blanc) 70%, var(--c-c2-l) 100%); }
+.brique-e.on { border-color: var(--c-e); background: linear-gradient(180deg, var(--blanc) 70%, var(--c-e-l) 100%); }
+ 
+.brique-letter {
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  font-weight: 900;
+  line-height: 1;
+}
+ 
+.brique-r .brique-letter { color: var(--c-r); }
+.brique-c .brique-letter { color: var(--c-c); }
+.brique-t .brique-letter { color: var(--c-t); }
+.brique-f .brique-letter { color: var(--c-f); }
+.brique-c2 .brique-letter { color: var(--c-c2); }
+.brique-e .brique-letter { color: var(--c-e); }
+ 
+.brique-title {
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  font-weight: 700;
+  margin: 0.8vh 0 0.4vh;
+}
+ 
+.brique-r .brique-title { color: var(--c-r); }
+.brique-c .brique-title { color: var(--c-c); }
+.brique-t .brique-title { color: var(--c-t); }
+.brique-f .brique-title { color: var(--c-f); }
+.brique-c2 .brique-title { color: var(--c-c2); }
+.brique-e .brique-title { color: var(--c-e); }
+ 
+.brique-desc {
+  font-size: clamp(0.7rem, 0.95vw, 0.85rem);
+  color: var(--gris-soft);
+  line-height: 1.3;
+}
+ 
+/* ============ SLIDES V1/V2/V3 ============ */
+.prompt-box {
+  background: var(--gris-light);
+  border-radius: 10px;
+  padding: 2vh 1.5vw;
+  border-left: 4px solid var(--gris-soft);
+  font-family: Consolas, Monaco, monospace;
+  font-size: clamp(0.9rem, 1.25vw, 1.1rem);
+  color: var(--gris);
+  line-height: 1.5;
+  position: relative;
+}
+ 
+.prompt-box.v2 { border-left-color: var(--violet); }
+.prompt-box.v3 { border-left-color: var(--violet-dark); background: var(--violet-vlight); }
+ 
+.prompt-label {
+  position: absolute;
+  top: -10px;
+  left: 15px;
+  background: white;
+  padding: 2px 12px;
+  font-family: -apple-system, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--violet);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: 1px solid var(--violet-light);
+  border-radius: 4px;
+}
+ 
+/* Highlights colorés par brique */
+.h-r { background: var(--c-r-l); color: var(--c-r); padding: 0 4px; border-radius: 3px; font-weight: 700; }
+.h-c { background: var(--c-c-l); color: var(--c-c); padding: 0 4px; border-radius: 3px; font-weight: 700; }
+.h-t { background: var(--c-t-l); color: var(--c-t); padding: 0 4px; border-radius: 3px; font-weight: 700; }
+.h-f { background: var(--c-f-l); color: var(--c-f); padding: 0 4px; border-radius: 3px; font-weight: 700; }
+.h-c2 { background: var(--c-c2-l); color: #92400E; padding: 0 4px; border-radius: 3px; font-weight: 700; }
+.h-e { background: var(--c-e-l); color: var(--c-e); padding: 0 4px; border-radius: 3px; font-weight: 700; }
+ 
+.result-analysis {
+  margin-top: 2vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5vw;
+}
+ 
+.result-box {
+  background: white;
+  border: 2px solid var(--gris-lighter);
+  border-radius: 10px;
+  padding: 1.5vh 1.2vw;
+}
+ 
+.result-box.good { border-color: var(--vert); }
+.result-box.bad { border-color: var(--rouge); }
+.result-box.meh { border-color: var(--orange); }
+ 
+.result-label {
+  font-size: clamp(0.75rem, 0.95vw, 0.88rem);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.6vh;
+}
+ 
+.result-box.bad .result-label { color: var(--rouge); }
+.result-box.meh .result-label { color: var(--orange); }
+.result-box.good .result-label { color: var(--vert); }
+ 
+.result-text {
+  font-size: clamp(0.9rem, 1.2vw, 1.08rem);
+  color: var(--gris);
+  line-height: 1.5;
+}
+ 
+/* Barre des briques activées */
+.briques-mini {
+  display: flex;
+  gap: 0.6vw;
+  margin-top: 2vh;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+ 
+.brique-mini {
+  padding: 0.5vh 0.9vw;
+  border-radius: 8px;
+  background: var(--gris-light);
+  color: var(--gris-soft);
+  font-size: clamp(0.75rem, 1vw, 0.9rem);
+  font-weight: 700;
+  border: 2px solid transparent;
+  transition: all 0.3s;
+}
+ 
+.brique-mini.on.m-r { background: var(--c-r-l); color: var(--c-r); border-color: var(--c-r); }
+.brique-mini.on.m-c { background: var(--c-c-l); color: var(--c-c); border-color: var(--c-c); }
+.brique-mini.on.m-t { background: var(--c-t-l); color: var(--c-t); border-color: var(--c-t); }
+.brique-mini.on.m-f { background: var(--c-f-l); color: var(--c-f); border-color: var(--c-f); }
+.brique-mini.on.m-c2 { background: var(--c-c2-l); color: #92400E; border-color: var(--c-c2); }
+.brique-mini.on.m-e { background: var(--c-e-l); color: var(--c-e); border-color: var(--c-e); }
+ 
+/* ============ ZONE PROMPT EDITABLE (slide 10) ============ */
+.prompt-editor {
+  background: var(--violet-vlight);
+  border: 2px dashed var(--violet);
+  border-radius: 12px;
+  padding: 2vh 1.5vw;
+  margin-top: 2vh;
+}
+ 
+.prompt-editor-label {
+  font-size: clamp(0.8rem, 1rem, 0.92rem);
+  color: var(--violet);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 1vh;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+ 
+.prompt-editor-label::before {
+  content: "✎";
+  font-size: 1.2em;
+}
+ 
+.prompt-editor textarea {
+  width: 100%;
+  min-height: 16vh;
+  border: 1px solid var(--violet-light);
+  background: white;
+  border-radius: 8px;
+  padding: 1.5vh 1vw;
+  font-family: Consolas, Monaco, monospace;
+  font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+  color: var(--gris);
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+}
+ 
+.prompt-editor textarea:focus {
+  border-color: var(--violet);
+  box-shadow: 0 0 0 3px var(--violet-light);
+}
+ 
+.prompt-editor-hint {
+  font-size: clamp(0.8rem, 1rem, 0.9rem);
+  color: var(--gris-soft);
+  font-style: italic;
+  margin-top: 1vh;
+  text-align: right;
+}
+ 
+/* ============ CARTES INTERACTIVES ============ */
+.interactive-card {
+  background: var(--blanc);
+  border: 2px solid var(--violet-light);
+  border-radius: 16px;
+  padding: 2vh 1.5vw;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+}
+ 
+.interactive-card:hover {
+  border-color: var(--violet);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(107,33,168,0.15);
+}
+ 
+.interactive-card.revealed {
+  background: var(--violet-vlight);
+  border-color: var(--violet);
+}
+ 
+.interactive-card .num-big {
+  font-size: clamp(2.5rem, 4.5vw, 4rem);
+  font-weight: 900;
+  color: var(--violet);
+  line-height: 1;
+  margin-bottom: 1vh;
+}
+ 
+.interactive-card .card-hint {
+  font-size: clamp(0.75rem, 0.95vw, 0.9rem);
+  color: var(--gris-soft);
+  font-style: italic;
+  margin-top: auto;
+}
+ 
+.interactive-card .content-hidden {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.4s ease;
+  pointer-events: none;
+}
+ 
+.interactive-card.revealed .content-hidden {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+ 
+.interactive-card.revealed .card-hint { display: none; }
+ 
+.interactive-card .card-title-big {
+  font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+  font-weight: 700;
+  color: var(--violet-dark);
+  margin: 1vh 0 0.8vh;
+}
+ 
+.interactive-card .card-desc {
+  font-size: clamp(0.85rem, 1.15vw, 1.02rem);
+  color: var(--gris);
+  line-height: 1.4;
+  margin-bottom: 1vh;
+}
+ 
+.interactive-card .card-example {
+  font-size: clamp(0.8rem, 1.05vw, 0.95rem);
+  font-style: italic;
+  color: var(--violet-dark);
+  padding-top: 1vh;
+  border-top: 1px dashed var(--violet-light);
+}
+ 
+.interactive-card .card-stats {
+  background: rgba(0,0,0,0.04);
+  border-radius: 8px;
+  padding: 1vh 0.8vw;
+  margin: 1vh 0;
+  font-size: clamp(0.75rem, 1rem, 0.9rem);
+  color: var(--gris);
+  line-height: 1.5;
+}
+ 
+.interactive-card .card-stats strong {
+  display: block;
+  color: var(--violet-dark);
+  font-size: clamp(0.85rem, 1.1vw, 1rem);
+  margin-bottom: 0.3vh;
+}
+ 
+.sub-reflexes {
+  margin: 1vh 0;
+  border-top: 1px dashed var(--violet-light);
+}
+ 
+.sub-reflexe {
+  padding: 0.7vh 0;
+  font-size: clamp(0.82rem, 1.1vw, 0.98rem);
+  color: var(--gris);
+  line-height: 1.45;
+  border-bottom: 1px dashed var(--violet-light);
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em;
+}
+ 
+.sub-reflexe:last-child { border-bottom: none; }
+ 
+.sub-reflexe .sub-icon {
+  font-size: 1.1em;
+}
+ 
+.sub-reflexe strong {
+  color: var(--violet-dark);
+  font-weight: 700;
+}
+ 
+.card-tip {
+  background: #FEF3C7;
+  border-left: 4px solid var(--c-c2);
+  padding: 1vh 1vw;
+  margin-top: 1vh;
+  border-radius: 6px;
+  font-size: clamp(0.8rem, 1.05vw, 0.95rem);
+  color: var(--gris);
+  line-height: 1.45;
+}
+ 
+.card-tip strong {
+  color: #92400E;
+  display: block;
+  margin-bottom: 0.3vh;
+  font-size: clamp(0.75rem, 0.95vw, 0.88rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+ 
+/* Techniques : titre visible avant clic */
+.card-teaser {
+  font-size: clamp(0.85rem, 1.15vw, 1.05rem);
+  color: var(--gris-soft);
+  font-style: italic;
+  margin: 0.5vh 0 1vh;
+  line-height: 1.4;
+}
+ 
+.card-visible-title {
+  font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+  font-weight: 700;
+  color: var(--violet-dark);
+  margin: 0.8vh 0 0.2vh;
+}
+ 
+/* Engagements — variantes couleur */
+.interactive-card.engage-v { border-color: var(--orange); }
+.interactive-card.engage-v.revealed { background: #FFF7ED; border-color: var(--orange); }
+.interactive-card.engage-v .num-big { color: var(--orange); }
+.interactive-card.engage-v .card-title-big { color: var(--orange); }
+ 
+.interactive-card.engage-p { border-color: var(--violet); }
+.interactive-card.engage-p.revealed { background: var(--violet-vlight); border-color: var(--violet); }
+ 
+.interactive-card.engage-m { border-color: var(--vert); }
+.interactive-card.engage-m.revealed { background: #ECFDF5; border-color: var(--vert); }
+.interactive-card.engage-m .num-big { color: var(--vert); }
+.interactive-card.engage-m .card-title-big { color: var(--vert); }
+ 
+.clickable-hint {
+  text-align: center;
+  margin-top: 2vh;
+  font-size: clamp(0.85rem, 1.1vw, 1rem);
+  color: var(--violet);
+  font-style: italic;
+  opacity: 0.8;
+}
+ 
+/* ============ STAT BLOCK ============ */
+.stat-block {
+  background: var(--violet-vlight);
+  padding: 3vh 2.5vw;
+  border-radius: 16px;
+  text-align: center;
+  border-left: 8px solid var(--violet);
+}
+ 
+.stat-label {
+  font-size: clamp(0.9rem, 1.15vw, 1.1rem);
+  color: var(--gris-soft);
+  margin-bottom: 1vh;
+  font-weight: 500;
+}
+ 
+.stat-number {
+  font-size: clamp(2.8rem, 6.5vw, 4.5rem);
+  font-weight: 900;
+  color: var(--violet);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+ 
+.stat-explain {
+  font-size: clamp(0.85rem, 1.1vw, 1rem);
+  color: var(--gris-soft);
+  margin-top: 1vh;
+  font-style: italic;
+}
+ 
+/* ============ MÉTAPHORE ============ */
+.metaphor {
+  background: var(--violet-dark);
+  color: white;
+  padding: 2.5vh 2vw;
+  border-radius: 16px;
+  text-align: center;
+  margin-top: 2.5vh;
+}
+ 
+.metaphor-label {
+  font-size: clamp(0.8rem, 1rem, 0.95rem);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 1vh;
+}
+ 
+.metaphor-text {
+  font-size: clamp(1.3rem, 2.2vw, 1.9rem);
+  font-weight: 700;
+  line-height: 1.3;
+}
+ 
+.metaphor-text em { color: #FDE68A; font-style: normal; }
+ 
+/* ============ ACCENT LIST ============ */
+.accent-list { list-style: none; padding: 0; }
+ 
+.accent-list li {
+  padding: 1vh 0 1vh 2.2em;
+  position: relative;
+  font-size: clamp(0.95rem, 1.25vw, 1.15rem);
+  line-height: 1.5;
+  border-bottom: 1px solid var(--violet-light);
+}
+ 
+.accent-list li:last-child { border-bottom: none; }
+ 
+.accent-list li::before {
+  content: "→";
+  position: absolute;
+  left: 0.2em;
+  color: var(--violet);
+  font-weight: 800;
+  font-size: 1.3em;
+}
+ 
+.accent-list li strong { color: var(--violet-dark); font-weight: 700; }
+ 
+/* ============ TAG ============ */
+.tag {
+  display: inline-block;
+  background: var(--violet-light);
+  color: var(--violet-dark);
+  padding: 0.4em 1em;
+  border-radius: 999px;
+  font-size: clamp(0.75rem, 0.95vw, 0.9rem);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+ 
+/* ============ HIGHLIGHT BOX ============ */
+.highlight-box {
+  background: linear-gradient(135deg, var(--violet-light) 0%, var(--violet-vlight) 100%);
+  padding: 3vh 2.5vw;
+  border-radius: 16px;
+  text-align: center;
+  border: 2px solid var(--violet);
+}
+ 
+/* ============ CARTE SYNTHÈSE (imprimable) ============ */
+.synthesis-card {
+  background: var(--blanc);
+  border: 3px solid var(--violet);
+  border-radius: 20px;
+  padding: 3vh 3vw;
+  max-width: 820px;
+  margin: 0 auto;
+  box-shadow: 0 20px 60px rgba(107,33,168,0.12);
+  position: relative;
+  page-break-inside: avoid;
+}
+ 
+.synthesis-card::before {
+  content: "";
+  position: absolute;
+  top: -2px; left: -2px; right: -2px;
+  height: 8px;
+  background: linear-gradient(90deg, var(--violet) 0%, var(--violet-dark) 100%);
+  border-radius: 20px 20px 0 0;
+}
+ 
+.synthesis-header {
+  text-align: center;
+  margin-bottom: 2vh;
+  padding-bottom: 1.5vh;
+  border-bottom: 1px dashed var(--violet-light);
+}
+ 
+.synthesis-header .label {
+  font-size: clamp(0.75rem, 0.95vw, 0.88rem);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--violet);
+  font-weight: 700;
+  margin-bottom: 1vh;
+}
+ 
+.synthesis-header h2 {
+  margin-bottom: 0;
+  color: var(--violet-dark);
+  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+}
+ 
+.synthesis-line {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.5vw;
+  align-items: center;
+  padding: 1.5vh 0;
+  border-bottom: 1px solid var(--gris-lighter);
+}
+ 
+.synthesis-line:last-child { border-bottom: none; }
+ 
+.synthesis-icon {
+  font-size: clamp(1.8rem, 2.8vw, 2.2rem);
+  width: 60px;
+  text-align: center;
+}
+ 
+.synthesis-text .title {
+  font-size: clamp(0.8rem, 1rem, 0.95rem);
+  font-weight: 700;
+  color: var(--violet);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.3vh;
+}
+ 
+.synthesis-text .body {
+  font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+  color: var(--gris);
+  line-height: 1.45;
+}
+ 
+.synthesis-text .body strong { color: var(--violet-dark); }
+ 
+.synthesis-footer {
+  text-align: center;
+  margin-top: 2vh;
+  padding-top: 1.5vh;
+  border-top: 1px dashed var(--violet-light);
+  font-size: clamp(0.9rem, 1.15vw, 1.05rem);
+  color: var(--violet-dark);
+  font-style: italic;
+}
+ 
+.synthesis-signature {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1vh;
+  padding-top: 1.5vh;
+  font-size: clamp(0.75rem, 0.95vw, 0.88rem);
+  color: var(--gris-soft);
+}
+ 
+/* ============ MODÈLE DE PROMPT VISUEL ============ */
+.prompt-template {
+  background: var(--gris-light);
+  border-radius: 12px;
+  padding: 2vh 1.5vw;
+  margin: 2vh 0;
+  position: relative;
+}
+ 
+.prompt-template-line {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 0.8vw;
+  align-items: center;
+  padding: 0.6vh 0;
+}
+ 
+.tpl-tag {
+  display: inline-block;
+  padding: 0.35em 0.7em;
+  border-radius: 6px;
+  font-size: clamp(0.7rem, 0.9vw, 0.82rem);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-align: center;
+  color: white;
+}
+ 
+.tpl-r { background: var(--c-r); }
+.tpl-c { background: var(--c-c); }
+.tpl-t { background: var(--c-t); }
+.tpl-f { background: var(--c-f); }
+.tpl-c2 { background: var(--c-c2); color: #7C4A03; }
+.tpl-e { background: var(--c-e); }
+ 
+.tpl-text {
+  font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+  color: var(--gris);
+  line-height: 1.45;
+  font-family: -apple-system, sans-serif;
+}
+ 
+.tpl-text em {
+  color: var(--gris-soft);
+  font-style: italic;
+  font-weight: 500;
+}
+ 
+/* Blocs latéraux de synthèse */
+.synthesis-side-blocks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5vw;
+  margin-top: 1.5vh;
+}
+ 
+.synthesis-block {
+  background: var(--violet-vlight);
+  border-left: 4px solid var(--violet);
+  padding: 1.2vh 1vw;
+  border-radius: 8px;
+}
+ 
+.synthesis-block .block-title {
+  font-size: clamp(0.85rem, 1.1vw, 1rem);
+  font-weight: 800;
+  color: var(--violet-dark);
+  margin-bottom: 0.4vh;
+  letter-spacing: 0.05em;
+}
+ 
+.synthesis-block .block-content {
+  font-size: clamp(0.85rem, 1.1vw, 1rem);
+  color: var(--gris);
+  line-height: 1.4;
+}
+ 
+.synthesis-block .block-content strong {
+  color: var(--violet-dark);
+}
+ 
+/* ============ SOMMAIRE / AGENDA ============ */
+.agenda-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2vh;
+  margin-top: 2vh;
+}
+ 
+.agenda-item {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  gap: 1.5vw;
+  align-items: center;
+  padding: 1.6vh 1.5vw;
+  background: var(--violet-vlight);
+  border-left: 5px solid var(--violet);
+  border-radius: 10px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+ 
+.agenda-item:hover {
+  transform: translateX(4px);
+  box-shadow: 0 6px 20px rgba(107,33,168,0.12);
+}
+ 
+.agenda-num {
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 900;
+  color: var(--violet);
+  text-align: center;
+  line-height: 1;
+}
+ 
+.agenda-title {
+  font-size: clamp(1rem, 1.4vw, 1.25rem);
+  font-weight: 700;
+  color: var(--violet-dark);
+  margin-bottom: 0.3vh;
+  line-height: 1.3;
+}
+ 
+.agenda-desc {
+  font-size: clamp(0.85rem, 1.15vw, 1rem);
+  color: var(--gris-soft);
+  line-height: 1.4;
+}
+ 
+.agenda-item.qr {
+  background: var(--gris-light);
+  border-left-color: var(--gris-soft);
+}
+ 
+.agenda-item.qr .agenda-num,
+.agenda-item.qr .agenda-title {
+  color: var(--gris);
+}
+ 
+.agenda-item.intro {
+  background: linear-gradient(135deg, var(--violet) 0%, var(--violet-dark) 100%);
+  border-left-color: var(--violet-dark);
+}
+ 
+.agenda-item.intro .agenda-num {
+  color: white;
+  font-size: clamp(2rem, 3.2vw, 2.8rem);
+}
+ 
+.agenda-item.intro .agenda-title {
+  color: white;
+}
+ 
+.agenda-item.intro .agenda-desc {
+  color: rgba(255,255,255,0.85);
+}
+ 
+/* ============ RÉVÉLATION PROGRESSIVE AU CLIC ============ */
+.reveal-on-click {
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none;
+  max-height: 0;
+  overflow: hidden;
+  margin-top: 0 !important;
+}
+ 
+.reveal-on-click.shown {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  max-height: 50vh;
+  margin-top: 2.5vh !important;
+  overflow: visible;
+}
+ 
+/* ============ Q&R + CONTACT ============ */
+.qr-layout {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 3vw;
+  align-items: stretch;
+  margin-top: 3vh;
+}
+ 
+.qr-block {
+  background: white;
+  border: 2px solid var(--violet-light);
+  border-radius: 16px;
+  padding: 2.5vh 2vw;
+}
+ 
+.qr-block .big-q {
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 900;
+  color: var(--violet);
+  line-height: 1;
+  margin-bottom: 1vh;
+}
+ 
+.qr-relance {
+  margin-top: 2vh;
+}
+ 
+.qr-relance h3 {
+  font-size: clamp(0.85rem, 1.05vw, 0.95rem);
+  color: var(--gris-soft);
+  font-weight: 600;
+  margin-bottom: 1vh;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+ 
+.qr-relance ul { list-style: none; padding-left: 0; }
+ 
+.qr-relance li {
+  padding: 0.5vh 0 0.5vh 1.5em;
+  position: relative;
+  font-size: clamp(0.9rem, 1.15vw, 1.05rem);
+  color: var(--gris);
+  font-style: italic;
+}
+ 
+.qr-relance li::before {
+  content: "💬";
+  position: absolute;
+  left: 0;
+}
+ 
+.contact-card {
+  background: linear-gradient(135deg, var(--violet) 0%, var(--violet-dark) 100%);
+  color: white;
+  border-radius: 16px;
+  padding: 3vh 2.5vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+ 
+.contact-card .contact-label {
+  font-size: clamp(0.75rem, 0.95vw, 0.88rem);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.75);
+  margin-bottom: 1vh;
+}
+ 
+.contact-card .contact-name {
+  font-size: clamp(1.3rem, 1.9vw, 1.7rem);
+  font-weight: 800;
+  margin-bottom: 0.5vh;
+}
+ 
+.contact-card .contact-company {
+  font-size: clamp(0.95rem, 1.25vw, 1.1rem);
+  color: rgba(255,255,255,0.85);
+  font-style: italic;
+  margin-bottom: 2vh;
+}
+ 
+.contact-card .contact-line {
+  font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+  color: white;
+  padding: 0.5vh 0;
+  display: flex;
+  align-items: center;
+  gap: 0.8em;
+}
+ 
+.contact-card .contact-line .icon {
+  width: 24px;
+  display: inline-block;
+  text-align: center;
+}
+ 
+/* ============ FOOTER ============ */
+.footer {
+  position: fixed;
+  bottom: 1vh;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 3vw;
+  font-size: 0.72rem;
+  color: var(--gris-soft);
+  z-index: 50;
+  pointer-events: none;
+}
+ 
+.footer-brand { font-weight: 600; color: var(--violet); }
+.footer-sogetrel { font-style: italic; opacity: 0.7; }
+.slide-counter { font-variant-numeric: tabular-nums; }
+ 
+/* ============ HELP ============ */
+.help {
+  position: fixed;
+  bottom: 1vh;
+  right: 2vw;
+  background: rgba(0,0,0,0.8);
+  color: white;
+  padding: 0.5em 1em;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  z-index: 200;
+}
+ 
+.help.show { opacity: 1; }
+ 
+/* ============ PRINT (pour imprimer la carte synthèse) ============ */
+@media print {
+  @page { size: A4 landscape; margin: 0; }
+ 
+  html, body {
+    overflow: visible !important;
+    height: auto !important;
+    width: auto !important;
+  }
+ 
+  .progress-nav, .footer, .progress-bar, .help { display: none !important; }
+ 
+  .presentation {
+    height: auto !important;
+    width: auto !important;
+    padding-top: 0 !important;
+    position: static !important;
+  }
+ 
+  /* Mode "print all" : toutes les slides en pages A4 paysage */
+  body.print-all .slide {
+    position: relative !important;
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    width: 297mm !important;
+    height: 210mm !important;
+    top: auto !important;
+    left: auto !important;
+    padding: 10mm 14mm !important;
+    box-sizing: border-box !important;
+    page-break-after: always !important;
+    break-after: page !important;
+    overflow: hidden !important;
+  }
+  body.print-all .slide:last-child {
+    page-break-after: auto !important;
+  }
+ 
+  /* Force reveal des elements normalement masques au clic */
+  body.print-all .reveal-on-click {
+    opacity: 1 !important;
+    transform: none !important;
+    max-height: none !important;
+    margin-top: 2.5vh !important;
+    overflow: visible !important;
+    pointer-events: auto !important;
+  }
+ 
+  body.print-all .interactive-card {
+    background: var(--violet-vlight) !important;
+    border-color: var(--violet) !important;
+  }
+  body.print-all .interactive-card .content-hidden {
+    opacity: 1 !important;
+    transform: none !important;
+    pointer-events: auto !important;
+  }
+  body.print-all .interactive-card .card-hint,
+  body.print-all .clickable-hint {
+    display: none !important;
+  }
+  body.print-all .interactive-card.engage-v {
+    background: #FFF7ED !important;
+    border-color: var(--orange) !important;
+  }
+  body.print-all .interactive-card.engage-p {
+    background: var(--violet-vlight) !important;
+    border-color: var(--violet) !important;
+  }
+  body.print-all .interactive-card.engage-m {
+    background: #ECFDF5 !important;
+    border-color: var(--vert) !important;
+  }
+ 
+  /* Mode "print synthesis only" : uniquement la fiche synthese imprimable (touche P) */
+  body.print-synthesis @page { size: A4 portrait; margin: 0; }
+  body.print-synthesis .slide { display: none; }
+  body.print-synthesis .slide[data-act="cloture"][data-printable="true"] {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    position: relative;
+    page-break-after: always;
+    height: 100vh;
+  }
+}
+</style>
+</head>
+<body>
+ 
+<!-- ============ BANDEAU DE PROGRESSION — 5 BLOCS ============ -->
+<nav class="progress-nav" id="progressNav">
+  <div class="nav-item" data-act="decouverte">Découverte</div>
+  <div class="nav-item" data-act="methode">Méthode</div>
+  <div class="nav-item" data-act="application">Application</div>
+  <div class="nav-item" data-act="cadre">Cadre</div>
+  <div class="nav-item" data-act="cloture">Clôture</div>
+</nav>
+ 
+<div class="progress-bar" id="progressBar" style="width: 0%;"></div>
+ 
+<div class="presentation" id="presentation">
+ 
+<!-- ========== SLIDE 1 — COUVERTURE ========== -->
+<section class="slide cover active" data-act="decouverte">
+  <div class="slide-content">
+    <h1>Maîtriser<br>l'ingénierie du prompt</h1>
+    <p class="subtitle">POC Webinaire — 75 min en classe virtuelle</p>
+    <div class="meta">
+      Lundi 27 avril 2026 · 9h00 – 10h15<br>
+      Animé par Mathieu LEGEAS — IAvenir Formation
+    </div>
+  </div>
+  <div class="cover-brand">
+    <span class="cover-brand-item">IAvenir</span>
+    <div class="cover-separator"></div>
+    <span class="cover-brand-item">× Sogetrel</span>
+  </div>
+</section>
+ 
+<!-- ========== SLIDE 2 — SOMMAIRE ========== -->
+<section class="slide" data-act="decouverte">
+  <div class="slide-content">
+    <h2>Au programme</h2>
+    <p class="subtitle" style="margin-bottom: 1vh;">Ce qu'on va faire ensemble pendant 75 minutes.</p>
+ 
+    <div class="agenda-list">
+      <div class="agenda-item intro">
+        <div class="agenda-num">★</div>
+        <div>
+          <div class="agenda-title">Comprendre l'IA</div>
+          <div class="agenda-desc">L'essentiel en 90 secondes — comment ça marche et pourquoi le prompt change tout.</div>
+        </div>
+      </div>
+ 
+      <div class="agenda-item">
+        <div class="agenda-num">1</div>
+        <div>
+          <div class="agenda-title">Le prompt</div>
+          <div class="agenda-desc">La méthode R·C·T·F·C·E + co-construction d'un cas concret de votre quotidien.</div>
+        </div>
+      </div>
+ 
+      <div class="agenda-item">
+        <div class="agenda-num">2</div>
+        <div>
+          <div class="agenda-title">Créer votre assistant</div>
+          <div class="agenda-desc">Capitaliser votre méthode en outil réutilisable par toute votre équipe.</div>
+        </div>
+      </div>
+ 
+      <div class="agenda-item">
+        <div class="agenda-num">3</div>
+        <div>
+          <div class="agenda-title">Les 3 engagements</div>
+          <div class="agenda-desc">Vérifier · Protéger · Ménager — éthique et sobriété.</div>
+        </div>
+      </div>
+ 
+      <div class="agenda-item qr">
+        <div class="agenda-num">4</div>
+        <div>
+          <div class="agenda-title">Vos questions</div>
+          <div class="agenda-desc">7 minutes pour vos cas concrets, vos objections, vos doutes.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- ========== SLIDE 3 — COMMENT MARCHE UNE IA + DÉFINITION DU PROMPT (RÉVÉLATION PROGRESSIVE) ========== -->
+<section class="slide" data-act="decouverte" data-has-reveals="2">
+  <div class="slide-content">
+    <h2>Comment marche une IA</h2>
+    <p class="subtitle" style="margin-bottom: 2vh;">90 secondes pour comprendre — et pourquoi le prompt change tout.</p>
+ 
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-title">① Elle prédit</div>
+        <div class="card-body">
+          Elle calcule des probabilités. Pas de compréhension au sens humain.
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">② Elle ne sait rien de vous</div>
+        <div class="card-body">
+          Ni vos dossiers, ni votre entreprise. Si vous ne lui dites pas, elle ne sait pas.
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">③ Elle suit votre direction</div>
+        <div class="card-body">
+          Précis en entrée = précis en sortie. Flou = générique.
+        </div>
+      </div>
+    </div>
+ 
+    <div class="metaphor reveal-on-click" data-reveal-step="1" style="padding: 2vh 2.5vw;">
+      <div class="metaphor-label">Image à garder en tête</div>
+      <div class="metaphor-text" style="font-size: clamp(1.15rem, 1.9vw, 1.7rem);">Copilot, c'est un <em>stagiaire à très fort potentiel</em>, qui ne demande qu'à être formé et bien drivé.</div>
+    </div>
+ 
+    <div class="reveal-on-click" data-reveal-step="2" style="text-align: center; padding: 1.5vh 2vw; background: var(--violet-vlight); border-radius: 12px; border-left: 5px solid var(--violet);">
+      <span style="font-size: clamp(0.95rem, 1.3vw, 1.15rem); color: var(--gris-soft);">Et on le drive avec…</span>
+      <span style="font-size: clamp(1.1rem, 1.55vw, 1.4rem); font-weight: 800; color: var(--violet-dark); margin-left: 0.5em;">un prompt</span>
+      <span style="font-size: clamp(0.95rem, 1.3vw, 1.15rem); color: var(--gris); margin-left: 0.3em;">— l'instruction écrite que vous donnez à l'IA. <em>Plus il est clair, plus la réponse est juste.</em></span>
+    </div>
+  </div>
+</section>
+ 
+<!-- ========== SLIDE 4 — SCÉNARIO ========== -->
+<section class="slide" data-act="decouverte">
+  <div class="slide-content">
+    <div style="text-align: center;">
+      <div class="tag">Scénario fil rouge</div>
+      <h2 style="margin-top: 2vh;">Je suis responsable formation chez Sogetrel</h2>
+    </div>
+ 
+    <div class="grid-2" style="margin-top: 3vh;">
+      <div>
+        <ul class="accent-list">
+          <li>Lundi, <strong>j'interviens en CODIR</strong> pour présenter l'état des lieux formation de la branche et partager mon plan 2026.</li>
+          <li>J'ai <strong>10 minutes</strong> de slot devant 8 directeurs.</li>
+          <li>Mon objectif : ressortir avec <strong>une note de synthèse + un support de présentation</strong>.</li>
+          <li>Sur mon bureau, le <strong>Rapport de Branche Télécoms 2024</strong> — 80 pages denses.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="highlight-box">
+          <div style="font-size: clamp(1.2rem, 1.9vw, 1.6rem); font-weight: 700; color: var(--violet-dark); line-height: 1.3;">
+            Je vais me faire accompagner par l'IA.
+          </div>
+          <div style="margin-top: 2vh; font-size: clamp(0.9rem, 1.25vw, 1.1rem); color: var(--gris-soft); font-style: italic;">
+            C'est ce qu'on va apprendre à faire ensemble, pas à pas, pendant 1h15.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- ========== SLIDE 5 — V1 ========== -->
+<section class="slide" data-act="methode">
+  <div class="slide-content">
+    <div class="tag">Démo — Version 1</div>
+    <h2 style="margin-top: 2vh; margin-bottom: 2vh;">Le prompt réflexe</h2>
+ 
+    <div class="prompt-box">
+      <span class="prompt-label">V1</span>
+      Résume-moi ce document et fais-moi la présentation.
+    </div>
+ 
+    <div class="result-analysis">
+      <div class="result-box bad">
+        <div class="result-label">Résultat</div>
+        <div class="result-text">Un résumé générique et quelques slides plates, sans angle ni hiérarchie. Inutilisable tel quel pour un CODIR.</div>
+      </div>
+      <div class="result-box bad">
+        <div class="result-label">Pourquoi ?</div>
+        <div class="result-text">Aucun rôle, aucun contexte, aucune forme attendue. L'IA compile du bateau — elle ne peut pas faire mieux avec si peu.</div>
+      </div>
+    </div>
+ 
+    <div class="briques-mini">
+      <div class="brique-mini">R</div>
+      <div class="brique-mini">C</div>
+      <div class="brique-mini">T</div>
+      <div class="brique-mini">F</div>
+      <div class="brique-mini">C</div>
+      <div class="brique-mini">E</div>
+    </div>
+  </div>
+</section>
+ 
+<!-- ========== SLIDE 6 — V2 + R + C ========== -->
+<section class="slide" data-act="methode">
+  <div class="slide-content">
+    <div class="tag">Démo — Version 2</div>
+    <h2 style="margin-top: 2vh; margin-bottom: 2vh;">On ajoute <span style="color: var(--c-r);">Rôle</span> + <span style="color: var(--c-c);">Contexte</span></h2>
+ 
+    <div class="prompt-box v2">
+      <span class="prompt-label">V2</span>
+      <span class="h-r">Tu es consultant RH spécialiste télécoms.</span> <span class="h-c">Je suis responsable formation Sogetrel, j'interviens en CODIR dans 48h sur mon plan 2026.</span> Résume-moi ce document et fais-moi la présentation associée.
+    </div>
+ 
+    <div class="result-analysis">
+      <div class="result-box meh">
+        <div class="result-label">Résultat</div>
+        <div class="result-text">Note plus pertinente, ciblée RH, orientée décision. Quelques slides utiles mais encore trop longues et sans structure claire.</div>
+      </div>
+      <div class="result-box good">
+        <div class="result-label">Pourquoi ça progresse</div>
+        <div class="result-text">On a donné <strong>l'expert à incarner</strong> et <strong>le contexte métier</strong>. L'IA sait à qui s'adresser et pourquoi.</div>
+      </div>
+    </div>
+ 
+    <div class="briques-mini">
+      <div class="brique-mini on m-r">R — Rôle</div>
+      <div class="brique-mini on m-c">C — Contexte</div>
+      <div class="brique-mini">T</div>
+      <div class="brique-mini">F</div>
+      <div class="brique-mini">C</div>
+      <div class="brique-mini">E</div>
+    </div>
+  </div>
+</section>
+ 
+<!-- ========== SLIDE 7 — V3 COMPLÈTE ========== -->
+<section class="slide" data-act="methode">
+  <div class="slide-content">
+    <div class="tag">Démo — Version 3</div>
+    <h2 style="margin-top: 2vh; margin-bottom: 2vh;">On complète avec <span style="color: var(--c-t);">Tâche</span> · <span style="color: var(--c-f);">Format</span> · <span style="color: #92400E;">Contraintes</span> · <span style="color: var(--c-e);">Exemple</span></h2>
+ 
+    <div class="prompt-box v3" style="font-size: clamp(0.78rem, 1.05vw, 0.95rem);">
+      <span class="prompt-label">V3</span>
+      <span class="h-r">Tu es consultant RH senior spécialisé télécoms.</span> <span class="h-c">Je suis responsable formation Sogetrel, j'interviens en CODIR dans 48h devant 8 directeurs.</span> <span class="h-t">À partir de ce rapport, produis-moi 2 livrables : (1) une note de synthèse en Word, (2) un PowerPoint. Génère directement les deux documents.</span> <span class="h-f">Note en 4 parties : chiffres clés / tendances / points de vigilance / 3 recommandations. Deck 8-10 slides avec titre, contenu clé, visuel suggéré. Données Sogetrel : effectif 3 847, 50 000 h formation/an, 25 % taux d'accès, budget 1,3 M€, 150 alternants, 80 % d'embauche post-alternance.</span> <span class="h-c2">500 mots max pour la note Word, ton pro, sans jargon. Si une info manque, le dire plutôt que d'inventer.</span> <span class="h-e">Inspire-toi du format note exécutive pour COMEX et des decks de cabinet conseil.</span>
+    </div>
+ 
+    <div class="result-analysis">
+      <div class="result-box good">
+        <div class="result-label">Résultat</div>
+        <div class="result-text">Note exécutive structurée <strong>+ plan de PPT détaillé</strong>. Livrables directement exploitables après relecture.</div>
+      </div>
+      <div class="result-box good">
+        <div class="result-label">Pourquoi c'est du pro</div>
+        <div class="result-text">On a précisé <strong>la tâche</strong>, <strong>la forme</strong>, <strong>les règles</strong> et <strong>le style</strong>. Le livrable n'est plus un hasard.</div>
+      </div>
+    </div>
+ 
+    <div class="briques-mini">
+      <div class="brique-mini on m-r">R</div>
+      <div class="brique-mini on m-c">C</div>
+      <div class="brique-mini on m-t">T — Tâche</div>
+      <div class="brique-mini on m-f">F — Format</div>
+      <div class="brique-mini on m-c2">C — Contraintes</div>
+      <div class="brique-mini on m-e">E — Exemple</div>
+    </div>
+  </div>
+</section>
+ 
+<!-- ========== SLIDE 8 — MÉTHODE R·C·T·F·C·E ========== -->
+<section class="slide" data-act="methode">
+  <div class="slide-content">
+    <h2>Ce qu'on a utilisé, ça a un nom : R·C·T·F·C·E</h2>
+    <p class="subtitle" style="margin-bottom: 3vh;">6 briques, 6 couleurs, pour un prompt qui produit du sur-mesure.</p>
+ 
+    <div class="grid-6">
+      <div class="brique brique-r on">
+        <div class="brique-letter">R</div>
+        <div class="brique-title">Rôle</div>
+        <div class="brique-desc">L'expert qu'on convoque</div>
+      </div>
+      <div class="brique brique-c on">
+        <div class="brique-letter">C</div>
+        <div class="brique-title">Contexte</div>
+        <div class="brique-desc">Le brief métier</div>
+      </div>
+      <div class="brique brique-t on">
+        <div class="brique-letter">T</div>
+        <div class="brique-title">Tâche</div>
+        <div class="brique-desc">Le verbe d'action</div>
+      </div>
+      <div class="brique brique-f on">
+        <div class="brique-letter">F</div>
+        <div class="brique-title">Format</div>
+        <div class="brique-desc">La forme attendue</div>
+      </div>
+      <div class="brique brique-c2 on">
+        <div class="brique-letter">C</div>
+        <div class="brique-title">Contraintes</div>
+        <div class="brique-desc">Les règles du jeu</div>
+      </div>
+      <div class="brique brique-e on">
+        <div class="brique-letter">E</div>
+        <div class="brique-title">Exemple</div>
+        <div class="brique-desc">Le patron de référence</div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- ========== SLIDE 9 — RÈGLE D'OR ========== -->
+<section class="slide" data-act="methode">
+  <div class="slide-content" style="text-align: center;">
+    <div class="tag">La règle d'or</div>
+    <div class="quote" style="margin-top: 4vh; font-size: clamp(1.8rem, 3.3vw, 3rem); line-height: 1.3;">
+      « Plus vous donnez de contexte,<br>moins vous recevez de généralités. »
+    </div>
+    <p style="margin-top: 4vh; font-size: clamp(1rem, 1.4vw, 1.25rem); color: var(--gris-soft); font-style: italic;">
+      Votre stagiaire brillant mais amnésique a besoin de tout ça pour bien bosser.
+    </p>
+  </div>
+</section>
+ 
+<!-- ========== SLIDE 10 — CAS CAHIER DES CHARGES avec TEXTAREA ========== -->
+<section class="slide" data-act="application">
+  <div class="slide-content">
+    <div class="tag">On applique ensemble</div>
+    <h2 style="margin-top: 2vh;">Rédiger un cahier des charges de formation</h2>
+    <p class="subtitle" style="margin-bottom: 2vh;">Consulter 3 organismes pour un appel d'offres simplifié.</p>
+ 
+    <div class="grid-2">
+      <div>
+        <h3 style="color: var(--violet); margin-bottom: 1.5vh; font-size: clamp(1rem, 1.4vw, 1.25rem);">Le cas concret</h3>
+        <ul class="accent-list">
+          <li>Former <strong>12 techniciens fibre</strong> (cuivre → FTTH)</li>
+          <li>Budget : <strong>~18 000 € HT</strong></li>
+          <li>Durée : <strong>2 jours présentiel</strong></li>
+          <li>Échéance : <strong>juin 2026</strong></li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="color: var(--violet); margin-bottom: 1.5vh; font-size: clamp(1rem, 1.4vw, 1.25rem);">La méthode</h3>
+        <p style="font-size: clamp(0.95rem, 1.25vw, 1.1rem); line-height: 1.5;">
+          On construit <strong>ensemble</strong>, brique par brique, dans le chat. Je tape vos propositions en direct dans la zone ci-dessous, puis dans Copilot.
+        </p>
+      </div>
+    </div>
+ 
+    <div class="prompt-editor">
+      <div class="prompt-editor-label">Zone de construction en direct</div>
+      <textarea placeholder="Tu es... (Rôle)&#10;&#10;Je suis... (Contexte)&#10;&#10;Rédige... (Tâche)&#10;&#10;Structure en... (Format)&#10;&#10;800 mots max... (Contraintes)&#10;&#10;Inspire-toi de... (Exemple)"></textarea>
+    </div>
+  </div>
+</section>
+ 
+<!-- ========== SLIDE 11 — 3 TECHNIQUES AVANCÉES (ITÉRER + CoT + REVERSE) ========== -->
+<section class="slide" data-act="application">
+  <div class="slide-content">
+    <h2>3 techniques avancées</h2>
+    <p class="subtitle" style="margin-bottom: 2.5vh;">Ce que connaissent ceux qui utilisent l'IA au quotidien.</p>
+ 
+    <div class="grid-3">
+      <div class="interactive-card" onclick="this.classList.toggle('revealed')">
+        <div class="num-big">①</div>
+        <div class="card-visible-title">🔁 Itérer</div>
+        <div class="card-teaser">Rattraper une réponse imparfaite via 3 réflexes ciblés.</div>
+        <div class="content-hidden">
+          <div class="sub-reflexes">
+            <div class="sub-reflexe"><span class="sub-icon">🔄</span><span><strong>Reformuler</strong> — changer d'angle, de rôle, de format</span></div>
+            <div class="sub-reflexe"><span class="sub-icon">🎯</span><span><strong>Préciser</strong> — ajouter un détail manquant, un focus</span></div>
+            <div class="sub-reflexe"><span class="sub-icon">🚧</span><span><strong>Contraindre</strong> — imposer une limite, un ton, une longueur</span></div>
+          </div>
+        </div>
+        <div class="card-hint">Cliquez pour voir les 3 réflexes</div>
+      </div>
+ 
+      <div class="interactive-card" onclick="this.classList.toggle('revealed')">
+        <div class="num-big">②</div>
+        <div class="card-visible-title">🧠 Chaîne de pensée</div>
+        <div class="card-teaser">Faire expliciter le raisonnement étape par étape.</div>
+        <div class="content-hidden">
+          <div class="card-desc">Idéal pour les arbitrages complexes, les analyses chiffrées, les recommandations à défendre. L'IA ne vous sort plus un résultat brut — elle montre son cheminement.</div>
+          <div class="card-example">« Raisonne étape par étape avant de conclure. »</div>
+        </div>
+        <div class="card-hint">Cliquez pour en savoir plus</div>
+      </div>
+ 
+      <div class="interactive-card" onclick="this.classList.toggle('revealed')">
+        <div class="num-big">③</div>
+        <div class="card-visible-title">🔃 Reverse Prompting</div>
+        <div class="card-teaser">Décrire le résultat attendu, l'IA écrit le prompt idéal.</div>
+        <div class="content-hidden">
+          <div class="card-desc">Quand vous avez un modèle en tête mais pas les mots pour le déclencher. Très puissant pour réutiliser un livrable de qualité sur un nouveau contexte.</div>
+          <div class="card-example">« Quel serait le prompt parfait pour produire ce type de résultat ? »</div>
+        </div>
+        <div class="card-hint">Cliquez pour en savoir plus</div>
+      </div>
+    </div>
+ 
+    <div class="clickable-hint">↑ Cliquez sur chaque carte pour découvrir la technique</div>
+  </div>
+</section>
+ 
+<!-- ========== SLIDE 13 — ASSISTANT ========== -->
+<section class="slide" data-act="application">
+  <div class="slide-content">
+    <div class="tag">Capitalisation</div>
+    <h2 style="margin-top: 2vh;">Créer votre premier assistant</h2>
+    <p class="subtitle" style="margin-bottom: 2.5vh;">Enregistrer votre méthode une fois. La relancer d'un clic, autant de fois que vous voulez.</p>
+ 
+    <h3 style="color: var(--violet); margin-bottom: 2vh;">4 assistants à créer dans votre équipe formation</h3>
+    <div class="grid-4">
+      <div class="card">
+        <div class="card-title">📄 Cahier des charges formation</div>
+        <div class="card-body">Celui qu'on vient de construire. Réutilisable par toute l'équipe.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">📊 Synthèse rapport pour COMEX</div>
+        <div class="card-body">Transforme un doc long en note exécutive + plan PPT structuré.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">✉️ Mail de relance prestataire</div>
+        <div class="card-body">Mail type avec tous les éléments de négociation.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">📝 CR de réunion pédagogique</div>
+        <div class="card-body">Transforme des notes brutes en CR formaté prêt à diffuser.</div>
+      </div>
+    </div>
+ 
+    <p style="margin-top: 2.5vh; text-align: center; font-size: clamp(1rem, 1.35vw, 1.2rem); color: var(--violet-dark); font-weight: 600;">
+      Chaque assistant : 30 min à 2 h économisées par utilisation.
+    </p>
+  </div>
+</section>
+ 
+<!-- ========== SLIDE 14 — 3 ENGAGEMENTS DÉTAILLÉS (INTERACTIF) ========== -->
+<section class="slide" data-act="cadre">
+  <div class="slide-content">
+    <h2>Les 3 engagements</h2>
+    <p class="subtitle" style="margin-bottom: 2.5vh;">Un contrat que vous passez avec vous-même et vos équipes.</p>
+ 
+    <div class="grid-3">
+      <!-- Vérifier -->
+      <div class="interactive-card engage-v" onclick="this.classList.toggle('revealed')">
+        <div class="num-big">①</div>
+        <div class="content-hidden">
+          <div class="card-title-big">VÉRIFIER</div>
+          <div class="card-desc">Tout élément factuel — chiffre, date, citation, référence — doit être vérifié avant diffusion. L'IA peut inventer.</div>
+          <div class="card-stats">
+            <strong>3 à 10 %</strong>
+            Taux d'hallucination des grands modèles sur des faits simples (études 2024-2025). Jusqu'à <strong>20 %</strong> sur des sujets techniques pointus ou juridiques.
+          </div>
+          <div class="card-tip">
+            <strong>Astuce prompt — limiter les hallucinations</strong>
+            Ajoutez systématiquement : « Si tu n'as pas l'information ou si tu n'es pas certain, dis-le clairement plutôt que d'inventer. »
+          </div>
+          <div class="card-example">Une référence légale inventée dans un cahier des charges = crédibilité perdue immédiatement auprès du prestataire.</div>
+        </div>
+        <div class="card-hint">Cliquez pour révéler</div>
+      </div>
+ 
+      <!-- Protéger -->
+      <div class="interactive-card engage-p" onclick="this.classList.toggle('revealed')">
+        <div class="num-big">②</div>
+        <div class="content-hidden">
+          <div class="card-title-big">PROTÉGER</div>
+          <div class="card-desc">Jamais de données sensibles dans un outil grand public. Les prompts peuvent alimenter l'entraînement des modèles.</div>
+          <div class="card-stats">
+            <strong>43 %</strong>
+            des salariés utilisent une IA grand public sans autorisation (Salesforce 2024). <strong>1 entreprise sur 5</strong> a déjà eu une fuite via IA. Amende RGPD max : <strong>4 % du CA mondial ou 20 M€</strong>.
+          </div>
+          <div class="card-example">Samsung 2023 : code source confidentiel collé dans ChatGPT → intégré au corpus. Ban interne en 48h. Solution : Copilot M365 configuré par votre DSI, données dans votre environnement Sogetrel.</div>
+        </div>
+        <div class="card-hint">Cliquez pour révéler</div>
+      </div>
+ 
+      <!-- Ménager -->
+      <div class="interactive-card engage-m" onclick="this.classList.toggle('revealed')">
+        <div class="num-big">③</div>
+        <div class="content-hidden">
+          <div class="card-title-big">MÉNAGER</div>
+          <div class="card-desc">L'IA a un coût énergétique et environnemental réel. Bon outil pour la bonne tâche.</div>
+          <div class="card-stats">
+            <strong>~10 ×</strong>
+            Une requête IA consomme environ 10 fois plus qu'une recherche Google (3 Wh vs 0,3 Wh). <strong>~500 ml d'eau</strong> pour refroidir 20-50 requêtes. Les datacenters IA pourraient passer de <1 % à <strong>~4 %</strong> de la consommation électrique mondiale d'ici 2027.
+          </div>
+          <div class="card-example">Avant chaque requête : « Est-ce que l'IA apporte une vraie valeur ici, ou c'est un réflexe paresseux ? » Pour 2+2, Google ou votre cerveau suffisent.</div>
+        </div>
+        <div class="card-hint">Cliquez pour révéler</div>
+      </div>
+    </div>
+ 
+    <div class="clickable-hint">↑ Cliquez sur chaque carte pour découvrir l'engagement et ses chiffres</div>
+  </div>
+</section>
+ 
+<!-- ========== SLIDE 15 — CARTE SYNTHÈSE IMPRIMABLE ========== -->
+<section class="slide" data-act="cloture" data-printable="true">
+  <div class="slide-content">
+    <div class="synthesis-card">
+      <div class="synthesis-header">
+        <div class="label">À emporter avec vous · Fiche imprimable (P)</div>
+        <h2>Maîtriser l'ingénierie du prompt</h2>
+      </div>
+ 
+      <div style="text-align: center; margin-bottom: 1vh; font-size: clamp(0.85rem, 1.1vw, 1rem); color: var(--gris-soft); letter-spacing: 0.05em;">
+        Un bon prompt, c'est 6 briques. Remplissez-les, adaptez-les.
+      </div>
+ 
+      <div class="prompt-template">
+        <div class="prompt-template-line">
+          <span class="tpl-tag tpl-r">RÔLE</span>
+          <span class="tpl-text">Tu es <em>[expert, consultant, analyste senior en…]</em>.</span>
+        </div>
+        <div class="prompt-template-line">
+          <span class="tpl-tag tpl-c">CONTEXTE</span>
+          <span class="tpl-text">Nous travaillons actuellement à <em>[projet, équipe, enjeu, public cible…]</em>.</span>
+        </div>
+        <div class="prompt-template-line">
+          <span class="tpl-tag tpl-t">TÂCHE</span>
+          <span class="tpl-text"><em>[Rédige, analyse, synthétise, crée, compare…]</em>.</span>
+        </div>
+        <div class="prompt-template-line">
+          <span class="tpl-tag tpl-f">FORMAT</span>
+          <span class="tpl-text">Sous forme de <em>[tableau, note en 4 parties, slides, mail, liste à puces…]</em>.</span>
+        </div>
+        <div class="prompt-template-line">
+          <span class="tpl-tag tpl-c2">CONTRAINTES</span>
+          <span class="tpl-text"><em>[X mots max, ton professionnel, sans jargon, inclure X paragraphe…]</em>.</span>
+        </div>
+        <div class="prompt-template-line">
+          <span class="tpl-tag tpl-e">EXEMPLE</span>
+          <span class="tpl-text">Inspire-toi de <em>[style de référence, modèle, livrable type…]</em>.</span>
+        </div>
+      </div>
+ 
+      <div class="synthesis-side-blocks">
+        <div class="synthesis-block">
+          <div class="block-title">⚡ 3 techniques avancées</div>
+          <div class="block-content"><strong>Itérer</strong> (reformuler · préciser · contraindre) · <strong>Chaîne de pensée</strong> · <strong>Reverse Prompting</strong>.</div>
+        </div>
+        <div class="synthesis-block">
+          <div class="block-title">🤝 3 engagements</div>
+          <div class="block-content"><strong>Vérifier</strong> (faits, chiffres) · <strong>Protéger</strong> (RGPD, confidentialité) · <strong>Ménager</strong> (sobriété).</div>
+        </div>
+      </div>
+ 
+      <div class="synthesis-footer">C'est à vous maintenant.</div>
+ 
+      <div class="synthesis-signature">
+        <span>IAvenir - Conseil &amp; Formation × Sogetrel · 27 avril 2026</span>
+        <span>Mathieu LEGEAS</span>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- ========== SLIDE 16 — Q&R + CONTACT (FUSIONNÉS) ========== -->
+<section class="slide" data-act="cloture">
+  <div class="slide-content">
+    <h2 style="text-align: center;">Questions / Réponses &amp; Contact</h2>
+    <p class="subtitle" style="text-align: center; margin-bottom: 1vh;">7 minutes pour vos questions. Pour prolonger, gardez mes coordonnées.</p>
+ 
+    <div class="qr-layout">
+      <div class="qr-block">
+        <div class="big-q">?</div>
+        <h3 style="color: var(--violet-dark); font-size: clamp(1.2rem, 1.7vw, 1.5rem); margin-bottom: 1vh;">À vos questions</h3>
+        <p style="font-size: clamp(0.95rem, 1.25vw, 1.1rem); color: var(--gris-soft);">
+          Texte dans le chat ou à l'oral. Vos objections, vos cas concrets, vos doutes.
+        </p>
+        <div class="qr-relance">
+          <h3>Sujets qu'on peut creuser</h3>
+          <ul>
+            <li>Combien de temps pour se former sérieusement à cette méthode ?</li>
+            <li>Que faire quand Copilot n'est pas encore déployé à grande échelle ?</li>
+            <li>Comment déployer tout ça à vos collaborateurs Sogetrel ?</li>
+          </ul>
+        </div>
+      </div>
+ 
+      <div class="contact-card">
+        <div class="contact-label">Pour prolonger</div>
+        <div class="contact-name">Mathieu LEGEAS</div>
+        <div class="contact-company">IAvenir - Conseil &amp; Formation</div>
+        <div class="contact-line"><span class="icon">📧</span> mathieu.legeas@iavenir-formation.fr</div>
+        <div class="contact-line"><span class="icon">📞</span> 07 61 60 22 77</div>
+        <div class="contact-line"><span class="icon">🌐</span> www.iavenir-formation.fr</div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- ========== SLIDE 17 — BACK-UP PROMPTS ========== -->
+<section class="slide" data-act="cloture">
+  <div class="slide-content">
+    <div class="tag" style="background: var(--gris-light); color: var(--gris-soft);">Slide de secours</div>
+    <h2 style="margin-top: 2vh;">Les 3 prompts préparés (back-up)</h2>
+    <p class="subtitle" style="margin-bottom: 2.5vh;">Au cas où une démo lâche, à copier-coller rapidement dans Copilot.</p>
+ 
+    <div style="background: var(--gris-light); padding: 1.5vh 1.5vw; border-radius: 10px; margin-bottom: 1.5vh;">
+      <div style="font-size: clamp(0.8rem, 1.05vw, 0.95rem); color: var(--violet); font-weight: 700; letter-spacing: 0.1em;">PROMPT V1 — BASIQUE</div>
+      <p style="margin-top: 0.8vh; font-family: Consolas, monospace; font-size: clamp(0.85rem, 1.15vw, 1rem); color: var(--gris);">
+        Résume-moi ce document et fais-moi la présentation.
+      </p>
+    </div>
+ 
+    <div style="background: var(--gris-light); padding: 1.5vh 1.5vw; border-radius: 10px; margin-bottom: 1.5vh;">
+      <div style="font-size: clamp(0.8rem, 1.05vw, 0.95rem); color: var(--violet); font-weight: 700; letter-spacing: 0.1em;">PROMPT V2 — + RÔLE + CONTEXTE</div>
+      <p style="margin-top: 0.8vh; font-family: Consolas, monospace; font-size: clamp(0.85rem, 1.15vw, 1rem); color: var(--gris);">
+        Tu es consultant RH spécialiste télécoms. Je suis responsable formation Sogetrel, j'interviens en CODIR dans 48h sur mon plan 2026. Résume-moi ce document et fais-moi la présentation associée.
+      </p>
+    </div>
+ 
+    <div style="background: var(--violet-vlight); padding: 1.5vh 1.5vw; border-radius: 10px; border-left: 4px solid var(--violet);">
+      <div style="font-size: clamp(0.8rem, 1.05vw, 0.95rem); color: var(--violet-dark); font-weight: 700; letter-spacing: 0.1em;">PROMPT V3 — VERSION PRO (6 BRIQUES → NOTE + PPT)</div>
+      <p style="margin-top: 0.8vh; font-family: Consolas, monospace; font-size: clamp(0.8rem, 1.05vw, 0.95rem); color: var(--gris); line-height: 1.5;">
+        Tu es consultant RH senior spécialisé télécoms (R). Je suis responsable formation chez Sogetrel, j'interviens en CODIR dans 48h devant 8 directeurs pour présenter un état des lieux formation de la branche télécoms et partager mon plan 2026 (C). À partir de ce rapport de branche, produis-moi 2 livrables : (1) une note de synthèse écrite en Word, (2) un PowerPoint de présentation. Génère directement les deux documents (T). Note structurée en 4 parties : chiffres clés / tendances / points de vigilance / 3 recommandations. Deck de 8 à 10 slides avec titre, contenu clé et visuel suggéré par slide. Données Sogetrel à inclure dans la présentation : effectif 3 847 personnes, 50 000 heures de formation/an, 25 % de taux d'accès, budget 1,3 M€, pas de certification, 150 alternants, 80 % de taux d'embauche post-alternance (F). 500 mots max pour la note en Word, ton professionnel, aucun jargon non expliqué. Si une information manque dans le document, dis-le clairement plutôt que d'inventer (C). Inspire-toi du format note exécutive pour COMEX et des decks de cabinet conseil (E).
+      </p>
+    </div>
+  </div>
+</section>
+ 
+</div>
+ 
+<div class="footer">
+  <div class="footer-brand">IAvenir — Webinaire Prompt Engineering</div>
+  <div class="slide-counter" id="slideCounter">1 / 16</div>
+  <div class="footer-sogetrel">POC Sogetrel — 27 avril 2026</div>
+</div>
+ 
+<div class="help" id="help">
+  ← → pour naviguer · F plein écran · Home/End · H pour aide · Clic sur les cartes pour révéler · P pour imprimer la carte synthèse
+</div>
+ 
+<script>
+const slides = document.querySelectorAll('.slide');
+const navItems = document.querySelectorAll('.nav-item');
+const total = slides.length;
+let current = 0;
+const progressBar = document.getElementById('progressBar');
+const counter = document.getElementById('slideCounter');
+const help = document.getElementById('help');
+const progressNav = document.getElementById('progressNav');
+ 
+const actOrder = ['decouverte', 'methode', 'application', 'cadre', 'cloture'];
+ 
+function showSlide(index) {
+  if (index < 0) index = 0;
+  if (index >= total) index = total - 1;
+ 
+  slides.forEach(s => s.classList.remove('active'));
+  slides[index].classList.add('active');
+  current = index;
+ 
+  // Reset des révélations progressives sur la nouvelle slide
+  const newSlide = slides[index];
+  if (newSlide.dataset.hasReveals) {
+    newSlide.dataset.currentReveal = '0';
+    newSlide.querySelectorAll('.reveal-on-click').forEach(el => el.classList.remove('shown'));
+  }
+ 
+  progressBar.style.width = ((index + 1) / total * 100) + '%';
+  counter.textContent = (index + 1) + ' / ' + total;
+ 
+  const currentAct = slides[index].dataset.act;
+  const currentActIndex = actOrder.indexOf(currentAct);
+ 
+  navItems.forEach(item => {
+    const itemAct = item.dataset.act;
+    const itemIndex = actOrder.indexOf(itemAct);
+    item.classList.remove('active', 'passed');
+    if (itemAct === currentAct) item.classList.add('active');
+    else if (itemIndex < currentActIndex) item.classList.add('passed');
+  });
+ 
+  if (slides[index].classList.contains('cover')) progressNav.classList.add('hidden');
+  else progressNav.classList.remove('hidden');
+}
+ 
+function next() {
+  // Si la slide active a des éléments à révéler progressivement, on en révèle un avant de passer
+  const slide = slides[current];
+  const hasReveals = parseInt(slide.dataset.hasReveals || '0');
+  if (hasReveals > 0) {
+    const currentRevealStep = parseInt(slide.dataset.currentReveal || '0');
+    if (currentRevealStep < hasReveals) {
+      const newStep = currentRevealStep + 1;
+      slide.dataset.currentReveal = newStep;
+      const elem = slide.querySelector(`.reveal-on-click[data-reveal-step="${newStep}"]`);
+      if (elem) elem.classList.add('shown');
+      return;
+    }
+  }
+  showSlide(current + 1);
+}
+ 
+function prev() {
+  // Si la slide active a des révélations actives, on en cache une avant de revenir en arrière
+  const slide = slides[current];
+  const hasReveals = parseInt(slide.dataset.hasReveals || '0');
+  if (hasReveals > 0) {
+    const currentRevealStep = parseInt(slide.dataset.currentReveal || '0');
+    if (currentRevealStep > 0) {
+      const elem = slide.querySelector(`.reveal-on-click[data-reveal-step="${currentRevealStep}"]`);
+      if (elem) elem.classList.remove('shown');
+      slide.dataset.currentReveal = currentRevealStep - 1;
+      return;
+    }
+  }
+  showSlide(current - 1);
+}
+function goHome() { showSlide(0); }
+function goEnd() { showSlide(total - 1); }
+ 
+function toggleFullscreen() {
+  if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {});
+  else document.exitFullscreen();
+}
+ 
+// Mode d'impression par defaut : tout le support
+document.body.classList.add('print-all');
+ 
+function printSynthesis() {
+  // Aller sur la slide synthèse imprimable, basculer en mode "synthese seule", imprimer, restaurer
+  for (let i = 0; i < slides.length; i++) {
+    if (slides[i].dataset.printable === "true") {
+      showSlide(i);
+      document.body.classList.remove('print-all');
+      document.body.classList.add('print-synthesis');
+      setTimeout(() => {
+        window.print();
+        // Restaurer apres impression
+        setTimeout(() => {
+          document.body.classList.remove('print-synthesis');
+          document.body.classList.add('print-all');
+        }, 500);
+      }, 300);
+      break;
+    }
+  }
+}
+ 
+document.addEventListener('keydown', (e) => {
+  // Ne pas capturer les touches si on est dans un textarea
+  if (e.target.tagName === 'TEXTAREA') return;
+ 
+  switch (e.key) {
+    case 'ArrowRight':
+    case ' ':
+    case 'PageDown':
+      next(); e.preventDefault(); break;
+    case 'ArrowLeft':
+    case 'PageUp':
+      prev(); e.preventDefault(); break;
+    case 'Home': goHome(); e.preventDefault(); break;
+    case 'End': goEnd(); e.preventDefault(); break;
+    case 'f':
+    case 'F': toggleFullscreen(); e.preventDefault(); break;
+    case 'h':
+    case 'H': help.classList.toggle('show'); e.preventDefault(); break;
+    case 'p':
+    case 'P': printSynthesis(); e.preventDefault(); break;
+  }
+});
+ 
+document.addEventListener('click', (e) => {
+  if (window.getSelection().toString()) return;
+  if (e.target.closest('.interactive-card')) return;
+  if (e.target.closest('.progress-nav')) return;
+  if (e.target.closest('textarea')) return;
+  if (e.target.tagName === 'TEXTAREA') return;
+ 
+  const x = e.clientX;
+  const w = window.innerWidth;
+  if (x > w / 2) next(); else prev();
+});
+ 
+navItems.forEach(item => {
+  item.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const targetAct = item.dataset.act;
+    for (let i = 0; i < slides.length; i++) {
+      if (slides[i].dataset.act === targetAct) {
+        showSlide(i);
+        break;
+      }
+    }
+  });
+});
+ 
+setTimeout(() => {
+  help.classList.add('show');
+  setTimeout(() => help.classList.remove('show'), 5000);
+}, 500);
+ 
+showSlide(0);
+</script>
+ 
+</body>
