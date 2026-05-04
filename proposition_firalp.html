@@ -1,0 +1,2161 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposition technico-commerciale — FIRALP × IAvenir</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --violet: #8B5CF6;
+    --violet-dark: #6D28D9;
+    --violet-deep: #4C1D95;
+    --violet-light: #EDE9FE;
+    --violet-pale: #F5F3FF;
+    --ink: #0F0A1E;
+    --ink-soft: #2A1F3D;
+    --gray-900: #1F1B2E;
+    --gray-700: #4B4361;
+    --gray-500: #7A7290;
+    --gray-300: #D4CFE0;
+    --gray-100: #F4F1F9;
+    --white: #FFFFFF;
+    --cream: #FAF8FC;
+    --accent: #F59E0B;
+    --green: #10B981;
+    --red: #EF4444;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--ink);
+    background: var(--cream);
+    line-height: 1.6;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ===== TYPOGRAPHY ===== */
+  .display {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    font-variation-settings: "opsz" 144;
+  }
+
+  .mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  /* ===== LAYOUT ===== */
+  .page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 48px;
+  }
+
+  section {
+    padding: 100px 0;
+    position: relative;
+  }
+
+  /* ===== TOP BAR ===== */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(250, 248, 252, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--gray-300);
+    padding: 14px 0;
+  }
+
+  .topbar-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  .logo span {
+    color: var(--violet);
+  }
+
+  .topbar-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    letter-spacing: 0.05em;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    padding: 80px 0 120px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    right: -300px;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, transparent 60%);
+    z-index: 0;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    border: 1px solid var(--violet);
+    border-radius: 100px;
+    color: var(--violet-dark);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 32px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--violet);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
+  }
+
+  .hero-title {
+    font-size: clamp(2.5rem, 6vw, 4.8rem);
+    margin-bottom: 28px;
+    max-width: 950px;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--violet);
+    font-weight: 400;
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--gray-700);
+    max-width: 720px;
+    margin-bottom: 48px;
+    line-height: 1.55;
+  }
+
+  .hero-meta {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    padding-top: 40px;
+    border-top: 1px solid var(--gray-300);
+    max-width: 900px;
+  }
+
+  .hero-meta-item .mono {
+    color: var(--gray-500);
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .hero-meta-item strong {
+    font-family: 'Fraunces', serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  /* ===== SECTION HEADERS ===== */
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--violet);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .section-label::before {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: var(--violet);
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    margin-bottom: 24px;
+    max-width: 800px;
+  }
+
+  .section-intro {
+    font-size: 1.15rem;
+    color: var(--gray-700);
+    max-width: 720px;
+    margin-bottom: 60px;
+  }
+
+  /* ===== CONTEXTE ===== */
+  .contexte-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 40px;
+  }
+
+  .contexte-card {
+    padding: 32px 28px;
+    background: var(--white);
+    border: 1px solid var(--gray-300);
+    border-radius: 4px;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .contexte-card:hover {
+    border-color: var(--violet);
+    transform: translateY(-2px);
+  }
+
+  .contexte-num {
+    font-family: 'Fraunces', serif;
+    font-size: 3rem;
+    color: var(--violet);
+    font-weight: 300;
+    line-height: 1;
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+
+  .contexte-card h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+
+  .contexte-card p {
+    color: var(--gray-700);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  /* ===== DÉMYSTIFICATION ===== */
+  .demystification {
+    background: var(--ink);
+    color: var(--white);
+    margin: 0 -48px;
+    padding: 100px 48px;
+  }
+
+  .demystification .section-label {
+    color: var(--violet);
+  }
+
+  .demystification .section-label::before {
+    background: var(--violet);
+  }
+
+  .demystification .section-title {
+    color: var(--white);
+  }
+
+  .demystification .section-intro {
+    color: var(--gray-300);
+  }
+
+  .demyst-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+    margin-top: 40px;
+  }
+
+  .demyst-card {
+    padding: 32px 28px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+  }
+
+  .demyst-card:hover {
+    border-color: var(--violet);
+    background: rgba(139, 92, 246, 0.08);
+  }
+
+  .demyst-num {
+    font-family: 'Fraunces', serif;
+    font-size: 2.5rem;
+    font-style: italic;
+    color: var(--violet);
+    line-height: 1;
+    margin-bottom: 18px;
+    font-weight: 300;
+  }
+
+  .demyst-card h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+    font-weight: 500;
+    margin-bottom: 14px;
+    color: var(--white);
+    line-height: 1.3;
+  }
+
+  .demyst-card p {
+    font-size: 0.95rem;
+    color: var(--gray-300);
+    line-height: 1.65;
+  }
+
+  .demyst-conclusion {
+    margin-top: 50px;
+    padding: 24px 32px;
+    border-left: 3px solid var(--violet);
+    background: rgba(139, 92, 246, 0.08);
+  }
+
+  .demyst-conclusion p {
+    font-family: 'Fraunces', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--white);
+    line-height: 1.5;
+    font-weight: 400;
+  }
+
+  /* ===== ARCHITECTURE COMPARISON ===== */
+  .archi-section {
+    background: var(--white);
+    margin: 0 -48px;
+    padding: 100px 48px;
+  }
+
+  .archi-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 60px;
+  }
+
+  .archi-card {
+    padding: 40px;
+    border: 1px solid var(--gray-300);
+    border-radius: 4px;
+    background: var(--cream);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .archi-card.recommended {
+    border: 2px solid var(--violet);
+    background: linear-gradient(180deg, var(--violet-pale) 0%, var(--white) 100%);
+  }
+
+  .archi-badge {
+    position: absolute;
+    top: -12px;
+    right: 24px;
+    background: var(--violet);
+    color: var(--white);
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+  }
+
+  .archi-letter {
+    font-family: 'Fraunces', serif;
+    font-size: 5rem;
+    font-weight: 300;
+    color: var(--violet);
+    line-height: 0.9;
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+
+  .archi-card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .archi-card .archi-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 24px;
+  }
+
+  .archi-card p.desc {
+    color: var(--gray-700);
+    margin-bottom: 28px;
+    font-size: 0.97rem;
+  }
+
+  .archi-features {
+    list-style: none;
+    margin-bottom: 28px;
+    padding: 0;
+  }
+
+  .archi-features li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--gray-300);
+    font-size: 0.93rem;
+    color: var(--gray-700);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .archi-features li:last-child {
+    border-bottom: none;
+  }
+
+  .archi-features .check {
+    color: var(--green);
+    font-weight: 600;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .archi-features .warn {
+    color: var(--accent);
+    font-weight: 600;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .archi-features .cross {
+    color: var(--red);
+    font-weight: 600;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .archi-pricing {
+    margin-top: auto;
+    padding-top: 24px;
+    border-top: 1px solid var(--gray-300);
+  }
+
+  .pricing-row {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .pricing-divider {
+    height: 1px;
+    background: var(--gray-300);
+    margin: 0;
+  }
+
+  .archi-pricing .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+
+  .archi-pricing .price {
+    font-family: 'Fraunces', serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+
+  .archi-pricing .price-unit {
+    font-size: 0.95rem;
+    color: var(--gray-500);
+    font-weight: 400;
+  }
+
+  .archi-pricing .price-detail {
+    font-size: 0.82rem;
+    color: var(--gray-500);
+    margin-top: 4px;
+  }
+
+  /* ===== PHASES ===== */
+  .phases-list {
+    margin-top: 50px;
+  }
+
+  .phase {
+    display: grid;
+    grid-template-columns: 100px 1fr 200px;
+    gap: 40px;
+    padding: 36px 0;
+    border-bottom: 1px solid var(--gray-300);
+    align-items: start;
+  }
+
+  .phase:first-child {
+    border-top: 1px solid var(--gray-300);
+  }
+
+  .phase-num {
+    font-family: 'Fraunces', serif;
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--violet);
+    font-style: italic;
+    line-height: 1;
+  }
+
+  .phase-content h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+
+  .phase-content p {
+    color: var(--gray-700);
+    font-size: 0.97rem;
+    line-height: 1.65;
+  }
+
+  .phase-content .deliverable {
+    margin-top: 16px;
+    padding: 14px 16px;
+    background: var(--violet-pale);
+    border-left: 3px solid var(--violet);
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+
+  .phase-content .deliverable strong {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--violet-dark);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .phase-meta {
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--gray-700);
+  }
+
+  .phase-meta .duree {
+    color: var(--ink);
+    font-weight: 500;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+  }
+
+  .phase-meta .jours {
+    color: var(--gray-500);
+  }
+
+  /* ===== CHIFFRAGE ===== */
+  .chiffrage-section {
+    background: var(--ink);
+    color: var(--white);
+    margin: 0 -48px;
+    padding: 100px 48px;
+  }
+
+  .chiffrage-section .section-label {
+    color: var(--violet);
+  }
+
+  .chiffrage-section .section-label::before {
+    background: var(--violet);
+  }
+
+  .chiffrage-section .section-title {
+    color: var(--white);
+  }
+
+  .chiffrage-section .section-intro {
+    color: var(--gray-300);
+  }
+
+  .chiffrage-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+
+  .chiffrage-table th {
+    text-align: left;
+    padding: 16px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    color: var(--gray-300);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    letter-spacing: 0.08em;
+    font-weight: 500;
+  }
+
+  .chiffrage-table td {
+    padding: 22px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 0.95rem;
+  }
+
+  .chiffrage-table .phase-name {
+    font-family: 'Fraunces', serif;
+    font-size: 1.05rem;
+    color: var(--white);
+  }
+
+  .chiffrage-table .duree {
+    color: var(--gray-300);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+  }
+
+  .chiffrage-table .montant {
+    text-align: right;
+    font-family: 'Fraunces', serif;
+    font-size: 1.05rem;
+    color: var(--white);
+  }
+
+  .chiffrage-table tr.total td {
+    border-top: 2px solid var(--violet);
+    border-bottom: none;
+    padding-top: 28px;
+  }
+
+  .chiffrage-table tr.total .phase-name {
+    color: var(--violet);
+    font-size: 0.78rem;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .chiffrage-table tr.total .montant {
+    font-size: 1.6rem;
+    color: var(--white);
+  }
+
+  .chiffrage-summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 60px;
+  }
+
+  .summary-card {
+    padding: 36px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+  }
+
+  .summary-card.highlight {
+    background: var(--violet);
+    border-color: var(--violet);
+  }
+
+  .summary-card .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    color: var(--gray-300);
+    margin-bottom: 12px;
+    letter-spacing: 0.08em;
+  }
+
+  .summary-card.highlight .label {
+    color: var(--violet-pale);
+  }
+
+  .summary-card .value {
+    font-family: 'Fraunces', serif;
+    font-size: 2.4rem;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .summary-card .detail {
+    color: var(--gray-300);
+    font-size: 0.92rem;
+  }
+
+  .summary-card.highlight .detail {
+    color: var(--violet-pale);
+  }
+
+  .infra-block {
+    margin-top: 32px;
+    padding: 24px 28px;
+    background: rgba(139, 92, 246, 0.08);
+    border-left: 3px solid var(--violet);
+    border-radius: 0 4px 4px 0;
+  }
+
+  .infra-block h5 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--violet);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 14px;
+  }
+
+  .infra-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .infra-item {
+    font-size: 0.9rem;
+  }
+
+  .infra-item .infra-name {
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .infra-item .infra-cost {
+    color: var(--gray-300);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+  }
+
+  /* ===== GARDE-FOUS ===== */
+  .gardefous-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-top: 50px;
+  }
+
+  .gardefou {
+    padding: 28px;
+    background: var(--white);
+    border: 1px solid var(--gray-300);
+    border-radius: 4px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  .gardefou-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--violet-pale);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--violet);
+    flex-shrink: 0;
+    font-family: 'Fraunces', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+
+  .gardefou h5 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .gardefou p {
+    font-size: 0.92rem;
+    color: var(--gray-700);
+    line-height: 1.6;
+  }
+
+  /* ===== ROI BLOCK (synthétique) ===== */
+  .roi-block {
+    margin-top: 50px;
+    padding: 40px 48px;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.18) 0%, rgba(139, 92, 246, 0.06) 100%);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-left: 3px solid var(--violet);
+    border-radius: 4px;
+  }
+
+  .roi-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--violet);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 14px;
+  }
+
+  .roi-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.7rem;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  .roi-intro {
+    color: var(--gray-300);
+    font-size: 1rem;
+    line-height: 1.65;
+    margin-bottom: 0;
+    max-width: 800px;
+  }
+
+  .roi-intro strong {
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  /* ===== COÛTS À L'ÉCHELLE ===== */
+  .couts-echelle {
+    background: var(--cream);
+  }
+
+  .hypotheses-block,
+  .facturation-block {
+    margin-top: 40px;
+    padding: 36px 40px;
+    background: var(--white);
+    border: 1px solid var(--gray-300);
+    border-radius: 4px;
+  }
+
+  .facturation-block {
+    margin-top: 24px;
+  }
+
+  .hypotheses-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.35rem;
+    font-weight: 500;
+    margin-bottom: 24px;
+    color: var(--ink);
+  }
+
+  .hypotheses-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+  }
+
+  .hypothese-item {
+    border-left: 2px solid var(--violet);
+    padding-left: 18px;
+  }
+
+  .hypothese-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+  }
+
+  .hypothese-value {
+    font-family: 'Fraunces', serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+
+  .hypothese-detail {
+    font-size: 0.85rem;
+    color: var(--gray-700);
+    line-height: 1.5;
+  }
+
+  .facturation-intro {
+    color: var(--gray-700);
+    font-size: 0.97rem;
+    margin-bottom: 28px;
+  }
+
+  .facturation-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .facturation-card {
+    padding: 28px;
+    background: var(--cream);
+    border: 1px solid var(--gray-300);
+    border-radius: 4px;
+    position: relative;
+  }
+
+  .facturation-letter {
+    font-family: 'Fraunces', serif;
+    font-size: 2.5rem;
+    font-style: italic;
+    color: var(--violet);
+    line-height: 1;
+    margin-bottom: 12px;
+    font-weight: 300;
+  }
+
+  .facturation-card h5 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .optional-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    background: var(--violet-pale);
+    color: var(--violet-dark);
+    padding: 3px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+  }
+
+  .facturation-desc {
+    font-size: 0.92rem;
+    color: var(--gray-700);
+    margin-bottom: 18px;
+    line-height: 1.55;
+  }
+
+  .facturation-rate {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 14px 0;
+    border-top: 1px solid var(--gray-300);
+    border-bottom: 1px solid var(--gray-300);
+    margin-bottom: 14px;
+  }
+
+  .rate-amount {
+    font-family: 'Fraunces', serif;
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: var(--violet);
+  }
+
+  .rate-unit {
+    font-size: 0.85rem;
+    color: var(--gray-700);
+  }
+
+  .facturation-note {
+    font-size: 0.85rem;
+    color: var(--gray-500);
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  .scenarios-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-top: 60px;
+    margin-bottom: 12px;
+  }
+
+  .scenarios-intro {
+    color: var(--gray-700);
+    font-size: 0.97rem;
+    margin-bottom: 28px;
+    max-width: 720px;
+  }
+
+  .hypotheses-condensed {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 24px;
+    background: var(--white);
+    border: 1px solid var(--gray-300);
+    border-left: 3px solid var(--violet);
+    border-radius: 4px;
+    margin-bottom: 28px;
+    font-size: 0.92rem;
+  }
+
+  .hypotheses-condensed .hypo-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--violet);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+    margin-right: 6px;
+  }
+
+  .hypotheses-condensed .hypo-item {
+    color: var(--gray-700);
+  }
+
+  .hypotheses-condensed .hypo-item strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .hypotheses-condensed .hypo-sep {
+    color: var(--gray-300);
+    font-weight: 600;
+  }
+
+  .scenarios-table-wrap {
+    background: var(--white);
+    border: 1px solid var(--gray-300);
+    border-radius: 4px;
+    overflow-x: auto;
+  }
+
+  .scenarios-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .scenarios-table th {
+    text-align: left;
+    padding: 18px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--gray-500);
+    font-weight: 500;
+    background: var(--gray-100);
+    border-bottom: 1px solid var(--gray-300);
+  }
+
+  .scenarios-table th.amount {
+    text-align: right;
+  }
+
+  .scenarios-table td {
+    padding: 22px 20px;
+    border-bottom: 1px solid var(--gray-300);
+    font-size: 0.95rem;
+    color: var(--gray-700);
+  }
+
+  .scenarios-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .scenarios-table td strong {
+    font-family: 'Fraunces', serif;
+    font-size: 1.05rem;
+    color: var(--ink);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .phase-detail {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .scenarios-table td.amount {
+    text-align: right;
+    font-family: 'Fraunces', serif;
+    font-size: 1.2rem;
+    color: var(--violet);
+    font-weight: 500;
+  }
+
+  .synthese-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 32px;
+  }
+
+  .synthese-card {
+    padding: 36px 32px;
+    background: var(--white);
+    border: 1px solid var(--gray-300);
+    border-radius: 4px;
+    position: relative;
+  }
+
+  .synthese-card.highlight {
+    border: 2px solid var(--violet);
+    background: linear-gradient(180deg, var(--violet-pale) 0%, var(--white) 100%);
+  }
+
+  .synthese-badge {
+    position: absolute;
+    top: -12px;
+    right: 24px;
+    background: var(--violet);
+    color: var(--white);
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+  }
+
+  .synthese-letter {
+    font-family: 'Fraunces', serif;
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--violet);
+    font-style: italic;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .synthese-card h5 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+
+  .synthese-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px 0;
+  }
+
+  .synthese-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--gray-300);
+    font-size: 0.93rem;
+  }
+
+  .synthese-list li:last-child {
+    border-bottom: none;
+  }
+
+  .synthese-poste {
+    color: var(--gray-700);
+  }
+
+  .synthese-mont {
+    font-family: 'Fraunces', serif;
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .synthese-mont-na {
+    color: var(--gray-500);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .synthese-total {
+    padding-top: 20px;
+    border-top: 2px solid var(--violet);
+  }
+
+  .synthese-total-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+
+  .synthese-total-value {
+    font-family: 'Fraunces', serif;
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .synthese-total-detail {
+    font-size: 0.85rem;
+    color: var(--gray-500);
+  }
+
+  .lecture-strategique {
+    margin-top: 60px;
+    padding: 32px 36px;
+    background: var(--ink);
+    color: var(--white);
+    border-radius: 4px;
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+  }
+
+  .lecture-icon {
+    font-family: 'Fraunces', serif;
+    font-size: 2.5rem;
+    color: var(--violet);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .lecture-content h5 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--violet);
+    margin-bottom: 12px;
+  }
+
+  .lecture-content p {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--gray-300);
+  }
+
+  .lecture-content p strong {
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  /* ===== ROADMAP ===== */
+  .roadmap-section {
+    background: linear-gradient(180deg, var(--violet-pale) 0%, var(--cream) 100%);
+    margin: 0 -48px;
+    padding: 100px 48px;
+  }
+
+  .roadmap-timeline {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-top: 50px;
+    position: relative;
+  }
+
+  .roadmap-timeline::before {
+    content: '';
+    position: absolute;
+    top: 32px;
+    left: 5%;
+    right: 5%;
+    height: 1px;
+    background: linear-gradient(90deg, var(--violet) 0%, var(--violet) 50%, var(--gray-300) 100%);
+    z-index: 0;
+  }
+
+  .roadmap-step {
+    background: var(--white);
+    padding: 32px 28px;
+    border-radius: 4px;
+    border: 1px solid var(--gray-300);
+    position: relative;
+    z-index: 1;
+  }
+
+  .roadmap-step.current {
+    border-color: var(--violet);
+    box-shadow: 0 4px 24px rgba(139, 92, 246, 0.15);
+  }
+
+  .roadmap-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--violet);
+    margin-bottom: 24px;
+    border: 4px solid var(--cream);
+    box-shadow: 0 0 0 1px var(--violet);
+  }
+
+  .roadmap-step.future .roadmap-dot {
+    background: var(--white);
+    box-shadow: 0 0 0 1px var(--gray-500);
+  }
+
+  .roadmap-step .horizon {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--violet);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+
+  .roadmap-step.future .horizon {
+    color: var(--gray-500);
+  }
+
+  .roadmap-step h5 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+
+  .roadmap-step p {
+    color: var(--gray-700);
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+
+  /* ===== POURQUOI IAVENIR ===== */
+  .pourquoi-iavenir {
+    padding: 100px 0;
+  }
+
+  .diff-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    margin-top: 50px;
+  }
+
+  .diff-card {
+    padding: 36px 32px;
+    background: var(--white);
+    border: 1px solid var(--gray-300);
+    border-radius: 4px;
+    border-top: 3px solid var(--violet);
+    transition: all 0.3s ease;
+  }
+
+  .diff-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 32px rgba(139, 92, 246, 0.12);
+  }
+
+  .diff-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--violet);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 18px;
+  }
+
+  .diff-card h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+    font-weight: 500;
+    margin-bottom: 14px;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+
+  .diff-card p {
+    color: var(--gray-700);
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  /* ===== CTA / SIGNATURE ===== */
+  .signature-section {
+    padding: 120px 0;
+    text-align: center;
+  }
+
+  .signature-section h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: 24px;
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  .signature-section h2 strong {
+    font-style: normal;
+    color: var(--violet);
+    font-weight: 600;
+  }
+
+  .signature-contact {
+    display: inline-block;
+    padding: 32px 48px;
+    background: var(--white);
+    border: 1px solid var(--gray-300);
+    border-radius: 4px;
+    margin-top: 32px;
+  }
+
+  .signature-name {
+    font-family: 'Fraunces', serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  .signature-role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    letter-spacing: 0.08em;
+    margin-bottom: 16px;
+  }
+
+  .signature-details {
+    font-size: 0.95rem;
+    color: var(--gray-700);
+    line-height: 1.8;
+  }
+
+  .signature-details a {
+    color: var(--violet);
+    text-decoration: none;
+  }
+
+  .signature-details a:hover {
+    text-decoration: underline;
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--ink);
+    color: var(--gray-300);
+    padding: 48px;
+    text-align: center;
+  }
+
+  footer .logo {
+    color: var(--white);
+  }
+
+  footer .footer-meta {
+    margin-top: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--gray-500);
+  }
+
+  footer a {
+    color: var(--violet);
+    text-decoration: none;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px) {
+    .page { padding: 0 24px; }
+    section { padding: 60px 0; }
+    .hero { padding: 50px 0 80px; }
+    .archi-section, .chiffrage-section, .roadmap-section { margin: 0 -24px; padding: 70px 24px; }
+    .contexte-grid, .archi-grid, .gardefous-grid, .roadmap-timeline { grid-template-columns: 1fr; }
+    .roadmap-timeline::before { display: none; }
+    .hero-meta { grid-template-columns: repeat(2, 1fr); }
+    .phase { grid-template-columns: 60px 1fr; }
+    .phase-meta { grid-column: 2; text-align: left; margin-top: 12px; }
+    .infra-list { grid-template-columns: 1fr; }
+    .chiffrage-summary { grid-template-columns: 1fr; }
+    .chiffrage-table th:nth-child(2),
+    .chiffrage-table td:nth-child(2) { display: none; }
+    .hypotheses-grid { grid-template-columns: 1fr 1fr; }
+    .facturation-grid { grid-template-columns: 1fr; }
+    .synthese-grid { grid-template-columns: 1fr; }
+    .hypotheses-block, .facturation-block { padding: 28px 24px; }
+    .scenarios-table th:nth-child(3),
+    .scenarios-table td:nth-child(3),
+    .scenarios-table th:nth-child(4),
+    .scenarios-table td:nth-child(4) { display: none; }
+    .lecture-strategique { padding: 24px 20px; flex-direction: column; gap: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="logo">IA<span>venir</span> × FIRALP</div>
+    <div class="topbar-meta">Proposition v1 · Mai 2026</div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="page">
+    <div class="hero-content">
+      <div class="hero-tag">Proposition technico-commerciale</div>
+      <h1 class="display hero-title">
+        Un assistant conversationnel <em>au cœur</em><br>
+        de votre système de management qualité.
+      </h1>
+      <p class="hero-subtitle">
+        Donner à chacun des 1 300 collaborateurs FIRALP un accès direct, instantané et fiable aux 65 procédures qui structurent vos métiers — achats, RH, travaux. Un pilote opérationnel pragmatique sur l'écosystème Microsoft, première étape d'une trajectoire vers la souveraineté.
+      </p>
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <span class="mono">Client</span>
+          <strong>FIRALP</strong>
+        </div>
+        <div class="hero-meta-item">
+          <span class="mono">Périmètre</span>
+          <strong>Pilote opérationnel</strong>
+        </div>
+        <div class="hero-meta-item">
+          <span class="mono">Durée</span>
+          <strong>7 semaines</strong>
+        </div>
+        <div class="hero-meta-item">
+          <span class="mono">Échelle cible</span>
+          <strong>1 300 utilisateurs</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTEXTE -->
+<section>
+  <div class="page">
+    <div class="section-label">01 — Contexte & enjeux</div>
+    <h2 class="display section-title">Trois besoins, une réponse unifiée.</h2>
+    <p class="section-intro">
+      À l'issue du cadrage, trois enjeux se dessinent. La proposition qui suit articule une réponse technique pragmatique pour les adresser sans surdimensionnement initial.
+    </p>
+
+    <div class="contexte-grid">
+      <div class="contexte-card">
+        <div class="contexte-num">01</div>
+        <h4>Accès aux procédures</h4>
+        <p>Rendre les 65 procédures multi-métiers immédiatement consultables par tous les collaborateurs, sans recherche manuelle dans le SharePoint, et avec des réponses contextualisées plutôt que des liens documentaires.</p>
+      </div>
+      <div class="contexte-card">
+        <div class="contexte-num">02</div>
+        <h4>Souveraineté à terme</h4>
+        <p>Préserver la trajectoire long terme vers une infrastructure souveraine (LLM open source on-prem) tout en démarrant pragmatiquement sur l'écosystème Microsoft déjà en place.</p>
+      </div>
+      <div class="contexte-card">
+        <div class="contexte-num">03</div>
+        <h4>Validation par l'usage</h4>
+        <p>Valider la valeur métier et l'adoption sur un périmètre maîtrisé avant tout investissement structurant. Le pilote permet de mesurer précision, fiabilité et appétence des utilisateurs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DÉMYSTIFICATION -->
+<section class="demystification">
+  <div class="page">
+    <div class="section-label">02 — Pourquoi c'est plus exigeant qu'il n'y paraît</div>
+    <h2 class="display section-title">Indexer 65 procédures n'est pas téléverser 65 PDF.</h2>
+    <p class="section-intro">
+      Beaucoup d'outils grand public donnent l'illusion qu'un agent conversationnel sur documents s'improvise en quelques heures. Pour 1 300 utilisateurs internes sur des procédures QSE, quatre dimensions techniques font la différence entre un prototype démonstratif et un assistant fiable en production.
+    </p>
+
+    <div class="demyst-grid">
+      <div class="demyst-card">
+        <div class="demyst-num">A</div>
+        <h4>La qualité documentaire conditionne tout</h4>
+        <p>Sur un corpus QSE multi-métiers, on trouve presque toujours : des procédures contradictoires entre métiers, des doublons cachés sous des intitulés différents, des PDF scannés non OCRisables, des versions obsolètes encore en circulation. Sans audit préalable, l'agent restitue ces incohérences amplifiées — au mot près.</p>
+      </div>
+      <div class="demyst-card">
+        <div class="demyst-num">B</div>
+        <h4>Le découpage des documents conditionne la pertinence</h4>
+        <p>Une procédure travaux ne se découpe pas comme une fiche RH. Les tableaux, schémas, références croisées entre procédures imposent des règles de chunking spécifiques. Un découpage générique réduit la précision des réponses de 40 à 60 % sur les questions complexes — et ce sont précisément celles à forte valeur.</p>
+      </div>
+      <div class="demyst-card">
+        <div class="demyst-num">C</div>
+        <h4>Les modèles de langage hallucinent</h4>
+        <p>Sans garde-fous explicites, un agent conversationnel produit des réponses plausibles mais fausses, en particulier lorsqu'une question dépasse son corpus. Sur du QSE, une réponse incorrecte engage la responsabilité opérationnelle voire juridique. Citations sources, refus hors périmètre, mesure de confiance : ces dispositifs ne sont pas accessoires, ils sont structurants.</p>
+      </div>
+      <div class="demyst-card">
+        <div class="demyst-num">D</div>
+        <h4>L'adoption est le vrai facteur de risque</h4>
+        <p>À 1 300 utilisateurs, un agent techniquement fonctionnel mais perçu comme imprécis sera abandonné en quelques semaines. C'est le scénario d'échec le plus fréquent des projets IA en entreprise. Tester sur un échantillon représentatif, mesurer la précision, itérer : c'est la condition pour qu'un déploiement à l'échelle ne soit pas un investissement à fonds perdu.</p>
+      </div>
+    </div>
+
+    <div class="demyst-conclusion">
+      <p>La proposition qui suit organise ces quatre exigences en une démarche structurée et chiffrée. Chaque phase y répond explicitement.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section class="archi-section">
+  <div class="page">
+    <div class="section-label">03 — Choix d'architecture</div>
+    <h2 class="display section-title">Deux variantes techniques pour un même objectif.</h2>
+    <p class="section-intro">
+      Sur la base de votre environnement (M365, sans Copilot pré-déployé), deux options s'offrent à FIRALP. La variante B est recommandée pour la qualité documentaire des procédures QSE.
+    </p>
+
+    <div class="archi-grid">
+      <!-- Variante A -->
+      <div class="archi-card">
+        <div class="archi-letter">A</div>
+        <h3>SharePoint natif</h3>
+        <div class="archi-tag">Entrée de gamme · Simplicité</div>
+        <p class="desc">
+          L'agent Copilot Studio s'appuie directement sur l'indexation native SharePoint Search, sans couche d'enrichissement supplémentaire. Mise en œuvre rapide, coût d'infrastructure minimal.
+        </p>
+        <ul class="archi-features">
+          <li><span class="check">✓</span> Mise en œuvre rapide (4 à 5 semaines technique)</li>
+          <li><span class="check">✓</span> Aucun coût Azure récurrent</li>
+          <li><span class="check">✓</span> Données restant strictement dans M365</li>
+          <li><span class="warn">!</span> Recherche par mots-clés enrichie, pas pleinement sémantique</li>
+          <li><span class="warn">!</span> Qualité moyenne sur PDF avec tableaux, schémas, scans</li>
+          <li><span class="cross">✕</span> Peu de contrôle sur le chunking et les métadonnées</li>
+        </ul>
+        <div class="archi-pricing">
+          <div class="pricing-row">
+            <div>
+              <div class="label">Infrastructure pilote (2 mois)</div>
+              <div class="price">~ 400 €</div>
+              <div class="price-detail">Copilot Studio capacité messages</div>
+            </div>
+            <div class="pricing-divider"></div>
+            <div>
+              <div class="label">Coût d'usage à 1 300 users</div>
+              <div class="price">2 400 – 4 800 € <span class="price-unit">/an</span></div>
+              <div class="price-detail">~ 2 à 4 € / user / an</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Variante B -->
+      <div class="archi-card recommended">
+        <div class="archi-badge">Recommandée</div>
+        <div class="archi-letter">B</div>
+        <h3>Azure AI Search</h3>
+        <div class="archi-tag">Qualité++ · Pertinence sémantique</div>
+        <p class="desc">
+          Les 65 procédures sont extraites, découpées et vectorisées dans un index Azure AI Search dédié, connecté à l'agent. Recherche hybride alliant pertinence sémantique et précision lexicale.
+        </p>
+        <ul class="archi-features">
+          <li><span class="check">✓</span> Recherche hybride (vectorielle + lexicale)</li>
+          <li><span class="check">✓</span> Maîtrise du chunking et des métadonnées (métier, processus, version)</li>
+          <li><span class="check">✓</span> Excellente qualité sur tableaux, schémas, procédures complexes</li>
+          <li><span class="check">✓</span> Citations sources précises dans les réponses</li>
+          <li><span class="check">✓</span> Évolutivité naturelle vers la phase 2 (1 300 utilisateurs)</li>
+          <li><span class="warn">!</span> Coût Azure récurrent (modéré sur tier Basic)</li>
+        </ul>
+        <div class="archi-pricing">
+          <div class="pricing-row">
+            <div>
+              <div class="label">Infrastructure pilote (2 mois)</div>
+              <div class="price">~ 1 000 €</div>
+              <div class="price-detail">Copilot Studio + Azure AI Search + embeddings</div>
+            </div>
+            <div class="pricing-divider"></div>
+            <div>
+              <div class="label">Coût d'usage à 1 300 users</div>
+              <div class="price">3 500 – 7 100 € <span class="price-unit">/an</span></div>
+              <div class="price-detail">~ 3 à 5 € / user / an</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DÉROULÉ MISSION -->
+<section>
+  <div class="page">
+    <div class="section-label">04 — Déroulé de mission</div>
+    <h2 class="display section-title">Cinq phases, sept semaines, un livrable validé.</h2>
+    <p class="section-intro">
+      La mission est structurée pour limiter les risques d'engagement à chaque étape. Chaque phase produit un livrable validé qui conditionne le passage à la suivante. Premier livrable utilisable en fin de semaine 3, mise en production effective en moins de deux mois.
+    </p>
+
+    <div class="phases-list">
+      <div class="phase">
+        <div class="phase-num">00</div>
+        <div class="phase-content">
+          <h4>Cadrage & audit qualité documentaire</h4>
+          <p>
+            Audit qualitatif des 65 procédures (lisibilité, structure, métadonnées, doublons, obsolescence), définition des règles de chunking et de métadonnées par métier, cartographie des cas d'usage prioritaires sur les trois familles métier (achats, RH, travaux). Identification des procédures nécessitant une remise à niveau préalable.
+          </p>
+          <div class="deliverable">
+            <strong>Livrable</strong>
+            Note de cadrage technique + matrice qualité documentaire des 65 procédures
+          </div>
+        </div>
+        <div class="phase-meta">
+          <div class="duree">1 semaine</div>
+          <div class="jours">5 jours</div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-num">01</div>
+        <div class="phase-content">
+          <h4>Préparation des données</h4>
+          <p>
+            Nettoyage et enrichissement des PDF, OCR pour les éventuelles procédures scannées, structuration des métadonnées (métier, processus, version, date de validité, périmètre d'application), ingestion dans la solution retenue (SharePoint indexé pour la variante A, Azure AI Search pour la variante B). Mise en place du pipeline de mise à jour continue.
+          </p>
+          <div class="deliverable">
+            <strong>Livrable</strong>
+            Base documentaire indexée et opérationnelle, documentation du pipeline d'ingestion
+          </div>
+        </div>
+        <div class="phase-meta">
+          <div class="duree">2 semaines</div>
+          <div class="jours">10 jours</div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-num">02</div>
+        <div class="phase-content">
+          <h4>Construction de l'agent</h4>
+          <p>
+            Configuration Copilot Studio, design du prompt système, gestion des sources et des citations, mise en place des garde-fous (refus hors périmètre, ton, format de réponse, niveau de certitude), tests itératifs sur jeu de questions métier. Personnalisation visuelle aux couleurs FIRALP.
+          </p>
+          <div class="deliverable">
+            <strong>Livrable</strong>
+            Agent conversationnel fonctionnel avec documentation de configuration
+          </div>
+        </div>
+        <div class="phase-meta">
+          <div class="duree">2 semaines</div>
+          <div class="jours">10 jours</div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-num">03</div>
+        <div class="phase-content">
+          <h4>Tests & validation utilisateurs</h4>
+          <p>
+            Recette technique sur batterie de questions par métier, tests utilisateurs sur un échantillon représentatif (30 à 50 collaborateurs des trois métiers achats, RH, travaux), itérations sur la qualité des réponses, mesure de la précision et du rappel, recueil structuré des retours. Animation des sessions de test et identification des futurs ambassadeurs métier pour la phase de déploiement.
+          </p>
+          <div class="deliverable">
+            <strong>Livrable</strong>
+            Rapport de tests utilisateurs, indicateurs de performance, recommandations d'ajustement
+          </div>
+        </div>
+        <div class="phase-meta">
+          <div class="duree">1,5 semaine</div>
+          <div class="jours">7,5 jours</div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-num">04</div>
+        <div class="phase-content">
+          <h4>Restitution & roadmap</h4>
+          <p>
+            Note de clôture du pilote : résultats consolidés, indicateurs de performance, premières estimations de ROI, roadmap de déploiement à l'échelle des 1 300 utilisateurs, scénarios d'évolution vers une architecture souveraine. Présentation finale aux sponsors.
+          </p>
+          <div class="deliverable">
+            <strong>Livrable</strong>
+            Note de clôture du pilote + roadmap déploiement + présentation de restitution
+          </div>
+        </div>
+        <div class="phase-meta">
+          <div class="duree">0,5 semaine</div>
+          <div class="jours">2,5 jours</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHIFFRAGE -->
+<section class="chiffrage-section">
+  <div class="page">
+    <div class="section-label">05 — Investissement</div>
+    <h2 class="display section-title">Un chiffrage transparent, par phase.</h2>
+    <p class="section-intro">
+      Mission au forfait, facturation par phase à validation du livrable. TJM consultant senior 750 € HT.
+    </p>
+
+    <table class="chiffrage-table">
+      <thead>
+        <tr>
+          <th>Phase</th>
+          <th>Description</th>
+          <th>Durée</th>
+          <th style="text-align: right;">Montant HT</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="phase-name">Phase 00</td>
+          <td>Cadrage & audit qualité documentaire</td>
+          <td class="duree">5 jours</td>
+          <td class="montant">3 750 €</td>
+        </tr>
+        <tr>
+          <td class="phase-name">Phase 01</td>
+          <td>Préparation des données & indexation</td>
+          <td class="duree">10 jours</td>
+          <td class="montant">7 500 €</td>
+        </tr>
+        <tr>
+          <td class="phase-name">Phase 02</td>
+          <td>Construction de l'agent</td>
+          <td class="duree">10 jours</td>
+          <td class="montant">7 500 €</td>
+        </tr>
+        <tr>
+          <td class="phase-name">Phase 03</td>
+          <td>Tests & validation utilisateurs</td>
+          <td class="duree">7,5 jours</td>
+          <td class="montant">5 625 €</td>
+        </tr>
+        <tr>
+          <td class="phase-name">Phase 04</td>
+          <td>Restitution & roadmap</td>
+          <td class="duree">2,5 jours</td>
+          <td class="montant">1 875 €</td>
+        </tr>
+        <tr class="total">
+          <td class="phase-name">Total prestation</td>
+          <td class="duree">7 semaines</td>
+          <td class="duree">35 jours</td>
+          <td class="montant">26 250 €</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="infra-block">
+      <h5>Forfait infrastructure pilote — Variante B (estimatif sur 2 mois)</h5>
+      <div class="infra-list">
+        <div class="infra-item">
+          <div class="infra-name">Copilot Studio</div>
+          <div class="infra-cost">~ 400 € · capacité messages pilote</div>
+        </div>
+        <div class="infra-item">
+          <div class="infra-name">Azure AI Search</div>
+          <div class="infra-cost">~ 500 € · tier Basic + stockage</div>
+        </div>
+        <div class="infra-item">
+          <div class="infra-name">Embeddings & marge</div>
+          <div class="infra-cost">~ 100 € · embeddings + sécurité</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chiffrage-summary">
+      <div class="summary-card">
+        <div class="label">Variante A — SharePoint natif</div>
+        <div class="value">26 650 € HT</div>
+        <div class="detail">Prestation 26 250 € + infrastructure 400 €</div>
+      </div>
+      <div class="summary-card highlight">
+        <div class="label">Variante B — Azure AI Search · Recommandée</div>
+        <div class="value">27 250 € HT</div>
+        <div class="detail">Prestation 26 250 € + infrastructure 1 000 €</div>
+      </div>
+    </div>
+
+    <!-- ENCART ROI SYNTHÉTIQUE -->
+    <div class="roi-block">
+      <div class="roi-label">Ordre de grandeur de la valeur générée</div>
+      <h3 class="roi-title">Un payback estimé en moins de 9 mois.</h3>
+      <p class="roi-intro">
+        À 1 300 collaborateurs, 5 minutes hebdomadaires économisées par utilisateur représentent une productivité mobilisable d'environ <strong>178 000 € par an</strong> (base 35 €/h chargés, 47 semaines actives). Une récupération réaliste de 20 % génère <strong>~ 35 000 € par an</strong>, soit un amortissement de l'investissement initial en moins de 9 mois de fonctionnement à pleine adoption. Les indicateurs précis seront mesurés dès la phase pilote.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- COÛTS À L'ÉCHELLE -->
+<section class="couts-echelle">
+  <div class="page">
+    <div class="section-label">06 — Coûts à l'échelle</div>
+    <h2 class="display section-title">Projection à 1 300 utilisateurs : transparente et soutenable.</h2>
+    <p class="section-intro">
+      Au-delà du pilote, FIRALP doit pouvoir anticiper le coût d'usage récurrent à l'échelle des 1 300 collaborateurs. La logique de facturation Microsoft permet une montée en charge maîtrisée, sans licence par utilisateur.
+    </p>
+
+    <!-- Logique de facturation -->
+    <div class="facturation-block">
+      <h4 class="hypotheses-title">Logique de facturation</h4>
+      <p class="facturation-intro">
+        Pour un agent interne consultatif, la tarification s'appuie sur deux mécanismes complémentaires, indépendants du nombre d'utilisateurs :
+      </p>
+      <div class="facturation-grid">
+        <div class="facturation-card">
+          <div class="facturation-letter">A</div>
+          <h5>Copilot Studio</h5>
+          <p class="facturation-desc">Capacité tenant partagée, facturée au nombre de requêtes effectuées sur l'agent. Aucune licence par utilisateur n'est requise.</p>
+          <div class="facturation-rate">
+            <span class="rate-amount">200 €</span>
+            <span class="rate-unit">par pack de 25 000 crédits / mois</span>
+          </div>
+          <p class="facturation-note">1 requête ≈ 2 crédits (réponse générative + grounding sur la source documentaire). La capacité s'ajuste mensuellement selon l'usage réel.</p>
+        </div>
+        <div class="facturation-card">
+          <div class="facturation-letter">B</div>
+          <h5>Azure AI Search <span class="optional-badge">Variante B</span></h5>
+          <p class="facturation-desc">Tarification par capacité provisionnée (search units), indépendante du volume de requêtes effectué.</p>
+          <div class="facturation-rate">
+            <span class="rate-amount">~ 75 €</span>
+            <span class="rate-unit">tier Basic, 1 SU / mois</span>
+          </div>
+          <p class="facturation-note">Pour 65 procédures et 1 300 utilisateurs en consultation, le tier Basic est largement dimensionné.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Synthèse annuelle par variante -->
+    <h4 class="scenarios-title">Synthèse annuelle à 1 300 utilisateurs</h4>
+    <p class="scenarios-intro">
+      Coûts d'usage récurrents projetés sur une année pleine de fonctionnement, en régime stable d'adoption.
+    </p>
+
+    <!-- Hypothèses condensées -->
+    <div class="hypotheses-condensed">
+      <span class="hypo-label">Hypothèses retenues</span>
+      <span class="hypo-item"><strong>1 300 collaborateurs</strong> · adoption stable 60 %</span>
+      <span class="hypo-sep">·</span>
+      <span class="hypo-item"><strong>2 à 4 requêtes</strong> / utilisateur actif / semaine</span>
+      <span class="hypo-sep">·</span>
+      <span class="hypo-item"><strong>~ 2 crédits</strong> par requête</span>
+    </div>
+
+    <div class="synthese-grid">
+      <div class="synthese-card">
+        <div class="synthese-letter">A</div>
+        <h5>SharePoint natif</h5>
+        <ul class="synthese-list">
+          <li><span class="synthese-poste">Copilot Studio</span><span class="synthese-mont">2 400 – 4 800 €</span></li>
+          <li><span class="synthese-poste">Azure AI Search</span><span class="synthese-mont synthese-mont-na">—</span></li>
+          <li><span class="synthese-poste">Embeddings</span><span class="synthese-mont synthese-mont-na">—</span></li>
+        </ul>
+        <div class="synthese-total">
+          <div class="synthese-total-label">Total annuel</div>
+          <div class="synthese-total-value">2 400 – 4 800 €</div>
+          <div class="synthese-total-detail">soit 2 à 4 € / utilisateur / an</div>
+        </div>
+      </div>
+
+      <div class="synthese-card highlight">
+        <div class="synthese-badge">Recommandée</div>
+        <div class="synthese-letter">B</div>
+        <h5>Azure AI Search</h5>
+        <ul class="synthese-list">
+          <li><span class="synthese-poste">Copilot Studio</span><span class="synthese-mont">2 400 – 4 800 €</span></li>
+          <li><span class="synthese-poste">Azure AI Search Basic</span><span class="synthese-mont">900 – 1 800 €</span></li>
+          <li><span class="synthese-poste">Embeddings (Azure OpenAI)</span><span class="synthese-mont">200 – 500 €</span></li>
+        </ul>
+        <div class="synthese-total">
+          <div class="synthese-total-label">Total annuel</div>
+          <div class="synthese-total-value">3 500 – 7 100 €</div>
+          <div class="synthese-total-detail">soit 3 à 5 € / utilisateur / an</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lecture stratégique -->
+    <div class="lecture-strategique">
+      <div class="lecture-icon">→</div>
+      <div class="lecture-content">
+        <h5>Lecture stratégique</h5>
+        <p>L'écart de coût d'usage entre les deux variantes est faible — environ <strong>1 500 € par an</strong>. À l'inverse, l'écart de qualité de réponse est structurant : à 1 300 utilisateurs, c'est la pertinence des réponses qui détermine l'adoption, et donc le retour sur investissement réel. C'est pourquoi nous recommandons la variante B, dont le surcoût annuel reste marginal au regard de l'enjeu d'usage.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GARDE-FOUS -->
+<section>
+  <div class="page">
+    <div class="section-label">07 — Garde-fous & RGPD</div>
+    <h2 class="display section-title">Maîtrise du risque, dès le pilote.</h2>
+    <p class="section-intro">
+      Sur un sujet QSE, la qualité des réponses et la traçabilité ne sont pas négociables. Quatre garde-fous structurants intégrés à la conception de l'agent.
+    </p>
+
+    <div class="gardefous-grid">
+      <div class="gardefou">
+        <div class="gardefou-icon">A</div>
+        <div>
+          <h5>Refus hors périmètre</h5>
+          <p>Le système est entraîné par prompt système à refuser explicitement toute question qui ne relève pas des procédures indexées, et à orienter l'utilisateur vers la bonne ressource humaine.</p>
+        </div>
+      </div>
+      <div class="gardefou">
+        <div class="gardefou-icon">B</div>
+        <div>
+          <h5>Citations sources systématiques</h5>
+          <p>Chaque réponse cite la procédure source avec le numéro, la version et le passage exact. L'utilisateur peut toujours remonter au document d'origine et vérifier.</p>
+        </div>
+      </div>
+      <div class="gardefou">
+        <div class="gardefou-icon">C</div>
+        <div>
+          <h5>Conformité RGPD & souveraineté</h5>
+          <p>Données hébergées dans le tenant FIRALP (UE), aucune donnée transmise à l'entraînement des modèles, traçabilité des conversations, conformité aux engagements Microsoft Data Protection Addendum.</p>
+        </div>
+      </div>
+      <div class="gardefou">
+        <div class="gardefou-icon">D</div>
+        <div>
+          <h5>Détection des hallucinations</h5>
+          <p>Mesure systématique de la précision des réponses pendant la phase de tests, avec ajustement du prompt et de la température. Indicateur de confiance affiché à l'utilisateur lorsque pertinent.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section class="roadmap-section">
+  <div class="page">
+    <div class="section-label">08 — Trajectoire à long terme</div>
+    <h2 class="display section-title">Le pilote, première étape d'un plan en trois horizons.</h2>
+    <p class="section-intro">
+      La proposition s'inscrit dans une trajectoire d'adoption maîtrisée, qui culmine à terme sur une infrastructure souveraine si la valeur du cas d'usage est confirmée.
+    </p>
+
+    <div class="roadmap-timeline">
+      <div class="roadmap-step current">
+        <div class="roadmap-dot"></div>
+        <div class="horizon">Horizon 1 · Cette mission</div>
+        <h5>Pilote Microsoft</h5>
+        <p>Validation du besoin métier sur un échantillon utilisateurs, sur écosystème Microsoft existant. Investissement maîtrisé, time-to-value rapide.</p>
+      </div>
+      <div class="roadmap-step future">
+        <div class="roadmap-dot"></div>
+        <div class="horizon">Horizon 2 · 6 à 12 mois</div>
+        <h5>Déploiement à l'échelle</h5>
+        <p>Passage aux 1 300 utilisateurs, conduite du changement, formation de référents par métier, mesure d'adoption. Phase à chiffrer séparément.</p>
+      </div>
+      <div class="roadmap-step future">
+        <div class="roadmap-dot"></div>
+        <div class="horizon">Horizon 3 · 12 à 24 mois</div>
+        <h5>Souveraineté</h5>
+        <p>Migration progressive vers une architecture souveraine — Azure OpenAI privé puis LLM open source on-prem — selon la maturité de l'usage et les enjeux de confidentialité identifiés.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POURQUOI IAVENIR -->
+<section class="pourquoi-iavenir">
+  <div class="page">
+    <div class="section-label">09 — Pourquoi IAvenir</div>
+    <h2 class="display section-title">Trois différenciateurs qui comptent pour ce projet.</h2>
+
+    <div class="diff-grid">
+      <div class="diff-card">
+        <div class="diff-num">01</div>
+        <h4>Connaissance métier BTP & industrie</h4>
+        <p>IAvenir intervient exclusivement sur les secteurs construction et industriels. Une procédure travaux, une fiche RH d'entreprise multi-sites, un processus achats avec sous-traitance : ce sont des objets que nos consultants comprennent et savent indexer. Un intégrateur Microsoft généraliste découvrira le métier en cours de mission.</p>
+      </div>
+      <div class="diff-card">
+        <div class="diff-num">02</div>
+        <h4>Retours d'expérience IA en production</h4>
+        <p>Notre cabinet conduit depuis plus d'un an des audits stratégiques IA et des déploiements opérationnels chez des acteurs majeurs du BTP. Cette expérience terrain — sur des écosystèmes Microsoft comparables au vôtre — nourrit chacune des décisions techniques de la mission.</p>
+      </div>
+      <div class="diff-card">
+        <div class="diff-num">03</div>
+        <h4>Approche usage, pas seulement techno</h4>
+        <p>Un agent qui fonctionne techniquement mais que personne n'utilise est un échec. Notre méthodologie intègre dès le pilote la mesure d'adoption, la conduite du changement et la formation de référents — éléments rarement présents dans une mission d'intégration pure.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SIGNATURE -->
+<section class="signature-section">
+  <div class="page">
+    <h2><strong>Prêts</strong> à transformer vos procédures<br>en intelligence collective ?</h2>
+    <div class="signature-contact">
+      <div class="signature-name">Antoine OGER</div>
+      <div class="signature-role">Directeur Général · IAvenir</div>
+      <div class="signature-details">
+        <a href="mailto:antoine.oger@iavenir-formation.fr">antoine.oger@iavenir-formation.fr</a><br>
+        <a href="https://www.iavenir-formation.fr">www.iavenir-formation.fr</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">IA<span style="color: var(--violet);">venir</span></div>
+  <div class="footer-meta">
+    Proposition technico-commerciale · FIRALP · Mai 2026<br>
+    IAvenir SAS · Rueil-Malmaison · SIREN 991 972 571 · Qualiopi
+  </div>
+</footer>
+
+</body>
+</html>
