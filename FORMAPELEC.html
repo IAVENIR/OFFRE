@@ -1386,6 +1386,7 @@ body {
   font-weight: 600;
 }
 .coverage-status.ok { background: rgba(16,185,129,0.15); color: var(--n1-green); }
+.coverage-status.ok-build { background: rgba(236,72,153,0.12); color: var(--esme-pink); }
 .coverage-status.missing { background: rgba(220,38,38,0.1); color: #DC2626; }
 .coverage-selected-tools {
   font-size: 12px;
@@ -1393,6 +1394,44 @@ body {
   padding-top: 8px;
   border-top: 1px solid var(--border);
 }
+
+/* Encadré "build personnalisé" en bas de phase 2 */
+.build-perso-card {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  margin-top: 28px;
+  padding: 22px 26px;
+  background: var(--esme-pink-light);
+  border-left: 4px solid var(--esme-pink);
+  border-radius: 8px;
+}
+.build-perso-icon {
+  font-size: 32px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.build-perso-content { flex: 1; min-width: 0; }
+.build-perso-title {
+  font-family: 'Fraunces', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--esme-navy);
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+.build-perso-title em {
+  color: var(--esme-pink);
+  font-style: italic;
+  font-weight: 600;
+}
+.build-perso-text {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.6;
+}
+.build-perso-text strong { color: var(--esme-navy); font-weight: 700; }
+.build-perso-text em { color: var(--esme-pink); font-style: italic; }
 
 /* Catégories des outils complémentaires */
 .complementary-category { margin-bottom: 20px; }
@@ -1686,6 +1725,249 @@ body {
 .fc-total-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.85; margin-bottom: 8px; }
 .fc-total-value { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 700; line-height: 1; }
 .fc-total-detail { font-size: 11px; opacity: 0.75; margin-top: 6px; }
+
+/* ROI dans la feuille de route - bloc phase 4 */
+.roi-roadmap-block {
+  margin-top: 28px;
+  padding: 24px 28px;
+  background: #f0fdf4;
+  border: 1px solid #10b98140;
+  border-left: 4px solid var(--n1-green);
+  border-radius: 10px;
+}
+.roi-roadmap-title {
+  font-family: 'Fraunces', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--esme-navy);
+  margin-bottom: 4px;
+}
+.roi-roadmap-subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 18px;
+}
+.roi-roadmap-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.roi-roadmap-item {
+  background: white;
+  border-radius: 8px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+}
+.roi-roadmap-item-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.roi-roadmap-item-value {
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--esme-navy);
+  line-height: 1;
+}
+.roi-roadmap-item-value.highlight { color: var(--n1-green); }
+.roi-roadmap-item-value.warning { color: var(--n2-orange); }
+.roi-roadmap-item-value.negative { color: #DC2626; }
+.roi-roadmap-item-detail {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 4px;
+  line-height: 1.3;
+}
+.roi-roadmap-formula {
+  font-size: 11px;
+  color: var(--text-muted);
+  background: white;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px dashed var(--border);
+  line-height: 1.5;
+}
+.roi-roadmap-formula strong { color: var(--esme-navy); }
+
+/* Ligne ROI multi-années (phase 4) */
+.roi-multiyear-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 10px 12px;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+.roi-multiyear-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 70px;
+}
+.roi-multiyear-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+.roi-multiyear-value {
+  font-family: 'Fraunces', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--esme-navy);
+}
+.roi-multiyear-value.highlight { color: var(--n1-green); }
+.roi-multiyear-value.negative { color: #DC2626; }
+.roi-multiyear-arrow {
+  font-size: 16px;
+  color: var(--text-muted);
+  font-weight: 300;
+}
+
+/* Tableau ROI par année (phase 5) */
+.roi-years-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+.roi-years-table th {
+  background: var(--esme-navy);
+  color: white;
+  padding: 10px 14px;
+  text-align: right;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+.roi-years-table th:first-child { text-align: left; }
+.roi-years-table td {
+  padding: 10px 14px;
+  text-align: right;
+  border-top: 1px solid var(--border);
+  font-variant-numeric: tabular-nums;
+}
+.roi-years-table .roi-row-label {
+  text-align: left;
+  color: var(--text);
+  font-weight: 500;
+}
+.roi-years-table td.green { color: var(--n1-green); }
+.roi-years-table td.pink { color: var(--esme-pink); }
+.roi-years-table td.red { color: #DC2626; }
+.roi-years-table td.highlight { color: var(--n1-green); }
+.roi-years-table td.negative { color: #DC2626; }
+.roi-years-table tr.roi-row-result td {
+  background: var(--bg);
+  border-top: 2px solid var(--esme-navy);
+}
+.roi-years-table tr.roi-row-result td:last-child {
+  background: var(--esme-pink-light);
+}
+@media (max-width: 800px) {
+  .roi-roadmap-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ROI final - bloc phase 5 */
+.roi-roadmap-final {
+  margin-top: 28px;
+  padding: 28px 32px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+.roi-roadmap-final-header { margin-bottom: 22px; }
+.roi-roadmap-final-eyebrow {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--esme-pink);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.roi-roadmap-final-title {
+  font-family: 'Fraunces', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--esme-navy);
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+.roi-roadmap-final-title em { color: var(--esme-pink); font-style: italic; }
+.roi-roadmap-final-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.roi-roadmap-final-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.roi-final-kpi {
+  background: var(--bg);
+  padding: 18px 20px;
+  border-radius: 10px;
+  border-left: 3px solid var(--esme-navy);
+}
+.roi-final-kpi.gain { border-left-color: var(--n1-green); }
+.roi-final-kpi.invest { border-left-color: var(--esme-pink); }
+.roi-final-kpi.payback { border-left-color: var(--n2-orange); }
+.roi-final-kpi.roi { border-left-color: var(--esme-navy); }
+.roi-final-kpi-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.roi-final-kpi-value {
+  font-family: 'Fraunces', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--esme-navy);
+  line-height: 1;
+}
+.roi-final-kpi-value.green { color: var(--n1-green); }
+.roi-final-kpi-value.pink { color: var(--esme-pink); }
+.roi-final-kpi-value.orange { color: var(--n2-orange); }
+.roi-final-kpi-value.red { color: #DC2626; }
+.roi-final-kpi-detail {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 6px;
+  line-height: 1.4;
+}
+.roi-roadmap-final-detail {
+  background: var(--bg);
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-size: 12px;
+  color: var(--text);
+  line-height: 1.6;
+}
+.roi-roadmap-final-detail strong { color: var(--esme-navy); }
+.roi-roadmap-final-detail .ratio { color: var(--esme-pink); font-weight: 700; }
+@media (max-width: 800px) {
+  .roi-roadmap-final-kpis { grid-template-columns: repeat(2, 1fr); }
+}
 
 /* ROADMAP FINALE */
 .roadmap-final {
@@ -1998,9 +2280,9 @@ body {
         <div class="intro-card">
           <div class="intro-card-title">Comment lire les outils</div>
           <div class="intro-card-text">
-            <strong>Couverture <span style="color:var(--n1-green)">V1 + V2</span></strong> : l'outil couvre à la fois les Assistants (V1) et les usages RAG/Agents (V2). Ex : Copilot M365, Google Workspace + AI Studio, Mistral Entreprise.<br/>
-            <strong>Couverture <span style="color:var(--n2-orange)">V1 seulement</span></strong> : l'outil est un assistant conversationnel autonome. Pour la V2, il faudra le compléter par un autre outil (RAG/orchestration). Ex : ChatGPT, Claude.<br/>
-            <strong>Multi-sélection possible</strong> : on peut choisir plusieurs outils (ex : Claude Entreprise pour V1 + Mistral pour V2 souverain).
+            <strong>Couverture <span style="color:var(--n1-green)">V1 + V2</span></strong> : l'outil propose nativement le RAG documentaire <strong>et les agents/workflows automatisés</strong>. <strong>Seul Copilot M365 entre dans cette catégorie</strong> (RAG natif sur SharePoint/Teams/OneDrive + agents via Copilot Studio).<br/><br/>
+            <strong>Couverture <span style="color:var(--n2-orange)">V1 seulement</span></strong> : assistant conversationnel pur. ChatGPT, Claude, Gemini, Le Chat (Mistral) — tous équivalents fonctionnellement, le choix dépend de l'écosystème, du budget et de la souveraineté.<br/><br/>
+            <strong>Multi-sélection possible</strong> : combinez plusieurs outils si pertinent (par exemple Le Chat pour la souveraineté + ChatGPT pour les usages génériques).
           </div>
         </div>
 
@@ -2015,8 +2297,24 @@ body {
         <div class="subsection">
           <div class="subsection-label">B. Outils complémentaires</div>
           <div class="subsection-title">Outils spécialisés "en plus"</div>
-          <div class="subsection-desc">Indépendants des phases V1/V2 — du "plus" pour des usages spécifiques : réunions, recherche, contenus, automatisation.</div>
+          <div class="subsection-desc">Du "plus" pour des usages spécifiques : réunions, recherche, contenus, automatisation.</div>
           <div class="complementary-tools" id="complementaryTools"></div>
+        </div>
+
+        <!-- Encadré explicatif statique : V1 + N8N = V2/V3 personnalisé -->
+        <div class="build-perso-card">
+          <div class="build-perso-icon">⚡</div>
+          <div class="build-perso-content">
+            <div class="build-perso-title">L'option <em>build personnalisé</em> : un outil V1 + un orchestrateur = couverture V2/V3</div>
+            <div class="build-perso-text">
+              Un assistant V1 (ChatGPT, Claude, Gemini, Le Chat) seul ne couvre pas la V2. <strong>Mais branché via son API dans un orchestrateur N8N, Make ou Zapier</strong>, il peut interroger vos documents (RAG) et exécuter des actions dans vos outils métier (agents).
+              <br/><br/>
+              <strong>Avantages</strong> : flexibilité maximale, pas de dépendance à un éditeur unique, possibilité d'utiliser un LLM souverain (Le Chat).<br/>
+              <strong>Limites</strong> : nécessite un accompagnement technique (1 à 3 mois), maintenance dans la durée, courbe d'apprentissage sur l'orchestrateur.
+              <br/><br/>
+              💡 <em>C'est l'alternative à Copilot M365 pour les organisations qui ne veulent pas s'enfermer dans Microsoft, ou qui ont besoin d'une solution souveraine.</em>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -2092,6 +2390,14 @@ body {
             <div class="fc-total-detail" id="totalConseilDetail">Durée cumulée des missions conseil</div>
           </div>
         </div>
+
+        <!-- ROI dynamique (aperçu phase 4) -->
+        <div class="roi-roadmap-block" id="roiPhase4Block">
+          <div class="roi-roadmap-title">📊 ROI estimé de la feuille de route</div>
+          <div class="roi-roadmap-subtitle">Calculé automatiquement à partir des arbitrages ci-dessus et du taux horaire de la cartographie</div>
+          <div class="roi-roadmap-grid" id="roiPhase4Grid"></div>
+          <div class="roi-roadmap-formula" id="roiPhase4Formula"></div>
+        </div>
       </div>
     </section>
 
@@ -2138,6 +2444,17 @@ body {
             <div class="roadmap-budget-item-value" id="roadmapConseil">— mois</div>
             <div class="roadmap-budget-item-detail">durée cumulée missions</div>
           </div>
+        </div>
+
+        <!-- ROI final - récap complet -->
+        <div class="roi-roadmap-final" id="roiPhase5Block">
+          <div class="roi-roadmap-final-header">
+            <div class="roi-roadmap-final-eyebrow">Indicateurs financiers</div>
+            <div class="roi-roadmap-final-title">Retour sur investissement <em>estimé</em></div>
+            <div class="roi-roadmap-final-subtitle" id="roiPhase5Subtitle">Taux horaire et hypothèses de calcul affichés ci-dessous</div>
+          </div>
+          <div class="roi-roadmap-final-kpis" id="roiPhase5Kpis"></div>
+          <div class="roi-roadmap-final-detail" id="roiPhase5Detail"></div>
         </div>
       </div>
     </section>
@@ -2845,6 +3162,8 @@ const roiSliderValue = document.getElementById('roiSliderValue');
 roiSlider.addEventListener('input', () => {
   roiSliderValue.textContent = roiSlider.value + ' €/h';
   renderROI();
+  // Synchroniser aussi le ROI de la feuille de route
+  if (typeof renderRmROI === 'function') renderRmROI();
 });
 
 function renderROI() {
@@ -3439,15 +3758,11 @@ let rmCurrentVagueTab = 'v1'; // gardé pour compatibilité, plus utilisé
 
 // Catalogue d'outils principaux avec couverture des phases
 const RM_TOOLS = [
-  { id: 'copilot-m365', name: 'Microsoft Copilot M365', vendor: 'Microsoft', coverage: 'both', ecosystem: 'm365', desc: 'Copilot intégré dans Word/Excel/Teams. Couvre Assistants + RAG (SharePoint).' },
-  { id: 'google-ai', name: 'Google Workspace + AI Studio', vendor: 'Google', coverage: 'both', ecosystem: 'google', desc: 'Gemini intégré dans Gmail/Docs. AI Studio pour les RAG et automatisations.' },
-  { id: 'chatgpt-ent', name: 'ChatGPT Entreprise', vendor: 'OpenAI', coverage: 'v1', desc: 'Assistant conversationnel autonome. Pas d\'intégration native ERP/CRM.' },
-  { id: 'chatgpt', name: 'ChatGPT (Plus / standard)', vendor: 'OpenAI', coverage: 'v1', desc: 'Version publique. Données génériques uniquement.' },
-  { id: 'claude-ent', name: 'Claude Entreprise', vendor: 'Anthropic', coverage: 'v1', desc: 'Assistant conversationnel haut de gamme. Projets et artefacts.' },
-  { id: 'claude', name: 'Claude (standard)', vendor: 'Anthropic', coverage: 'v1', desc: 'Version publique. Données génériques uniquement.' },
-  { id: 'mistral-ent', name: 'Mistral / Le Chat Entreprise', vendor: 'Mistral', coverage: 'both', ecosystem: 'sovereign', desc: 'Solution souveraine FR/EU. Couvre Assistants + RAG via La Plateforme.' },
-  { id: 'lechat', name: 'Le Chat (Mistral)', vendor: 'Mistral', coverage: 'v1', desc: 'Version publique souveraine.' },
-  { id: 'mistral-onprem', name: 'Mistral on-premise', vendor: 'Mistral', coverage: 'both', desc: 'Déploiement on-prem pour données très sensibles.' }
+  { id: 'copilot-m365', name: 'Microsoft Copilot M365', vendor: 'Microsoft', coverage: 'both', ecosystem: 'm365', desc: 'Seule solution avec RAG natif intégré : Copilot lit nativement SharePoint, Teams, OneDrive. Couvre V1 (assistant), V2 (RAG documentaire) et V3 (agents via Copilot Studio).' },
+  { id: 'chatgpt', name: 'ChatGPT', vendor: 'OpenAI', coverage: 'v1', desc: 'Leader généraliste, écosystème mature. Couvre V1 (assistant). Pour V2/V3 : à brancher dans N8N via l\'API.' },
+  { id: 'claude', name: 'Claude', vendor: 'Anthropic', coverage: 'v1', desc: 'Excellence en analyse et rédaction longue. Couvre V1 (assistant). Pour V2/V3 : à brancher dans N8N via l\'API.' },
+  { id: 'gemini', name: 'Gemini', vendor: 'Google', coverage: 'v1', desc: 'Intégration native Workspace, multimodalité avancée. Couvre V1 (assistant). Pour V2/V3 : à brancher dans N8N via l\'API.' },
+  { id: 'lechat', name: 'Le Chat (Mistral)', vendor: 'Mistral', coverage: 'v1', desc: 'Alternative française souveraine, conformité européenne. Couvre V1 (assistant). Pour V2/V3 : à brancher dans N8N via l\'API.' }
 ];
 
 const RM_COMPLEMENTARY_TOOLS = [
@@ -3457,18 +3772,17 @@ const RM_COMPLEMENTARY_TOOLS = [
   { id: 'notebooklm', name: 'NotebookLM', desc: 'RAG simple sur documents personnels.', category: 'research' },
   { id: 'tendercrunch', name: 'TenderCrunch', desc: 'Analyse et réponse à appels d\'offres.', category: 'business' },
   { id: 'gamma', name: 'Gamma', desc: 'Génération de présentations.', category: 'content' },
-  { id: 'mermaid', name: 'Mermaid Chart', desc: 'Diagrammes générés par IA.', category: 'content' },
   { id: 'midjourney', name: 'Midjourney / DALL-E', desc: 'Génération d\'images.', category: 'content' },
-  { id: 'n8n', name: 'N8N', desc: 'Plateforme d\'automatisation open-source (self-hosted).', category: 'automation' },
-  { id: 'make', name: 'Make (Integromat)', desc: 'Automatisation no-code visuelle.', category: 'automation' },
-  { id: 'zapier', name: 'Zapier', desc: 'Connecteurs entre applications SaaS.', category: 'automation' }
+  { id: 'n8n', name: 'N8N', desc: 'Orchestrateur de workflows open-source. Branchez un LLM via API pour créer des solutions V2/V3 personnalisées.', category: 'automation' },
+  { id: 'make', name: 'Make (Integromat)', desc: 'Orchestrateur d\'automatisation no-code visuel. Connecte un LLM via API à vos outils SaaS.', category: 'automation' },
+  { id: 'zapier', name: 'Zapier', desc: 'Connecteurs entre applications SaaS, peut intégrer un LLM via API dans des workflows.', category: 'automation' }
 ];
 
 // Conseil pédagogique automatique par niveau
 function rmConseilForNiveau(niveau) {
   if (niveau === 'N1') return { months: 0, label: 'Aucun', detail: '100% formation, pas de mission conseil' };
   if (niveau === 'N2') return { months: 2, label: '2 mois', detail: 'Cadrage + structuration corpus + déploiement' };
-  if (niveau === 'N3') return { months: 4, label: '4 mois', detail: 'Intégration SI + gouvernance + déploiement' };
+  if (niveau === 'N3') return { months: 2, label: '2 mois', detail: 'Cadrage + intégration + déploiement' };
   return { months: 0, label: '—', detail: '' };
 }
 
@@ -3717,14 +4031,30 @@ function renderRmVagueArbitrage() {
   } else {
     const tools = rmMainTools.map(getRmTool).filter(Boolean);
     const coversV1 = tools.some(t => t.coverage === 'both' || t.coverage === 'v1');
-    const coversV2 = tools.some(t => t.coverage === 'both');
+    const coversV2Native = tools.some(t => t.coverage === 'both');
+    
+    // Vérifier si un orchestrateur d'automatisation est aussi sélectionné
+    const automationIds = ['n8n', 'make', 'zapier'];
+    const hasAutomation = rmComplementary.some(id => automationIds.includes(id));
+    const automationName = rmComplementary
+      .filter(id => automationIds.includes(id))
+      .map(id => getRmComplementaryName(id))
+      .join(' / ');
+    
+    const coversV2 = coversV2Native || (coversV1 && hasAutomation);
     
     let v1Status = coversV1 
       ? '<span class="coverage-status ok">✓ Vague 1 couverte</span>' 
       : '<span class="coverage-status missing">⚠ Vague 1 non couverte</span>';
-    let v2Status = coversV2 
-      ? '<span class="coverage-status ok">✓ Vague 2 couverte</span>' 
-      : '<span class="coverage-status missing">⚠ Vague 2 non couverte — il faut ajouter un outil "Couvre V1 + V2" (Copilot M365, Mistral Ent, Google AI Studio)</span>';
+    
+    let v2Status;
+    if (coversV2Native) {
+      v2Status = '<span class="coverage-status ok">✓ Vague 2 couverte (RAG natif)</span>';
+    } else if (coversV2 && hasAutomation) {
+      v2Status = `<span class="coverage-status ok-build">✓ Vague 2 couverte via ${escapeHtml(automationName)} (build personnalisé)</span>`;
+    } else {
+      v2Status = '<span class="coverage-status missing">⚠ Vague 2 non couverte — ajoutez Copilot M365 (RAG natif) ou un orchestrateur N8N/Make/Zapier (build personnalisé)</span>';
+    }
     
     recapEl.innerHTML = `
       <div class="coverage-recap">
@@ -3998,6 +4328,297 @@ function renderRmFormConseil() {
   document.getElementById('totalConseilDetail').textContent = `V1: ${v1Cons} mois • V2: ${v2Cons} mois`;
   
   window._rmTotals = { form: totalForm, conseil: totalConseil, v1Form, v1Cons, v2Form, v2Cons };
+  
+  // Recalculer et afficher le ROI dans phase 4 et phase 5
+  renderRmROI();
+}
+
+// ====================================================================
+// Calcul ROI de la feuille de route
+// Investissement = Formation (2500€/j) + Conseil (750€/j à 20j/mois)
+// Gains = Heures économisées des cas retenus en V1+V2 × taux horaire (curseur cartographie)
+// ====================================================================
+const FORMATION_RATE = 2500; // €/jour
+const CONSEIL_RATE = 750;     // €/jour
+const CONSEIL_DAYS_PER_MONTH = 20;
+const MAX_PARTICIPANTS_PER_SESSION = 15;
+const LICENSE_RATE_PER_MONTH = 20; // €/mois/personne
+const LICENSE_RATE_PER_YEAR = LICENSE_RATE_PER_MONTH * 12; // 240 €/an/personne
+
+function computeRmROI() {
+  // Taux horaire récupéré du curseur ROI de la cartographie
+  const roiSlider = document.getElementById('roiSlider');
+  const hourlyRate = roiSlider ? parseFloat(roiSlider.value) : 35;
+  
+  // Cas retenus en V1 ou V2
+  const retainedCases = cases.map((c, i) => ({c, i})).filter(x => rmSelections[x.i] === 'v1' || rmSelections[x.i] === 'v2');
+  
+  // ===== INVESTISSEMENT FORMATION =====
+  let investForm = 0;
+  let totalSessions = 0;
+  
+  retainedCases.forEach(({c, i}) => {
+    const formDays = rmFormationDays[i] !== undefined ? rmFormationDays[i] : rmDefaultFormation(c.niveau);
+    if (formDays === 0) return;
+    
+    const serviceCov = rmServiceCoverage[c.metier];
+    const persToTrain = serviceCov ? (serviceCov.target || 0) : 0;
+    
+    const sessions = persToTrain === 0 ? 1 : Math.ceil(persToTrain / MAX_PARTICIPANTS_PER_SESSION);
+    investForm += sessions * formDays * FORMATION_RATE;
+    totalSessions += sessions;
+  });
+  
+  // ===== INVESTISSEMENT CONSEIL =====
+  // 2 mois fixe par cas N2/N3 dont la checkbox conseil est cochée
+  let conseilMonths = 0;
+  let nbConseilCases = 0;
+  retainedCases.forEach(({c, i}) => {
+    const isN1 = c.niveau === 'N1';
+    if (!isN1 && rmConseilInclude[i]) {
+      conseilMonths += 2;
+      nbConseilCases++;
+    }
+  });
+  const investConseil = conseilMonths * CONSEIL_DAYS_PER_MONTH * CONSEIL_RATE;
+  
+  // ===== LICENCES (récurrentes chaque année) =====
+  // Personnes formées = somme des `target` des services qui ont AU MOINS 1 cas pilote retenu
+  const servicesWithCases = new Set(retainedCases.map(x => x.c.metier));
+  let persLicensed = 0;
+  servicesWithCases.forEach(svc => {
+    const cov = rmServiceCoverage[svc];
+    if (cov) persLicensed += (cov.target || 0);
+  });
+  const licensesPerYear = persLicensed * LICENSE_RATE_PER_YEAR;
+  
+  // ===== GAINS ANNUELS =====
+  const totalHours = retainedCases.reduce((s, x) => s + (x.c.gainAnnuelHeures || 0), 0);
+  const gainsAnnuels = totalHours * hourlyRate;
+  
+  // ===== INVESTISSEMENTS PAR ANNÉE =====
+  const investAn1 = investForm + investConseil + licensesPerYear; // one-shot + récurrent
+  const investAn2 = licensesPerYear;                              // récurrent uniquement
+  const investAn3 = licensesPerYear;                              // récurrent uniquement
+  
+  // ===== ROI PAR ANNÉE =====
+  let roiAn1 = null, roiAn2 = null, roiAn3 = null;
+  if (investAn1 > 0) roiAn1 = ((gainsAnnuels - investAn1) / investAn1) * 100;
+  if (investAn2 > 0) roiAn2 = ((gainsAnnuels - investAn2) / investAn2) * 100;
+  if (investAn3 > 0) roiAn3 = ((gainsAnnuels - investAn3) / investAn3) * 100;
+  
+  // ===== ROI CUMULÉ SUR 3 ANS =====
+  const investCumule3Ans = investAn1 + investAn2 + investAn3;
+  const gainsCumule3Ans = gainsAnnuels * 3;
+  let roiCumule = null;
+  if (investCumule3Ans > 0) roiCumule = ((gainsCumule3Ans - investCumule3Ans) / investCumule3Ans) * 100;
+  
+  // ===== PAYBACK (sur les charges fixes initiales : formation + conseil) =====
+  // Le payback se calcule sur l'effort an 1 net de licences (formation + conseil amortis)
+  // Mais le plus intuitif : payback sur invest total an 1, avec gains nets de licences
+  const gainsNetsParAn = gainsAnnuels - licensesPerYear;
+  let paybackMonths = null;
+  if (investAn1 > 0 && gainsNetsParAn > 0) {
+    // Payback réaliste : combien de mois pour récupérer l'invest an 1 avec les gains nets annuels
+    paybackMonths = (investAn1 / gainsNetsParAn) * 12;
+  }
+  
+  return {
+    hourlyRate,
+    totalSessions,
+    conseilMonths,
+    nbConseilCases,
+    persLicensed,
+    investForm,
+    investConseil,
+    licensesPerYear,
+    investAn1,
+    investAn2,
+    investAn3,
+    investCumule3Ans,
+    totalHours,
+    gainsAnnuels,
+    gainsNetsParAn,
+    gainsCumule3Ans,
+    roiAn1,
+    roiAn2,
+    roiAn3,
+    roiCumule,
+    paybackMonths,
+    nbCases: retainedCases.length
+  };
+}
+
+function renderRmROI() {
+  const r = computeRmROI();
+  
+  const formatRoiPct = (v) => v === null ? '—' : ((v > 0 ? '+' : '') + v.toFixed(0) + ' %');
+  const roiColorClass = (v) => {
+    if (v === null) return '';
+    return v > 0 ? 'highlight' : 'negative';
+  };
+  
+  // === Bloc phase 4 (aperçu : 4 KPIs principaux + ligne ROI multi-années) ===
+  const grid4 = document.getElementById('roiPhase4Grid');
+  const formula4 = document.getElementById('roiPhase4Formula');
+  if (grid4 && formula4) {
+    if (r.investAn1 === 0 && r.gainsAnnuels === 0) {
+      grid4.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:12px">Sélectionnez des cas pilotes et ajustez les jours formation/conseil pour voir le ROI.</div>';
+      formula4.innerHTML = '';
+    } else {
+      grid4.innerHTML = `
+        <div class="roi-roadmap-item">
+          <div class="roi-roadmap-item-label">Investissement an 1</div>
+          <div class="roi-roadmap-item-value">${formatEur(r.investAn1)}</div>
+          <div class="roi-roadmap-item-detail">${formatEur(r.investForm)} formation<br/>+ ${formatEur(r.investConseil)} conseil<br/>+ ${formatEur(r.licensesPerYear)} licences</div>
+        </div>
+        <div class="roi-roadmap-item">
+          <div class="roi-roadmap-item-label">Gains annuels</div>
+          <div class="roi-roadmap-item-value highlight">${formatEur(r.gainsAnnuels)}</div>
+          <div class="roi-roadmap-item-detail">${formatHours(r.totalHours)} × ${r.hourlyRate}€/h</div>
+        </div>
+        <div class="roi-roadmap-item">
+          <div class="roi-roadmap-item-label">Payback</div>
+          <div class="roi-roadmap-item-value ${r.paybackMonths !== null && r.paybackMonths < 12 ? 'highlight' : (r.paybackMonths !== null && r.paybackMonths < 24 ? 'warning' : 'negative')}">${r.paybackMonths !== null ? r.paybackMonths.toFixed(1) + ' mois' : '—'}</div>
+          <div class="roi-roadmap-item-detail">Gains nets de licences</div>
+        </div>
+        <div class="roi-roadmap-item">
+          <div class="roi-roadmap-item-label">ROI cumulé 3 ans</div>
+          <div class="roi-roadmap-item-value ${roiColorClass(r.roiCumule)}">${formatRoiPct(r.roiCumule)}</div>
+          <div class="roi-roadmap-item-detail">Sur ${formatEur(r.investCumule3Ans)} investis</div>
+        </div>
+      `;
+      
+      // Ligne ROI multi-années
+      const multiYearLine = `
+        <div class="roi-multiyear-line">
+          <div class="roi-multiyear-item">
+            <span class="roi-multiyear-label">ROI an 1</span>
+            <span class="roi-multiyear-value ${roiColorClass(r.roiAn1)}">${formatRoiPct(r.roiAn1)}</span>
+          </div>
+          <div class="roi-multiyear-arrow">→</div>
+          <div class="roi-multiyear-item">
+            <span class="roi-multiyear-label">ROI an 2</span>
+            <span class="roi-multiyear-value ${roiColorClass(r.roiAn2)}">${formatRoiPct(r.roiAn2)}</span>
+          </div>
+          <div class="roi-multiyear-arrow">→</div>
+          <div class="roi-multiyear-item">
+            <span class="roi-multiyear-label">ROI an 3</span>
+            <span class="roi-multiyear-value ${roiColorClass(r.roiAn3)}">${formatRoiPct(r.roiAn3)}</span>
+          </div>
+        </div>
+      `;
+      
+      formula4.innerHTML = `
+        ${multiYearLine}
+        <strong>Hypothèses :</strong> Formation 2 500 €/j (sessions de 15 max) • Conseil 750 €/j (2 mois fixe par cas N2/N3) • Licences <strong>20 €/mois/personne récurrentes</strong> (${r.persLicensed} pers.) • Taux horaire ${r.hourlyRate} €/h • ${r.totalSessions} session(s).
+      `;
+    }
+  }
+  
+  // === Bloc phase 5 (récap final : 4 KPIs principaux + détail multi-années) ===
+  const kpis5 = document.getElementById('roiPhase5Kpis');
+  const detail5 = document.getElementById('roiPhase5Detail');
+  const subtitle5 = document.getElementById('roiPhase5Subtitle');
+  if (kpis5 && detail5) {
+    if (r.investAn1 === 0 && r.gainsAnnuels === 0) {
+      kpis5.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:18px">Aucun cas pilote sélectionné — sélection à faire en phase 1.</div>';
+      detail5.innerHTML = '';
+      if (subtitle5) subtitle5.textContent = 'En attente de la sélection des cas pilotes en phase 1.';
+    } else {
+      kpis5.innerHTML = `
+        <div class="roi-final-kpi gain">
+          <div class="roi-final-kpi-label">Gains annuels estimés</div>
+          <div class="roi-final-kpi-value green">${formatEur(r.gainsAnnuels)}</div>
+          <div class="roi-final-kpi-detail">${formatHours(r.totalHours)} économisées par an<br/>sur ${r.nbCases} cas pilotes</div>
+        </div>
+        <div class="roi-final-kpi invest">
+          <div class="roi-final-kpi-label">Investissement an 1</div>
+          <div class="roi-final-kpi-value pink">${formatEur(r.investAn1)}</div>
+          <div class="roi-final-kpi-detail">${formatEur(r.investForm)} formation<br/>+ ${formatEur(r.investConseil)} conseil<br/>+ ${formatEur(r.licensesPerYear)} licences</div>
+        </div>
+        <div class="roi-final-kpi payback">
+          <div class="roi-final-kpi-label">Payback</div>
+          <div class="roi-final-kpi-value ${r.paybackMonths !== null && r.paybackMonths < 12 ? 'green' : (r.paybackMonths !== null && r.paybackMonths < 24 ? 'orange' : 'red')}">${r.paybackMonths !== null ? r.paybackMonths.toFixed(1) + ' mois' : '—'}</div>
+          <div class="roi-final-kpi-detail">${r.paybackMonths !== null && r.paybackMonths < 12 ? 'Très court terme' : (r.paybackMonths !== null && r.paybackMonths < 24 ? 'Acceptable' : 'À réinterroger')}</div>
+        </div>
+        <div class="roi-final-kpi roi">
+          <div class="roi-final-kpi-label">ROI cumulé 3 ans</div>
+          <div class="roi-final-kpi-value ${r.roiCumule !== null && r.roiCumule > 0 ? 'green' : 'red'}">${formatRoiPct(r.roiCumule)}</div>
+          <div class="roi-final-kpi-detail">Sur ${formatEur(r.investCumule3Ans)} investis<br/>(${formatEur(r.gainsCumule3Ans)} de gains)</div>
+        </div>
+      `;
+      
+      // Tableau multi-années détaillé
+      const yearsTable = `
+        <table class="roi-years-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>An 1</th>
+              <th>An 2</th>
+              <th>An 3</th>
+              <th>Cumulé</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="roi-row-label">Gains</td>
+              <td class="green">${formatEur(r.gainsAnnuels)}</td>
+              <td class="green">${formatEur(r.gainsAnnuels)}</td>
+              <td class="green">${formatEur(r.gainsAnnuels)}</td>
+              <td class="green"><strong>${formatEur(r.gainsCumule3Ans)}</strong></td>
+            </tr>
+            <tr>
+              <td class="roi-row-label">Charges</td>
+              <td class="pink">−${formatEur(r.investAn1)}</td>
+              <td class="pink">−${formatEur(r.investAn2)}</td>
+              <td class="pink">−${formatEur(r.investAn3)}</td>
+              <td class="pink"><strong>−${formatEur(r.investCumule3Ans)}</strong></td>
+            </tr>
+            <tr class="roi-row-result">
+              <td class="roi-row-label"><strong>Résultat net</strong></td>
+              <td class="${r.gainsAnnuels - r.investAn1 > 0 ? 'green' : 'red'}"><strong>${formatEur(r.gainsAnnuels - r.investAn1)}</strong></td>
+              <td class="${r.gainsAnnuels - r.investAn2 > 0 ? 'green' : 'red'}"><strong>${formatEur(r.gainsAnnuels - r.investAn2)}</strong></td>
+              <td class="${r.gainsAnnuels - r.investAn3 > 0 ? 'green' : 'red'}"><strong>${formatEur(r.gainsAnnuels - r.investAn3)}</strong></td>
+              <td class="${r.gainsCumule3Ans - r.investCumule3Ans > 0 ? 'green' : 'red'}"><strong>${formatEur(r.gainsCumule3Ans - r.investCumule3Ans)}</strong></td>
+            </tr>
+            <tr class="roi-row-result">
+              <td class="roi-row-label"><strong>ROI</strong></td>
+              <td class="${roiColorClass(r.roiAn1)}"><strong>${formatRoiPct(r.roiAn1)}</strong></td>
+              <td class="${roiColorClass(r.roiAn2)}"><strong>${formatRoiPct(r.roiAn2)}</strong></td>
+              <td class="${roiColorClass(r.roiAn3)}"><strong>${formatRoiPct(r.roiAn3)}</strong></td>
+              <td class="${roiColorClass(r.roiCumule)}"><strong>${formatRoiPct(r.roiCumule)}</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      `;
+      
+      const ratioGainInvest = r.investAn1 > 0 ? (r.gainsAnnuels / r.investAn1).toFixed(1) : '—';
+      detail5.innerHTML = `
+        ${yearsTable}
+        <div style="margin-top:14px">
+          <strong>Méthode de calcul :</strong> 
+          <strong>An 1</strong> = <strong>${r.totalSessions} session(s)</strong> × jours × 2 500 € (${formatEur(r.investForm)}) 
+          ${r.nbConseilCases > 0 ? `+ <strong>${r.nbConseilCases} mission(s) conseil</strong> × 2 mois × 20 j × 750 € (${formatEur(r.investConseil)})` : ''}
+          + <strong>${r.persLicensed} licence(s)</strong> × 240 €/an (${formatEur(r.licensesPerYear)}) 
+          = <strong>${formatEur(r.investAn1)}</strong>.<br/>
+          <strong>An 2 et An 3</strong> = licences récurrentes seulement (formation et conseil amortis) = <strong>${formatEur(r.licensesPerYear)}/an</strong>.<br/>
+          <strong>Gains</strong> = ${formatHours(r.totalHours)} × ${r.hourlyRate} €/h = <strong>${formatEur(r.gainsAnnuels)}/an</strong>. 
+          Chaque euro investi an 1 génère <span class="ratio">${ratioGainInvest} €/an</span> de gain.
+          <br/><br/>
+          <em style="font-size:11px;color:var(--text-muted)">Règles : sessions de 15 personnes max • Conseil = 2 mois par cas N2/N3 coché • Licences = 20 €/mois/personne récurrentes pour ${r.persLicensed} personnes équipées (services avec cas pilotes retenus).</em>
+          <br/><br/>
+          ${r.paybackMonths !== null && r.paybackMonths < 18 
+            ? '<strong style="color:var(--n1-green)">✓ Payback inférieur à 18 mois : projet sain à lancer.</strong>'
+            : (r.paybackMonths !== null && r.paybackMonths < 24
+              ? '<strong style="color:var(--n2-orange)">⚠ Payback entre 18 et 24 mois : à valider avec un sponsor fort.</strong>'
+              : '<strong style="color:#DC2626">⚠ Payback supérieur à 24 mois : réinterroger le périmètre, l\'outil ou l\'accompagnement.</strong>')}
+        </div>
+      `;
+      if (subtitle5) subtitle5.textContent = `Taux horaire ${r.hourlyRate} €/h • Formation 2 500 €/j (sessions de 15 max) • Conseil 750 €/j (2 mois) • Licences 20 €/mois/personne récurrentes • ${r.nbCases} cas pilotes`;
+    }
+  }
 }
 
 function setRmFormation(i, days) {
