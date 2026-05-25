@@ -3871,12 +3871,12 @@ async function exportFeuilleRoutePDF() {
     y += 18;
   });
   
-  // Outils retenus
+  // Outils principaux retenus
   y += 5;
   doc.setTextColor(30,58,138);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(14);
-  doc.text('Outils IA retenus', M, y);
+  doc.text('Outils IA principaux retenus', M, y);
   y += 8;
   
   if (rmMainTools.length === 0) {
@@ -3911,25 +3911,357 @@ async function exportFeuilleRoutePDF() {
       doc.text(coverageText, W - M - 3, y + 7, { align: 'right' });
       y += 13;
     });
-  }
-  
-  // Outils complémentaires
-  if (rmComplementary.length > 0 && y < H - 30) {
-    y += 3;
-    doc.setTextColor(30,58,138);
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(11);
-    doc.text('Outils complémentaires', M, y);
-    y += 6;
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(9);
-    doc.setTextColor(80,80,80);
-    const compNames = rmComplementary.map(id => getRmComplementaryName(id)).join(' • ');
-    const compLines = doc.splitTextToSize(compNames, W - 2*M);
-    doc.text(compLines, M, y);
+    
+    // Note de bas de section vers la page outils complémentaires
+    if (rmComplementary.length > 0 && y < H - 25) {
+      y += 3;
+      doc.setTextColor(120,120,120);
+      doc.setFont('helvetica', 'italic');
+      doc.setFontSize(8);
+      doc.text(`Voir page suivante : ${rmComplementary.length} outil(s) complémentaire(s) retenu(s) pour des usages spécifiques.`, M, y);
+    }
   }
   
   drawRmFooter(doc, W, H, M, 'Synthèse des arbitrages');
+  
+  // ============ PAGE — BOÎTE À OUTILS COMPLÉMENTAIRES ============
+  if (rmComplementary.length > 0) {
+    doc.addPage();
+    drawRmHeader(doc, W, M);
+    
+    doc.setTextColor(30, 58, 138);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(24);
+    doc.text('Outils complémentaires', M, 50);
+    doc.setDrawColor(236, 72, 153);
+    doc.setLineWidth(2);
+    doc.line(M, 53, M + 90, 53);
+    
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(80,80,80);
+    const introText = `${rmComplementary.length} outil(s) complémentaire(s) retenu(s) pour des usages spécifiques au-delà des outils IA principaux.`;
+    const introLines = doc.splitTextToSize(introText, W - 2*M);
+    doc.text(introLines, M, 62);
+    
+    // Grouper par catégorie
+    const categoryLabels = {
+      meeting: { name: 'Réunions & transcription', color: [30, 58, 138] },
+      research: { name: 'Recherche & veille', color: [236, 72, 153] },
+      business: { name: 'Métiers spécifiques', color: [245, 158, 11] },
+      content: { name: 'Création de contenus', color: [139, 92, 246] },
+      automation: { name: 'Automatisation & orchestration', color: [16, 185, 129] }
+    };
+    
+    y = 75;
+    const selectedComps = rmComplementary
+      .map(id => RM_COMPLEMENTARY_TOOLS.find(t => t.id === id))
+      .filter(Boolean);
+    
+    // Grouper
+    const byCategory = {};
+    selectedComps.forEach(t => {
+      if (!byCategory[t.category]) byCategory[t.category] = [];
+      byCategory[t.category].push(t);
+    });
+    
+    // Afficher chaque catégorie
+    Object.entries(byCategory).forEach(([cat, tools]) => {
+      const catInfo = categoryLabels[cat] || { name: cat, color: [100, 100, 100] };
+      
+      if (y > H - 40) {
+        drawRmFooter(doc, W, H, M, 'Outils complémentaires');
+        doc.addPage();
+        drawRmHeader(doc, W, M);
+        y = 50;
+      }
+      
+      // En-tête catégorie
+      doc.setFillColor(...catInfo.color);
+      doc.rect(M, y, W - 2*M, 8, 'F');
+      doc.setTextColor(255, 255, 255);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.text(catInfo.name.toUpperCase(), M + 4, y + 5.5);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.text(`${tools.length} outil(s)`, W - M - 3, y + 5.5, { align: 'right' });
+      y += 11;
+      
+      // Liste des outils de la catégorie
+      tools.forEach(t => {
+        if (y > H - 25) {
+          drawRmFooter(doc, W, H, M, 'Outils complémentaires');
+          doc.addPage();
+          drawRmHeader(doc, W, M);
+          y = 50;
+        }
+        
+        const descLines = doc.splitTextToSize(t.desc, W - 2*M - 10);
+        const rowH = Math.max(14, descLines.length * 3.5 + 8);
+        
+        doc.setFillColor(252, 252, 250);
+        doc.rect(M, y, W - 2*M, rowH, 'F');
+        doc.setFillColor(...catInfo.color);
+        doc.rect(M, y, 2, rowH, 'F');
+        
+        // Nom
+        doc.setTextColor(30, 58, 138);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(10);
+        doc.text(t.name, M + 5, y + 5);
+        
+        // Description
+        doc.setTextColor(80, 80, 80);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8);
+        doc.text(descLines, M + 5, y + 9.5);
+        
+        y += rowH + 2;
+      });
+      
+      y += 3;
+    });
+    
+    drawRmFooter(doc, W, H, M, 'Outils complémentaires');
+  }
+  
+  // ============ PAGE — MISSIONS CONSEIL + ASSISTANTS FORMATION ============
+  // On sépare les cas en 2 groupes :
+  // - Missions conseil = N2/N3 dont la checkbox conseil est cochée
+  // - Assistants formation seule = N1 + (N2/N3 sans conseil coché)
+  const conseilCases = selectedCases.filter(({c, i}) => 
+    c.niveau !== 'N1' && rmConseilInclude[i]
+  );
+  const formationOnlyCases = selectedCases.filter(({c, i}) => 
+    c.niveau === 'N1' || !rmConseilInclude[i]
+  );
+  
+  doc.addPage();
+  drawRmHeader(doc, W, M);
+  
+  doc.setTextColor(30, 58, 138);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(24);
+  doc.text('Accompagnement par cas', M, 50);
+  doc.setDrawColor(236, 72, 153);
+  doc.setLineWidth(2);
+  doc.line(M, 53, M + 100, 53);
+  
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.setTextColor(80,80,80);
+  doc.text('Répartition des cas pilotes selon le type d\'accompagnement retenu.', M, 62);
+  
+  // === BLOC 1 — MISSIONS CONSEIL ===
+  y = 75;
+  
+  doc.setFillColor(236, 72, 153);
+  doc.rect(M, y, W - 2*M, 10, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.text(`MISSIONS DE CONSEIL — IAvenir`, M + 4, y + 6.5);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  const conseilTotalMonths = conseilCases.length * 2;
+  doc.text(`${conseilCases.length} cas • ${conseilTotalMonths} mois cumulés`, W - M - 3, y + 6.5, { align: 'right' });
+  y += 13;
+  
+  if (conseilCases.length === 0) {
+    doc.setTextColor(150, 150, 150);
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(9);
+    doc.text('Aucune mission de conseil sélectionnée. Pour activer le conseil, cochez la case correspondante en phase 4.', M, y);
+    y += 8;
+  } else {
+    // Intro contextuelle
+    doc.setTextColor(80, 80, 80);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.text('Cas nécessitant un accompagnement structuré (cadrage, structuration corpus, déploiement). 2 mois fixe par mission.', M, y);
+    y += 8;
+    
+    // Trier par vague puis niveau
+    conseilCases.sort((a, b) => {
+      const va = rmSelections[a.i] === 'v1' ? 0 : 1;
+      const vb = rmSelections[b.i] === 'v1' ? 0 : 1;
+      if (va !== vb) return va - vb;
+      return parseInt(a.c.niveau.substring(1)) - parseInt(b.c.niveau.substring(1));
+    });
+    
+    conseilCases.forEach(({c, i}) => {
+      if (y > H - 35) {
+        drawRmFooter(doc, W, H, M, 'Accompagnement par cas');
+        doc.addPage();
+        drawRmHeader(doc, W, M);
+        y = 50;
+      }
+      
+      const niveauColor = niveauColors[c.niveau];
+      const vague = rmSelections[i];
+      const vagueLabel = vague === 'v1' ? 'V1' : 'V2';
+      const conseilDetail = rmConseilForNiveau(c.niveau).detail;
+      
+      const titleLines = doc.splitTextToSize(c.titre, W - 2*M - 70);
+      const detailLines = doc.splitTextToSize(conseilDetail, W - 2*M - 70);
+      const rowH = Math.max(22, titleLines.length * 4 + detailLines.length * 3.5 + 14);
+      
+      doc.setFillColor(252, 240, 246);
+      doc.rect(M, y, W - 2*M, rowH, 'F');
+      doc.setFillColor(236, 72, 153);
+      doc.rect(M, y, 3, rowH, 'F');
+      
+      // Badges niveau + vague + métier
+      doc.setFillColor(...niveauColor);
+      doc.roundedRect(M + 6, y + 3, 18, 5, 1, 1, 'F');
+      doc.setTextColor(255,255,255);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(6);
+      doc.text(c.niveau, M + 15, y + 6.5, { align: 'center' });
+      
+      doc.setFillColor(30, 58, 138);
+      doc.roundedRect(M + 26, y + 3, 14, 5, 1, 1, 'F');
+      doc.setTextColor(255,255,255);
+      doc.text(vagueLabel, M + 33, y + 6.5, { align: 'center' });
+      
+      doc.setTextColor(120,120,120);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7);
+      doc.text(c.metier, M + 42, y + 6.5);
+      
+      // Titre
+      doc.setTextColor(40,40,40);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.text(titleLines, M + 6, y + 13);
+      
+      // Détail de la mission conseil
+      doc.setFont('helvetica', 'italic');
+      doc.setFontSize(7);
+      doc.setTextColor(236, 72, 153);
+      const detailY = y + 13 + titleLines.length * 4 + 2;
+      doc.text(detailLines, M + 6, detailY);
+      
+      // Durée à droite
+      doc.setTextColor(236, 72, 153);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(13);
+      doc.text('2 mois', W - M - 3, y + rowH/2 - 1, { align: 'right' });
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(6);
+      doc.setTextColor(120,120,120);
+      doc.text('CONSEIL', W - M - 3, y + rowH/2 + 3, { align: 'right' });
+      
+      y += rowH + 2;
+    });
+  }
+  
+  // === BLOC 2 — ASSISTANTS COUVERTS PAR LA FORMATION ===
+  y += 6;
+  if (y > H - 50) {
+    drawRmFooter(doc, W, H, M, 'Accompagnement par cas');
+    doc.addPage();
+    drawRmHeader(doc, W, M);
+    y = 50;
+  }
+  
+  doc.setFillColor(16, 185, 129);
+  doc.rect(M, y, W - 2*M, 10, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.text(`ASSISTANTS COUVERTS PAR LA FORMATION`, M + 4, y + 6.5);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  const totalFormDays = formationOnlyCases.reduce((s, {c, i}) => {
+    const d = rmFormationDays[i] !== undefined ? rmFormationDays[i] : rmDefaultFormation(c.niveau);
+    return s + d;
+  }, 0);
+  doc.text(`${formationOnlyCases.length} cas • ${totalFormDays} jours-cas`, W - M - 3, y + 6.5, { align: 'right' });
+  y += 13;
+  
+  if (formationOnlyCases.length === 0) {
+    doc.setTextColor(150, 150, 150);
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(9);
+    doc.text('Aucun cas couvert par la formation seule.', M, y);
+  } else {
+    // Intro contextuelle
+    doc.setTextColor(80, 80, 80);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.text('Cas mis en œuvre directement par les équipes après formation (prompt engineering, assistants génériques, RAG simple).', M, y);
+    y += 8;
+    
+    // Trier par vague puis niveau
+    formationOnlyCases.sort((a, b) => {
+      const va = rmSelections[a.i] === 'v1' ? 0 : 1;
+      const vb = rmSelections[b.i] === 'v1' ? 0 : 1;
+      if (va !== vb) return va - vb;
+      return parseInt(a.c.niveau.substring(1)) - parseInt(b.c.niveau.substring(1));
+    });
+    
+    formationOnlyCases.forEach(({c, i}) => {
+      if (y > H - 25) {
+        drawRmFooter(doc, W, H, M, 'Accompagnement par cas');
+        doc.addPage();
+        drawRmHeader(doc, W, M);
+        y = 50;
+      }
+      
+      const formDays = rmFormationDays[i] !== undefined ? rmFormationDays[i] : rmDefaultFormation(c.niveau);
+      const niveauColor = niveauColors[c.niveau];
+      const vague = rmSelections[i];
+      const vagueLabel = vague === 'v1' ? 'V1' : 'V2';
+      
+      const titleLines = doc.splitTextToSize(c.titre, W - 2*M - 70);
+      const rowH = Math.max(18, titleLines.length * 4 + 12);
+      
+      doc.setFillColor(240, 252, 246);
+      doc.rect(M, y, W - 2*M, rowH, 'F');
+      doc.setFillColor(16, 185, 129);
+      doc.rect(M, y, 3, rowH, 'F');
+      
+      // Badges
+      doc.setFillColor(...niveauColor);
+      doc.roundedRect(M + 6, y + 3, 18, 5, 1, 1, 'F');
+      doc.setTextColor(255,255,255);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(6);
+      doc.text(c.niveau, M + 15, y + 6.5, { align: 'center' });
+      
+      doc.setFillColor(30, 58, 138);
+      doc.roundedRect(M + 26, y + 3, 14, 5, 1, 1, 'F');
+      doc.setTextColor(255,255,255);
+      doc.text(vagueLabel, M + 33, y + 6.5, { align: 'center' });
+      
+      doc.setTextColor(120,120,120);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7);
+      doc.text(c.metier, M + 42, y + 6.5);
+      
+      // Titre
+      doc.setTextColor(40,40,40);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.text(titleLines, M + 6, y + 13);
+      
+      // Durée formation à droite
+      doc.setTextColor(16, 185, 129);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(13);
+      doc.text(`${formDays}j`, W - M - 3, y + rowH/2 - 1, { align: 'right' });
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(6);
+      doc.setTextColor(120,120,120);
+      doc.text('FORMATION', W - M - 3, y + rowH/2 + 3, { align: 'right' });
+      
+      y += rowH + 2;
+    });
+  }
+  
+  drawRmFooter(doc, W, H, M, 'Accompagnement par cas');
   
   // ============ PAGE 3 — COUVERTURE PAR SERVICE ============
   doc.addPage();
