@@ -742,6 +742,187 @@ body {
 .matrix-point.n1 { background: var(--n1-green); }
 .matrix-point.n2 { background: var(--n2-orange); }
 .matrix-point.n3 { background: var(--n3-purple); }
+.matrix-point.overridden::after {
+  content: '↻';
+  position: absolute;
+  top: -8px; right: -8px;
+  width: 16px; height: 16px;
+  background: var(--esme-pink);
+  color: white;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid white;
+}
+
+/* Popover de reclassement */
+.niveau-popover {
+  position: absolute;
+  z-index: 1000;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(30, 58, 138, 0.25);
+  padding: 18px;
+  width: 320px;
+  border: 1px solid var(--border);
+  animation: popover-appear 0.15s ease-out;
+}
+@keyframes popover-appear {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.niveau-popover-title {
+  font-family: 'Fraunces', serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--esme-navy);
+  margin-bottom: 4px;
+  line-height: 1.2;
+}
+.niveau-popover-subtitle {
+  font-size: 11px;
+  color: var(--esme-pink);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.niveau-popover-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.niveau-opt {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  grid-template-rows: auto auto;
+  gap: 2px 12px;
+  padding: 10px 12px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s;
+  font-family: 'Inter', sans-serif;
+}
+.niveau-opt:hover { border-color: var(--esme-pink-soft); background: var(--bg); }
+.niveau-opt.active { border-color: currentColor; background: rgba(0,0,0,0.02); }
+.niveau-opt.n1 { color: var(--n1-green); }
+.niveau-opt.n2 { color: var(--n2-orange); }
+.niveau-opt.n3 { color: var(--n3-purple); }
+.niveau-opt-code {
+  grid-row: 1 / 3;
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: currentColor;
+  color: white !important;
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+}
+.niveau-opt.n1 .niveau-opt-code { background: var(--n1-green); }
+.niveau-opt.n2 .niveau-opt-code { background: var(--n2-orange); }
+.niveau-opt.n3 .niveau-opt-code { background: var(--n3-purple); }
+.niveau-opt-label {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text);
+}
+.niveau-opt-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+.niveau-popover-info {
+  margin-top: 10px;
+  padding: 8px 10px;
+  background: var(--bg);
+  border-radius: 6px;
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+.niveau-popover-info strong { color: var(--esme-navy); }
+.niveau-popover-close {
+  width: 100%;
+  margin-top: 12px;
+  padding: 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+.niveau-popover-close:hover { background: var(--border); color: var(--text); }
+
+.tooltip-override-badge {
+  margin-top: 4px;
+  padding: 2px 6px;
+  background: var(--esme-pink);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 8px;
+  display: inline-block;
+}
+.tooltip-hint {
+  margin-top: 6px;
+  font-size: 10px;
+  opacity: 0.7;
+  font-style: italic;
+}
+
+/* Badge "reclassé" sur les lignes du plan */
+.case-override-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 7px;
+  background: var(--esme-pink-light);
+  color: var(--esme-pink);
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  vertical-align: middle;
+}
+
+/* Dropdown niveau dans le plan de déploiement */
+.deploy-case-niveau-select {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+.deploy-case-niveau-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.case-niveau-dropdown {
+  border: 1.5px solid;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  background: white;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.case-niveau-dropdown.n1 { border-color: var(--n1-green); color: var(--n1-green); }
+.case-niveau-dropdown.n2 { border-color: var(--n2-orange); color: var(--n2-orange); }
+.case-niveau-dropdown.n3 { border-color: var(--n3-purple); color: var(--n3-purple); }
+.case-niveau-dropdown:hover { background: var(--bg); }
 
 .matrix-tooltip {
   position: absolute;
@@ -2045,12 +2226,95 @@ uz.addEventListener('drop', e => {
 });
 
 // =============== PROCESS CSV ===============
+// Détecte le format Google Form multi-cas (1 ligne par personne avec colonnes "Nom du cas n°1", "n°2", ...)
+// et "déplie" cette structure en 1 ligne par cas d'usage pour pouvoir être traitée
+// par la logique standard de processCSV.
+function explodeMultiCasRows(rawRows, headers) {
+  // Repère tous les numéros de cas présents dans les en-têtes (1, 2, 3...)
+  const casNums = new Set();
+  headers.forEach(h => {
+    const m = h.match(/n°\s*(\d+)|n\s*°\s*(\d+)|cas\s*(\d+)/i);
+    if (m) {
+      const num = parseInt(m[1] || m[2] || m[3]);
+      if (!isNaN(num)) casNums.add(num);
+    }
+  });
+  const numsList = Array.from(casNums).sort((a,b) => a-b);
+  
+  // Colonnes communes (identité) = celles qui ne contiennent pas de "n°X" ni "cas X"
+  const communHeaders = headers.filter(h => !/n°\s*\d+|n\s*°\s*\d+|cas\s*\d+/i.test(h));
+  
+  // Pour chaque numéro de cas et chaque personne, créer une ligne dépliée
+  const exploded = [];
+  rawRows.forEach(row => {
+    numsList.forEach(num => {
+      const newRow = {};
+      // Ajoute les colonnes communes (identité, horodateur, etc.)
+      communHeaders.forEach(h => { newRow[h] = row[h]; });
+      
+      // Cherche les colonnes correspondant à ce numéro de cas et les renomme génériquement
+      headers.forEach(h => {
+        // On capture le numéro présent dans l'en-tête
+        const m = h.match(/n°\s*(\d+)|n\s*°\s*(\d+)|cas\s*(\d+)/i);
+        if (!m) return;
+        const headerNum = parseInt(m[1] || m[2] || m[3]);
+        if (headerNum !== num) return;
+        
+        // Renomme l'en-tête en supprimant la référence au numéro
+        // ex : "Nom du cas d'usage n°1" → "Nom du cas d'usage"
+        //      "Métier concerné — cas n°1" → "Métier concerné"
+        //      "Description du cas n°1 : que faites-vous aujourd'hui ?" → "Description : que faites-vous aujourd'hui ?"
+        let cleanName = h
+          .replace(/\s*[—\-–]\s*cas\s*n°\s*\d+/i, '')
+          .replace(/\s*du\s*cas\s*n°\s*\d+/i, '')
+          .replace(/\s*n°\s*\d+/i, '')
+          .replace(/\s*cas\s*\d+/i, '')
+          .replace(/\s+\(en minutes\)/i, ' (en minutes)') // garder "en minutes"
+          .replace(/\s{2,}/g, ' ')
+          .trim();
+        // Nettoyage final : "Description : que faites-vous ?" si la virgule colle mal
+        cleanName = cleanName.replace(/^:\s*/, '').replace(/\s*:\s*$/, '');
+        
+        newRow[cleanName] = row[h];
+      });
+      
+      // Ignore les groupes de colonnes vides (le participant n'a pas rempli ce cas)
+      const titreKey = Object.keys(newRow).find(k => /nom du cas|titre cas|nom cas/i.test(k));
+      if (titreKey && newRow[titreKey] && String(newRow[titreKey]).trim()) {
+        // Ignore aussi les réponses qui sont juste la question de navigation
+        // ("Souhaitez-vous ajouter un autre cas ?") - on supprime ces colonnes
+        Object.keys(newRow).forEach(k => {
+          if (/souhaitez-vous ajouter|ajouter un autre cas/i.test(k)) {
+            delete newRow[k];
+          }
+        });
+        exploded.push(newRow);
+      }
+    });
+  });
+  
+  console.log(`[Multi-cas] ${rawRows.length} participant(s) → ${exploded.length} cas d'usage dépliés`);
+  return exploded;
+}
+
 function processCSV(data, filename) {
   if (!data.length) { setStatus('Le CSV est vide.', '#DC2626'); return; }
   
   const headers = Object.keys(data[0]);
+  
+  // Détection du format multi-cas (Google Form v2 : 1 ligne par personne, N cas par ligne)
+  // On cherche des en-têtes du type "Nom du cas d'usage n°1", "Nom du cas d'usage n°2", etc.
+  const isMultiCasFormat = headers.some(h => /n°\s*\d+/i.test(h) || /n\s*°\s*\d+/i.test(h) || /cas\s*\d+/i.test(h));
+  
+  if (isMultiCasFormat) {
+    data = explodeMultiCasRows(data, headers);
+    if (!data.length) { setStatus('Aucun cas trouvé dans le CSV multi-cas.', '#DC2626'); return; }
+  }
+  
+  // Re-calcule les headers à partir des données dépliées
+  const finalHeaders = Object.keys(data[0]);
   const findCol = (patterns) => {
-    for (const h of headers) {
+    for (const h of finalHeaders) {
       const hLower = h.toLowerCase();
       for (const p of patterns) if (hLower.includes(p.toLowerCase())) return h;
     }
@@ -2066,7 +2330,11 @@ function processCSV(data, filename) {
     personnes: findCol(['personnes concernées', 'personnes', 'nombre de personnes']),
     duree: findCol(['durée', 'duree', 'minutes']),
     frequence: findCol(['fréquence', 'frequence']),
-    connexion: findCol(['connexion', 'connect', 'outil', 'logiciel', 'extraire', 'cette tâche', 'nécessite']),
+    // Nouveau format v3 (Source + Autonomie séparées)
+    source: findCol(['source des informations', 'source des info', 'source d\'info']),
+    autonomie: findCol(['niveau d\'autonomie', 'autonomie attendu', 'autonomie de l\'ia']),
+    // Ancien format v2 (Connexion unique)
+    connexion: findCol(['connexion aux outils', 'connect', 'extraire', 'cette tâche', 'nécessite']),
     type: findCol(['type de tâche', 'type tache']),
     criticite: findCol(['criticité', 'criticite'])
   };
@@ -2075,7 +2343,7 @@ function processCSV(data, filename) {
   if (!cols.titre) missing.push('Nom du cas');
   if (!cols.duree) missing.push('Durée');
   if (!cols.frequence) missing.push('Fréquence');
-  if (!cols.connexion && !cols.type) missing.push('Connexion ou Type de tâche');
+  if (!cols.source && !cols.connexion && !cols.type) missing.push('Source ou Connexion ou Type de tâche');
   if (missing.length) {
     setStatus(`Colonnes introuvables : ${missing.join(', ')}`, '#DC2626');
     alert(`Colonnes introuvables dans le CSV :\n• ${missing.join('\n• ')}\n\nVérifiez votre Google Form.`);
@@ -2083,22 +2351,38 @@ function processCSV(data, filename) {
   }
   
   cases = data
-    .filter(row => row[cols.titre] && row[cols.titre].trim())
+    .filter(row => row[cols.titre] && String(row[cols.titre]).trim())
     .map(row => {
-      const niveau = classifyNiveau(row[cols.connexion], row[cols.type]);
+      const sourceVal = cols.source ? String(row[cols.source] || '').trim() : '';
+      const autonomieVal = cols.autonomie ? String(row[cols.autonomie] || '').trim() : '';
+      const connexionVal = cols.connexion ? String(row[cols.connexion] || '').trim() : '';
+      const typeVal = cols.type ? String(row[cols.type] || '').trim() : '';
+      
+      // Classification : priorité au nouveau format (Source + Autonomie)
+      let niveau;
+      if (sourceVal || autonomieVal) {
+        niveau = classifyNiveauV3(sourceVal, autonomieVal);
+      } else {
+        niveau = classifyNiveau(connexionVal, typeVal);
+      }
+      
       return {
         prenom: (row[cols.prenom] || '').trim() || 'Anonyme',
         fonction: (row[cols.fonction] || '').trim(),
-        titre: row[cols.titre].trim(),
-        description: (row[cols.description] || '').trim(),
-        metier: (row[cols.metier] || 'Autre').trim() || 'Autre',
+        titre: String(row[cols.titre]).trim(),
+        description: String(row[cols.description] || '').trim(),
+        metier: String(row[cols.metier] || 'Autre').trim() || 'Autre',
         personnes: parseInt(row[cols.personnes]) || 1,
         dureeMinutes: parseFloat(row[cols.duree]) || 0,
-        frequence: (row[cols.frequence] || 'Mensuel').trim(),
-        connexion: (row[cols.connexion] || '').trim(),
-        type: (row[cols.type] || '').trim(),
+        frequence: String(row[cols.frequence] || 'Mensuel').trim(),
+        source: sourceVal,
+        autonomie: autonomieVal,
+        connexion: connexionVal,
+        type: typeVal,
         criticite: parseInt(row[cols.criticite]) || 3,
-        niveau: niveau
+        niveau: niveau,
+        niveauAuto: niveau,   // garde la valeur calculée pour distinguer override
+        niveauOverride: null  // null = pas d'override manuel
       };
     });
   
@@ -2116,6 +2400,48 @@ function processCSV(data, filename) {
   
   render();
   showContent(filename);
+}
+
+// Classification v3 : matrice Source × Autonomie
+// Plus précise que la classification v2 (Connexion seule)
+function classifyNiveauV3(sourceStr, autonomieStr) {
+  const src = (sourceStr || '').toLowerCase();
+  const aut = (autonomieStr || '').toLowerCase();
+  
+  // Identifier la source (5 catégories)
+  let source = 'user'; // défaut : utilisateur fournit
+  if (src.includes('plusieurs sources') || src.includes('combinées') || src.includes('combinees')) {
+    source = 'combine';
+  } else if (src.includes('site web') || src.includes('linkedin') || src.includes('boamp') || src.includes('externe') || src.includes('public')) {
+    source = 'web';
+  } else if (src.includes('logiciel') || src.includes('crm') || src.includes('erp') || src.includes('si interne') || src.includes('base de données')) {
+    source = 'si';
+  } else if (src.includes('document') || src.includes('référentiel') || src.includes('referentiel') || src.includes('ged') || src.includes('sharepoint') || src.includes('modèle')) {
+    source = 'doc';
+  } else if (src.includes('utilisateur') || src.includes('lui-même') || src.includes('saisie') || src.includes('copier-coller') || src.includes('fournit')) {
+    source = 'user';
+  }
+  
+  // Identifier le niveau d'autonomie (3 catégories)
+  let autonomie = 'gen'; // défaut : génération ponctuelle
+  if (aut.includes('agent autonome') || aut.includes('enchaîne') || aut.includes('enchaine') || aut.includes('sans supervision')) {
+    autonomie = 'agent';
+  } else if (aut.includes('recherche assistée') || aut.includes('recherche assistee') || aut.includes('explore') || aut.includes('synthétise') || aut.includes('synthetise')) {
+    autonomie = 'rech';
+  } else if (aut.includes('génération') || aut.includes('generation') || aut.includes('ponctuelle') || aut.includes('produit une réponse')) {
+    autonomie = 'gen';
+  }
+  
+  // Matrice de décision 5×3 → N1/N2/N3
+  const matrix = {
+    'user':    { 'gen': 'N1', 'rech': 'N1', 'agent': 'N3' },
+    'doc':     { 'gen': 'N1', 'rech': 'N2', 'agent': 'N3' },
+    'si':      { 'gen': 'N1', 'rech': 'N3', 'agent': 'N3' },
+    'web':     { 'gen': 'N1', 'rech': 'N1', 'agent': 'N3' },
+    'combine': { 'gen': 'N2', 'rech': 'N3', 'agent': 'N3' }
+  };
+  
+  return (matrix[source] && matrix[source][autonomie]) || 'N1';
 }
 
 function classifyNiveau(connexionStr, typeStr) {
@@ -2270,20 +2596,119 @@ function renderMatrix() {
   
   // Numéroter les cas selon ordre dans cases[]
   cases.forEach((c, i) => {
-    // X = faisabilité : 0=facile (gauche), 1=complexe (droite)
-    // Notre c.faisabilite : 0.75=facile (N1), 0.20=complexe (N3)
-    // On inverse : x = 1 - c.faisabilite donne 0.25 (gauche) pour N1, 0.80 (droite) pour N3
     const x = (1 - c.faisabilite) * 100;
-    // Y = criticité 1-5 : on convertit en 0-100 pour le bottom (donc 5 = 100% bas = top)
     const y = ((c.criticite - 1) / 4) * 100;
     
     const point = document.createElement('div');
     point.className = `matrix-point ${c.niveau.toLowerCase()}`;
+    if (c.niveauOverride) point.classList.add('overridden');
     point.style.left = x + '%';
     point.style.bottom = y + '%';
-    point.innerHTML = `${i+1}<div class="matrix-tooltip"><div class="tooltip-title">${escapeHtml(c.titre)}</div><div class="tooltip-meta">${escapeHtml(c.metier)} • ${niveauLabel(c.niveau)} • ${formatHours(c.gainAnnuelHeures)}/an</div></div>`;
+    point.title = 'Cliquer pour changer le niveau';
+    const overrideBadge = c.niveauOverride ? '<div class="tooltip-override-badge">↻ Reclassé manuellement</div>' : '';
+    point.innerHTML = `${i+1}<div class="matrix-tooltip"><div class="tooltip-title">${escapeHtml(c.titre)}</div><div class="tooltip-meta">${escapeHtml(c.metier)} • ${niveauLabel(c.niveau)} • ${formatHours(c.gainAnnuelHeures)}/an</div>${overrideBadge}<div class="tooltip-hint">Cliquer pour reclasser</div></div>`;
+    point.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openNiveauPopover(i, point);
+    });
     grid.appendChild(point);
   });
+}
+
+// Override manuel du niveau d'un cas
+function setCaseNiveau(idx, newNiveau) {
+  if (!cases[idx]) return;
+  const c = cases[idx];
+  
+  // Si le nouveau niveau correspond au niveauAuto, on retire l'override
+  if (newNiveau === c.niveauAuto) {
+    c.niveauOverride = null;
+    c.niveau = c.niveauAuto;
+  } else {
+    c.niveauOverride = newNiveau;
+    c.niveau = newNiveau;
+  }
+  
+  // Recalculer la faisabilité (position X dans la matrice)
+  c.faisabilite = { N1: 0.75, N2: 0.45, N3: 0.20 }[c.niveau];
+  
+  // Re-render tout pour propager le changement partout (matrice + plan + roadmap)
+  render();
+  
+  // Si l'onglet roadmap est actif, on rafraîchit aussi
+  if (typeof renderRoadmapAll === 'function' && cases.length > 0 && document.getElementById('roadmapContent') && !document.getElementById('roadmapContent').classList.contains('hidden')) {
+    renderRoadmapAll();
+  }
+  
+  closeNiveauPopover();
+}
+
+// Popover sélecteur de niveau
+function openNiveauPopover(idx, anchor) {
+  closeNiveauPopover();
+  const c = cases[idx];
+  
+  const pop = document.createElement('div');
+  pop.id = 'niveauPopover';
+  pop.className = 'niveau-popover';
+  pop.innerHTML = `
+    <div class="niveau-popover-title">${escapeHtml(c.titre)}</div>
+    <div class="niveau-popover-subtitle">Reclasser ce cas</div>
+    <div class="niveau-popover-options">
+      <button class="niveau-opt n1 ${c.niveau==='N1'?'active':''}" data-niveau="N1">
+        <span class="niveau-opt-code">N1</span>
+        <span class="niveau-opt-label">Assistant IA</span>
+        <span class="niveau-opt-desc">L'IA répond à partir des infos fournies</span>
+      </button>
+      <button class="niveau-opt n2 ${c.niveau==='N2'?'active':''}" data-niveau="N2">
+        <span class="niveau-opt-code">N2</span>
+        <span class="niveau-opt-label">RAG documentaire</span>
+        <span class="niveau-opt-desc">L'IA explore un corpus interne</span>
+      </button>
+      <button class="niveau-opt n3 ${c.niveau==='N3'?'active':''}" data-niveau="N3">
+        <span class="niveau-opt-code">N3</span>
+        <span class="niveau-opt-label">Agent IA autonome</span>
+        <span class="niveau-opt-desc">L'IA enchaîne des étapes et agit</span>
+      </button>
+    </div>
+    ${c.niveauOverride ? `<div class="niveau-popover-info">Niveau auto : <strong>${niveauLabel(c.niveauAuto)}</strong> — choisissez ce niveau pour revenir à l'auto.</div>` : ''}
+    <button class="niveau-popover-close" onclick="closeNiveauPopover()">Fermer</button>
+  `;
+  document.body.appendChild(pop);
+  
+  // Positionner près de l'anchor
+  const rect = anchor.getBoundingClientRect();
+  pop.style.left = Math.min(window.innerWidth - 340, rect.left + 30) + 'px';
+  pop.style.top = (rect.top + window.scrollY + 20) + 'px';
+  
+  // Listener sur les boutons
+  pop.querySelectorAll('.niveau-opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      setCaseNiveau(idx, btn.dataset.niveau);
+    });
+  });
+  
+  // Fermer si clic hors du popover
+  setTimeout(() => {
+    document.addEventListener('click', closeNiveauPopoverOnOutside, { once: true });
+  }, 100);
+}
+
+function closeNiveauPopover() {
+  const old = document.getElementById('niveauPopover');
+  if (old) old.remove();
+}
+
+function closeNiveauPopoverOnOutside(e) {
+  const pop = document.getElementById('niveauPopover');
+  if (pop && !pop.contains(e.target)) {
+    closeNiveauPopover();
+  } else if (pop) {
+    // Re-attacher pour les clics suivants
+    setTimeout(() => {
+      document.addEventListener('click', closeNiveauPopoverOnOutside, { once: true });
+    }, 100);
+  }
 }
 
 function niveauLabel(n) {
@@ -2373,12 +2798,16 @@ function renderDeploymentPlan() {
 function renderCaseRow(c) {
   const stars = Math.round(c.criticite);
   const dureeStr = c.dureeMinutes >= 60 ? (c.dureeMinutes / 60).toFixed(1).replace(/\.0$/, '') + 'h' : c.dureeMinutes + ' min';
+  const idx = cases.indexOf(c);
+  const overrideBadge = c.niveauOverride 
+    ? `<span class="case-override-badge" title="Niveau auto initial : ${niveauLabel(c.niveauAuto)}">↻ reclassé</span>` 
+    : '';
   
   return `
     <div class="deploy-case">
       <div class="deploy-case-main">
         <div class="deploy-case-author">par ${escapeHtml(c.prenom)}${c.fonction ? ' • ' + escapeHtml(c.fonction) : ''}</div>
-        <div class="deploy-case-title">${escapeHtml(c.titre)}</div>
+        <div class="deploy-case-title">${escapeHtml(c.titre)} ${overrideBadge}</div>
         ${c.description ? `<div class="deploy-case-desc">${escapeHtml(c.description)}</div>` : ''}
         <div class="deploy-case-meta">
           <span class="deploy-case-meta-item"><strong>${c.personnes}</strong> pers.</span>
@@ -2386,6 +2815,14 @@ function renderCaseRow(c) {
           <span class="deploy-case-meta-item"><strong>${dureeStr}</strong> par occurrence</span>
           <span>•</span>
           <span class="deploy-case-meta-item">Fréquence <strong>${escapeHtml(c.frequence.toLowerCase())}</strong></span>
+        </div>
+        <div class="deploy-case-niveau-select">
+          <span class="deploy-case-niveau-label">Niveau :</span>
+          <select class="case-niveau-dropdown ${c.niveau.toLowerCase()}" onchange="setCaseNiveau(${idx}, this.value)" data-idx="${idx}">
+            <option value="N1" ${c.niveau==='N1'?'selected':''}>N1 — Assistant IA</option>
+            <option value="N2" ${c.niveau==='N2'?'selected':''}>N2 — RAG documentaire</option>
+            <option value="N3" ${c.niveau==='N3'?'selected':''}>N3 — Agent autonome</option>
+          </select>
         </div>
       </div>
       <div class="deploy-case-impact">
