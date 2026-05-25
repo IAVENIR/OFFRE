@@ -486,16 +486,31 @@ body {
 .app-title .pink { color: var(--esme-pink); font-style: italic; }
 .app-subtitle { font-size: 12px; opacity: 0.7; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2px; }
 
+.export-buttons-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
 .export-pdf-btn {
   background: var(--esme-pink); color: white; border: none;
-  padding: 12px 22px;
-  font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600;
+  padding: 12px 18px;
+  font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
   cursor: pointer; border-radius: 8px;
   box-shadow: 0 4px 12px rgba(236,72,153,0.4);
   transition: all 0.2s;
+  white-space: nowrap;
 }
 .export-pdf-btn:hover { background: #d63d83; transform: translateY(-1px); }
 .export-pdf-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+.export-pdf-btn.export-roadmap {
+  background: var(--esme-navy);
+  box-shadow: 0 4px 12px rgba(30,58,138,0.4);
+}
+.export-pdf-btn.export-roadmap:hover { background: #142a5f; }
+@media (max-width: 720px) {
+  .export-buttons-group { flex-direction: column; gap: 6px; }
+  .export-pdf-btn { padding: 10px 14px; font-size: 12px; width: 100%; }
+}
 
 /* MAIN TABS */
 .main-tabs {
@@ -2108,7 +2123,10 @@ body {
       <div class="app-subtitle">Atelier collectif CODIR</div>
     </div>
   </div>
-  <button class="export-pdf-btn" id="exportBtn" disabled>📄 Exporter en PDF</button>
+  <div class="export-buttons-group">
+    <button class="export-pdf-btn" id="exportCartoBtn" disabled>📄 Cartographie</button>
+    <button class="export-pdf-btn export-roadmap" id="exportRoadmapBtn" disabled>📄 Feuille de route</button>
+  </div>
 </header>
 
 <div class="main-tabs">
@@ -2791,7 +2809,7 @@ function frequencyToOccurrences(freq) {
 // =============== AFFICHAGE ===============
 function showContent(filename) {
   document.getElementById('cartoContent').classList.remove('hidden');
-  document.getElementById('exportBtn').disabled = false;
+  document.getElementById('exportCartoBtn').disabled = false;
   uz.classList.add('has-data');
   
   Array.from(uz.children).forEach(child => {
@@ -2822,7 +2840,8 @@ function resetData(e) {
   if (e) e.stopPropagation();
   cases = [];
   document.getElementById('cartoContent').classList.add('hidden');
-  document.getElementById('exportBtn').disabled = true;
+  document.getElementById('exportCartoBtn').disabled = true;
+  document.getElementById('exportRoadmapBtn').disabled = true;
   uz.classList.remove('has-data');
   const successBlock = uz.querySelector('.upload-success-block');
   if (successBlock) successBlock.remove();
@@ -3201,9 +3220,10 @@ function renderROI() {
 }
 
 // =============== PDF EXPORT ===============
-document.getElementById('exportBtn').addEventListener('click', exportPDF);
+document.getElementById('exportCartoBtn').addEventListener('click', exportCartographiePDF);
+document.getElementById('exportRoadmapBtn').addEventListener('click', exportFeuilleRoutePDF);
 
-async function exportPDF() {
+async function exportCartographiePDF() {
   if (cases.length === 0) return;
   
   const { jsPDF } = window.jspdf;
@@ -3712,6 +3732,594 @@ async function exportPDF() {
   doc.text('executive.education@esme.fr', M, 264);
   
   doc.save(`Cartographie_IA_FORMAPELEC_${new Date().toISOString().slice(0,10)}.pdf`);
+}
+
+// ============================================================
+// EXPORT PDF — FEUILLE DE ROUTE
+// ============================================================
+async function exportFeuilleRoutePDF() {
+  if (cases.length === 0) return;
+  const selectedCases = cases.map((c, i) => ({c, i})).filter(x => rmSelections[x.i]);
+  if (selectedCases.length === 0) {
+    alert("Aucun cas pilote sélectionné. Sélectionnez au moins un cas en V1 ou V2 dans la phase 1 de la feuille de route.");
+    return;
+  }
+  
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  const W = 210, H = 297, M = 18;
+  
+  const niveauColors = { N1: [16,185,129], N2: [245,158,11], N3: [139,92,246] };
+  const niveauNames = { N1: 'N1 Assistant IA', N2: 'N2 RAG', N3: 'N3 Agent IA' };
+  
+  // ============ PAGE DE COUVERTURE ============
+  doc.setFillColor(30, 58, 138);
+  doc.rect(0, 0, W, H, 'F');
+  doc.setFillColor(255, 255, 255);
+  doc.rect(M, M, 32, 22, 'F');
+  doc.setTextColor(30, 58, 138);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(14);
+  doc.text('ESME', M + 16, M + 11, { align: 'center' });
+  doc.setFontSize(5);
+  doc.text('EXECUTIVE EDUCATION', M + 16, M + 17, { align: 'center' });
+  
+  doc.setTextColor(236, 72, 153);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(36);
+  doc.text('Feuille de route', M, 105);
+  doc.text('IA collective', M, 121);
+  
+  doc.setTextColor(255, 255, 255);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(14);
+  doc.text('FORMAPELEC × ESME Executive Education', M, 138);
+  doc.setFontSize(11);
+  doc.text('Arbitrages collectifs CODIR — Plan 12 mois', M, 145);
+  
+  // KPIs feuille de route en couverture
+  const roi = computeRmROI();
+  const v1Count = selectedCases.filter(x => rmSelections[x.i] === 'v1').length;
+  const v2Count = selectedCases.filter(x => rmSelections[x.i] === 'v2').length;
+  
+  doc.setFillColor(236, 72, 153);
+  doc.rect(M, 165, W - 2*M, 60, 'F');
+  doc.setTextColor(255, 255, 255);
+  
+  const rmKpis = [
+    { label: 'CAS PILOTES RETENUS', val: selectedCases.length },
+    { label: 'INVESTISSEMENT AN 1', val: formatEur(roi.investAn1) },
+    { label: 'GAINS ANNUELS', val: formatEur(roi.gainsAnnuels) },
+    { label: 'ROI CUMULÉ 3 ANS', val: roi.roiCumule !== null ? (roi.roiCumule > 0 ? '+' : '') + roi.roiCumule.toFixed(0) + ' %' : '—' }
+  ];
+  
+  rmKpis.forEach((s, i) => {
+    const col = i % 2;
+    const row = Math.floor(i / 2);
+    const x = M + 8 + col * ((W - 2*M - 16) / 2);
+    const y = 178 + row * 24;
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'normal');
+    doc.text(s.label, x, y);
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    doc.text(String(s.val), x, y + 10);
+  });
+  
+  doc.setFontSize(8);
+  doc.text('Atelier feuille de route CODIR • Document de restitution', W/2, H - 15, { align: 'center' });
+  const today = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+  doc.text(today, W/2, H - 10, { align: 'center' });
+  
+  // ============ PAGE 2 — SYNTHÈSE DES ARBITRAGES ============
+  doc.addPage();
+  drawRmHeader(doc, W, M);
+  
+  doc.setTextColor(30, 58, 138);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(24);
+  doc.text('Synthèse des arbitrages', M, 50);
+  doc.setDrawColor(236, 72, 153);
+  doc.setLineWidth(2);
+  doc.line(M, 53, M + 85, 53);
+  
+  // 4 KPIs en haut
+  let y = 65;
+  const kpis = [
+    { label: 'CAS RETENUS', val: selectedCases.length, color: [30,58,138] },
+    { label: 'COURT TERME (V1)', val: v1Count, color: [16,185,129] },
+    { label: 'MOYEN TERME (V2)', val: v2Count, color: [245,158,11] },
+    { label: 'CAS NON RETENUS', val: cases.length - selectedCases.length, color: [150,150,150] }
+  ];
+  const kpiW = (W - 2*M - 9) / 4;
+  kpis.forEach((k, i) => {
+    const x = M + i * (kpiW + 3);
+    doc.setFillColor(...k.color);
+    doc.rect(x, y, kpiW, 28, 'F');
+    doc.setTextColor(255,255,255);
+    doc.setFontSize(7);
+    doc.setFont('helvetica', 'normal');
+    doc.text(k.label, x + 3, y + 7);
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'bold');
+    doc.text(String(k.val), x + 3, y + 18);
+  });
+  
+  // Distribution par niveau (uniquement cas retenus)
+  y = 105;
+  doc.setTextColor(30,58,138);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(14);
+  doc.text('Cas pilotes retenus par niveau', M, y);
+  
+  y += 10;
+  ['N1','N2','N3'].forEach(n => {
+    const items = selectedCases.filter(x => x.c.niveau === n);
+    if (items.length === 0) return;
+    const hrs = items.reduce((s, x) => s + x.c.gainAnnuelHeures, 0);
+    
+    doc.setFillColor(...niveauColors[n]);
+    doc.rect(M, y, 4, 14, 'F');
+    doc.setTextColor(30,58,138);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.text(niveauNames[n], M + 8, y + 6);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor(80,80,80);
+    doc.text(`${items.length} cas retenus • ${formatHours(hrs)} économisées par an`, M + 8, y + 11);
+    y += 18;
+  });
+  
+  // Outils retenus
+  y += 5;
+  doc.setTextColor(30,58,138);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(14);
+  doc.text('Outils IA retenus', M, y);
+  y += 8;
+  
+  if (rmMainTools.length === 0) {
+    doc.setTextColor(150,150,150);
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(9);
+    doc.text('Aucun outil principal sélectionné en phase 2.', M, y);
+    y += 6;
+  } else {
+    rmMainTools.forEach(id => {
+      if (y > H - 30) return;
+      const t = getRmTool(id);
+      if (!t) return;
+      const coverageColor = t.coverage === 'both' ? [16,185,129] : [245,158,11];
+      const coverageText = t.coverage === 'both' ? 'V1 + V2 + V3' : 'V1 seulement';
+      
+      doc.setFillColor(248, 248, 245);
+      doc.rect(M, y, W - 2*M, 11, 'F');
+      doc.setFillColor(...coverageColor);
+      doc.rect(M, y, 3, 11, 'F');
+      doc.setTextColor(30,58,138);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.text(t.name, M + 6, y + 5);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(120,120,120);
+      doc.text(t.vendor, M + 6, y + 9);
+      doc.setTextColor(...coverageColor);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8);
+      doc.text(coverageText, W - M - 3, y + 7, { align: 'right' });
+      y += 13;
+    });
+  }
+  
+  // Outils complémentaires
+  if (rmComplementary.length > 0 && y < H - 30) {
+    y += 3;
+    doc.setTextColor(30,58,138);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.text('Outils complémentaires', M, y);
+    y += 6;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor(80,80,80);
+    const compNames = rmComplementary.map(id => getRmComplementaryName(id)).join(' • ');
+    const compLines = doc.splitTextToSize(compNames, W - 2*M);
+    doc.text(compLines, M, y);
+  }
+  
+  drawRmFooter(doc, W, H, M, 'Synthèse des arbitrages');
+  
+  // ============ PAGE 3 — COUVERTURE PAR SERVICE ============
+  doc.addPage();
+  drawRmHeader(doc, W, M);
+  
+  doc.setTextColor(30, 58, 138);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(24);
+  doc.text('Couverture par service', M, 50);
+  doc.setDrawColor(236, 72, 153);
+  doc.setLineWidth(2);
+  doc.line(M, 53, M + 85, 53);
+  
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.setTextColor(80,80,80);
+  doc.text('Nombre de personnes à équiper par service identifié.', M, 62);
+  
+  y = 72;
+  doc.setFillColor(30, 58, 138);
+  doc.rect(M, y, W - 2*M, 9, 'F');
+  doc.setTextColor(255,255,255);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(9);
+  doc.text('SERVICE', M + 4, y + 6);
+  doc.text('PERSONNES À ÉQUIPER', M + 90, y + 6);
+  doc.text('TOTAL SERVICE', M + 150, y + 6);
+  y += 9;
+  
+  const servicesArr = Object.entries(rmServiceCoverage);
+  let totalTarget = 0, totalGlobal = 0;
+  servicesArr.forEach(([s, c], i) => {
+    if (y > H - 30) return;
+    totalTarget += c.target || 0;
+    totalGlobal += c.total || 0;
+    doc.setFillColor(i % 2 === 0 ? 250 : 245, i % 2 === 0 ? 250 : 245, i % 2 === 0 ? 247 : 240);
+    doc.rect(M, y, W - 2*M, 9, 'F');
+    doc.setTextColor(40,40,40);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.text(s, M + 4, y + 6);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(236, 72, 153);
+    doc.text(String(c.target || 0), M + 90, y + 6);
+    doc.setTextColor(80,80,80);
+    doc.setFont('helvetica', 'normal');
+    doc.text(String(c.total || 0), M + 150, y + 6);
+    y += 9;
+  });
+  
+  // Total
+  doc.setFillColor(236, 72, 153);
+  doc.rect(M, y, W - 2*M, 11, 'F');
+  doc.setTextColor(255,255,255);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(10);
+  doc.text('TOTAL', M + 4, y + 7);
+  doc.text(String(totalTarget), M + 90, y + 7);
+  doc.text(String(totalGlobal), M + 150, y + 7);
+  
+  drawRmFooter(doc, W, H, M, 'Couverture par service');
+  
+  // ============ PAGES — CAS PILOTES PAR VAGUE ============
+  ['v1', 'v2'].forEach(vague => {
+    const vagueCases = selectedCases.filter(x => rmSelections[x.i] === vague);
+    if (vagueCases.length === 0) return;
+    
+    doc.addPage();
+    drawRmHeader(doc, W, M);
+    
+    const vagueColor = vague === 'v1' ? [16,185,129] : [245,158,11];
+    const vagueLabel = vague === 'v1' ? 'Vague 1 — Court Terme' : 'Vague 2 — Moyen Terme';
+    const vagueSubtitle = vague === 'v1' ? 'Quick Wins — Assistants IA (0 à 3 mois)' : 'RAG & Agents IA (3 à 9 mois)';
+    
+    doc.setFillColor(...vagueColor);
+    doc.rect(0, 18, W, 28, 'F');
+    doc.setTextColor(255,255,255);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.text(vagueLabel.toUpperCase(), M, 28);
+    doc.setFontSize(20);
+    doc.text(vagueSubtitle, M, 40);
+    
+    const vagueHrs = vagueCases.reduce((s, x) => s + x.c.gainAnnuelHeures, 0);
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`${vagueCases.length} cas • ${formatHours(vagueHrs)}/an`, W - M, 33, { align: 'right' });
+    
+    y = 56;
+    
+    // Trier par niveau N1→N3
+    vagueCases.sort((a, b) => parseInt(a.c.niveau.substring(1)) - parseInt(b.c.niveau.substring(1)));
+    
+    vagueCases.forEach(({c, i}) => {
+      if (y > H - 35) {
+        drawRmFooter(doc, W, H, M, vagueLabel);
+        doc.addPage();
+        drawRmHeader(doc, W, M);
+        y = 50;
+      }
+      
+      const formDays = rmFormationDays[i] !== undefined ? rmFormationDays[i] : rmDefaultFormation(c.niveau);
+      const conseil = rmConseilForNiveau(c.niveau);
+      const conseilIncluded = !!rmConseilInclude[i];
+      const isN1 = c.niveau === 'N1';
+      const niveauColor = niveauColors[c.niveau];
+      
+      const titleLines = doc.splitTextToSize(c.titre, W - 2*M - 80);
+      const rowH = Math.max(22, titleLines.length * 4 + 16);
+      
+      doc.setFillColor(252, 252, 250);
+      doc.rect(M, y, W - 2*M, rowH, 'F');
+      doc.setFillColor(...niveauColor);
+      doc.rect(M, y, 3, rowH, 'F');
+      
+      // Badge niveau
+      doc.setFillColor(...niveauColor);
+      doc.roundedRect(M + 6, y + 3, 18, 5, 1, 1, 'F');
+      doc.setTextColor(255,255,255);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(6);
+      doc.text(c.niveau, M + 15, y + 6.5, { align: 'center' });
+      
+      // Métier
+      doc.setTextColor(120,120,120);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7);
+      doc.text(c.metier, M + 27, y + 6.5);
+      
+      // Titre (sous le badge/métier)
+      doc.setTextColor(40,40,40);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.text(titleLines, M + 6, y + 13);
+      
+      // Plan : formation + conseil (en bas)
+      let planText = `${formDays}j formation`;
+      if (!isN1 && conseilIncluded) planText += ` + ${conseil.months} mois conseil`;
+      else if (!isN1) planText += ` (conseil non prioritaire)`;
+      
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7);
+      doc.setTextColor(236, 72, 153);
+      doc.text(planText, M + 6, y + rowH - 4);
+      
+      // Gain à droite
+      doc.setTextColor(16, 185, 129);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.text(formatHours(c.gainAnnuelHeures), W - M - 3, y + rowH/2 + 1, { align: 'right' });
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(6);
+      doc.setTextColor(120,120,120);
+      doc.text('GAIN/AN', W - M - 3, y + rowH/2 + 5, { align: 'right' });
+      
+      y += rowH + 2;
+    });
+    
+    drawRmFooter(doc, W, H, M, vagueLabel);
+  });
+  
+  // ============ PAGE — INDICATEURS FINANCIERS ============
+  doc.addPage();
+  drawRmHeader(doc, W, M);
+  
+  doc.setTextColor(30, 58, 138);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(24);
+  doc.text('Indicateurs financiers', M, 50);
+  doc.setDrawColor(236, 72, 153);
+  doc.setLineWidth(2);
+  doc.line(M, 53, M + 85, 53);
+  
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(80,80,80);
+  const subtitleLines = doc.splitTextToSize(
+    `Taux horaire ${roi.hourlyRate} €/h • Formation 2 500 €/j (sessions de 15 max) • Conseil 750 €/j (2 mois par cas N2/N3) • Licences 20 €/mois/personne récurrentes • ${roi.nbCases} cas pilotes`,
+    W - 2*M
+  );
+  doc.text(subtitleLines, M, 62);
+  
+  // 4 KPIs principaux
+  y = 75;
+  const finKpis = [
+    { label: 'GAINS ANNUELS ESTIMÉS', val: formatEur(roi.gainsAnnuels), sub: `${formatHours(roi.totalHours)} économisées/an`, color: [16,185,129] },
+    { label: 'INVESTISSEMENT AN 1', val: formatEur(roi.investAn1), sub: `${formatEur(roi.investForm)} form. + ${formatEur(roi.investConseil)} cons. + ${formatEur(roi.licensesPerYear)} lic.`, color: [236,72,153] },
+    { label: 'PAYBACK', val: roi.paybackMonths !== null ? roi.paybackMonths.toFixed(1) + ' mois' : '—', sub: roi.paybackMonths !== null && roi.paybackMonths < 18 ? 'Projet sain' : (roi.paybackMonths !== null && roi.paybackMonths < 24 ? 'Acceptable' : 'À réinterroger'), color: [245,158,11] },
+    { label: 'ROI CUMULÉ 3 ANS', val: roi.roiCumule !== null ? (roi.roiCumule > 0 ? '+' : '') + roi.roiCumule.toFixed(0) + ' %' : '—', sub: `Sur ${formatEur(roi.investCumule3Ans)} investis`, color: [30,58,138] }
+  ];
+  const finKpiW = (W - 2*M - 9) / 2;
+  finKpis.forEach((k, i) => {
+    const col = i % 2;
+    const row = Math.floor(i / 2);
+    const x = M + col * (finKpiW + 3);
+    const yk = y + row * 28;
+    doc.setFillColor(...k.color);
+    doc.rect(x, yk, 4, 25, 'F');
+    doc.setFillColor(248, 248, 245);
+    doc.rect(x + 4, yk, finKpiW - 4, 25, 'F');
+    doc.setTextColor(120,120,120);
+    doc.setFontSize(7);
+    doc.setFont('helvetica', 'normal');
+    doc.text(k.label, x + 8, yk + 6);
+    doc.setTextColor(30,58,138);
+    doc.setFontSize(15);
+    doc.setFont('helvetica', 'bold');
+    doc.text(String(k.val), x + 8, yk + 14);
+    doc.setTextColor(80,80,80);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7);
+    doc.text(k.sub, x + 8, yk + 20);
+  });
+  
+  // Tableau ROI multi-années
+  y += 65;
+  doc.setTextColor(30,58,138);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(13);
+  doc.text('Détail par année', M, y);
+  
+  y += 6;
+  const cellW = (W - 2*M - 50) / 4;
+  
+  // En-tête
+  doc.setFillColor(30, 58, 138);
+  doc.rect(M, y, W - 2*M, 9, 'F');
+  doc.setTextColor(255,255,255);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(9);
+  doc.text('POSTE', M + 4, y + 6);
+  doc.text('AN 1', M + 50 + cellW * 0.5, y + 6, { align: 'center' });
+  doc.text('AN 2', M + 50 + cellW * 1.5, y + 6, { align: 'center' });
+  doc.text('AN 3', M + 50 + cellW * 2.5, y + 6, { align: 'center' });
+  doc.text('CUMULÉ', M + 50 + cellW * 3.5, y + 6, { align: 'center' });
+  y += 9;
+  
+  const rows = [
+    { 
+      label: 'Gains', 
+      vals: [roi.gainsAnnuels, roi.gainsAnnuels, roi.gainsAnnuels, roi.gainsCumule3Ans],
+      color: [16, 185, 129]
+    },
+    { 
+      label: 'Charges', 
+      vals: [-roi.investAn1, -roi.investAn2, -roi.investAn3, -roi.investCumule3Ans],
+      color: [236, 72, 153]
+    },
+    { 
+      label: 'Résultat net', 
+      vals: [
+        roi.gainsAnnuels - roi.investAn1,
+        roi.gainsAnnuels - roi.investAn2,
+        roi.gainsAnnuels - roi.investAn3,
+        roi.gainsCumule3Ans - roi.investCumule3Ans
+      ],
+      bold: true,
+      bg: [245, 245, 240]
+    },
+    { 
+      label: 'ROI', 
+      vals: [
+        roi.roiAn1 !== null ? (roi.roiAn1 > 0 ? '+' : '') + roi.roiAn1.toFixed(0) + ' %' : '—',
+        roi.roiAn2 !== null ? (roi.roiAn2 > 0 ? '+' : '') + roi.roiAn2.toFixed(0) + ' %' : '—',
+        roi.roiAn3 !== null ? (roi.roiAn3 > 0 ? '+' : '') + roi.roiAn3.toFixed(0) + ' %' : '—',
+        roi.roiCumule !== null ? (roi.roiCumule > 0 ? '+' : '') + roi.roiCumule.toFixed(0) + ' %' : '—'
+      ],
+      bold: true,
+      bg: [245, 245, 240],
+      isPct: true
+    }
+  ];
+  
+  rows.forEach(row => {
+    doc.setFillColor(...(row.bg || [250, 250, 247]));
+    doc.rect(M, y, W - 2*M, 10, 'F');
+    doc.setTextColor(40, 40, 40);
+    doc.setFont('helvetica', row.bold ? 'bold' : 'normal');
+    doc.setFontSize(9);
+    doc.text(row.label, M + 4, y + 6.5);
+    
+    row.vals.forEach((v, i) => {
+      const x = M + 50 + cellW * (i + 0.5);
+      if (row.isPct) {
+        // Pour le ROI
+        const numVal = parseFloat(String(v).replace(/[+%\s]/g, '').replace(',', '.'));
+        doc.setTextColor(numVal > 0 ? 16 : 220, numVal > 0 ? 185 : 38, numVal > 0 ? 129 : 38);
+      } else if (row.color) {
+        doc.setTextColor(...row.color);
+      } else {
+        const numVal = typeof v === 'number' ? v : 0;
+        doc.setTextColor(numVal > 0 ? 16 : 220, numVal > 0 ? 185 : 38, numVal > 0 ? 129 : 38);
+      }
+      doc.setFont('helvetica', 'bold');
+      const formatted = typeof v === 'number' ? formatEur(v) : String(v);
+      doc.text(formatted, x, y + 6.5, { align: 'center' });
+    });
+    
+    y += 10;
+  });
+  
+  // Méthode de calcul
+  y += 8;
+  if (y < H - 40) {
+    doc.setTextColor(30,58,138);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.text('Méthode de calcul', M, y);
+    y += 6;
+    
+    doc.setTextColor(60,60,60);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    const methodText = `An 1 = ${roi.totalSessions} session(s) de formation × jours/session × 2 500 € (${formatEur(roi.investForm)}) ${roi.nbConseilCases > 0 ? '+ ' + roi.nbConseilCases + ' mission(s) conseil × 2 mois × 20 j × 750 € (' + formatEur(roi.investConseil) + ') ' : ''}+ ${roi.persLicensed} licence(s) × 240 €/an (${formatEur(roi.licensesPerYear)}) = ${formatEur(roi.investAn1)}.`;
+    const methodLines = doc.splitTextToSize(methodText, W - 2*M);
+    doc.text(methodLines, M, y);
+    y += methodLines.length * 4 + 4;
+    
+    const methodText2 = `An 2 et An 3 = licences récurrentes uniquement (formation et conseil amortis) = ${formatEur(roi.licensesPerYear)}/an.`;
+    const methodLines2 = doc.splitTextToSize(methodText2, W - 2*M);
+    doc.text(methodLines2, M, y);
+    y += methodLines2.length * 4 + 4;
+    
+    const methodText3 = `Gains = ${formatHours(roi.totalHours)} économisées × ${roi.hourlyRate} €/h = ${formatEur(roi.gainsAnnuels)}/an.`;
+    const methodLines3 = doc.splitTextToSize(methodText3, W - 2*M);
+    doc.text(methodLines3, M, y);
+  }
+  
+  drawRmFooter(doc, W, H, M, 'Indicateurs financiers');
+  
+  // ============ PAGE FINALE ============
+  doc.addPage();
+  doc.setFillColor(30,58,138);
+  doc.rect(0, 0, W, H, 'F');
+  doc.setTextColor(236, 72, 153);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(40);
+  doc.text('Et après ?', M, 110);
+  
+  doc.setTextColor(255,255,255);
+  doc.setFontSize(14);
+  doc.setFont('helvetica', 'normal');
+  doc.text('Cette feuille de route est le fruit', M, 130);
+  doc.text('des arbitrages collectifs du CODIR.', M, 140);
+  
+  doc.setFontSize(11);
+  doc.setTextColor(200,200,255);
+  [
+    '• Lancer les chantiers V1 (court terme, 0-3 mois)',
+    '• Préparer les chantiers V2 (moyen terme, 3-9 mois)',
+    '• Programmer les sessions de formation avec ESME Executive Education',
+    '• Cadrer les missions de conseil avec IAvenir',
+    '• Acquérir les licences et déployer les outils',
+    '• Mesurer les gains réels à 6 et 12 mois'
+  ].forEach((t, i) => doc.text(t, M, 160 + i*8));
+  
+  doc.setFontSize(9);
+  doc.setTextColor(150,150,200);
+  doc.text('ESME Executive Education', M, 250);
+  doc.text('65 bd de Brandebourg, 94200 Ivry-sur-Seine', M, 257);
+  doc.text('executive.education@esme.fr', M, 264);
+  
+  doc.save(`FeuilleDeRoute_IA_FORMAPELEC_${new Date().toISOString().slice(0,10)}.pdf`);
+}
+
+function drawRmHeader(doc, W, M) {
+  doc.setFillColor(30, 58, 138);
+  doc.rect(0, 0, W, 12, 'F');
+  doc.setFillColor(255, 255, 255);
+  doc.rect(M, 3, 12, 6, 'F');
+  doc.setTextColor(30, 58, 138);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(6);
+  doc.text('ESME', M + 6, 6.5, { align: 'center' });
+  doc.setFontSize(4);
+  doc.text('EXECUTIVE', M + 6, 8.5, { align: 'center' });
+  doc.setTextColor(255,255,255);
+  doc.setFontSize(8);
+  doc.setFont('helvetica', 'normal');
+  doc.text('FORMAPELEC × ESME Executive Education — Feuille de route IA', W - M, 7, { align: 'right' });
+}
+
+function drawRmFooter(doc, W, H, M, section) {
+  doc.setFillColor(245, 245, 240);
+  doc.rect(0, H - 10, W, 10, 'F');
+  doc.setTextColor(120, 120, 120);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(7);
+  doc.text(section, M, H - 4);
+  doc.text(`Feuille de route IA • ${new Date().toLocaleDateString('fr-FR')}`, W - M, H - 4, { align: 'right' });
 }
 
 function drawHeader(doc, W, M) {
@@ -4233,11 +4841,18 @@ function renderRmFormConseil() {
   const container = document.getElementById('formConseilCases');
   const selectedCases = cases.map((c, i) => ({c, i})).filter(x => rmSelections[x.i]);
   
+  // Mise à jour de l'état du bouton "Feuille de route"
+  const exportRoadmapBtn = document.getElementById('exportRoadmapBtn');
+  if (exportRoadmapBtn) {
+    exportRoadmapBtn.disabled = selectedCases.length === 0;
+  }
+  
   if (selectedCases.length === 0) {
     container.innerHTML = '<div style="padding:30px;text-align:center;color:var(--text-muted);background:var(--bg);border-radius:8px">Aucun cas pilote sélectionné en phase 1.</div>';
     document.getElementById('totalFormation').textContent = '0 j';
     document.getElementById('totalConseil').textContent = '0 mois';
     window._rmTotals = { form: 0, conseil: 0, v1Form: 0, v1Cons: 0, v2Form: 0, v2Cons: 0 };
+    renderRmROI();
     return;
   }
   
