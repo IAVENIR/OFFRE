@@ -1204,6 +1204,18 @@ body {
 .summary-stat strong { font-family: 'Fraunces', serif; font-size: 16px; color: var(--esme-navy); }
 .summary-stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
 
+.summary-card-pending {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: rgba(245, 158, 11, 0.12);
+  border-left: 3px solid var(--n2-orange);
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--n2-orange);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
 .cases-selector {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
@@ -3739,9 +3751,19 @@ async function exportCartographiePDF() {
 // ============================================================
 async function exportFeuilleRoutePDF() {
   if (cases.length === 0) return;
-  const selectedCases = cases.map((c, i) => ({c, i})).filter(x => rmSelections[x.i]);
+  
+  // Filtre des cas retenus dans le PDF :
+  // - V1 : tous retenus
+  // - V2 : retenus UNIQUEMENT si la checkbox conseil est cochée
+  // (cohérent avec la règle de calcul ROI)
+  const selectedCases = cases.map((c, i) => ({c, i})).filter(x => {
+    if (rmSelections[x.i] === 'v1') return true;
+    if (rmSelections[x.i] === 'v2' && rmConseilInclude[x.i]) return true;
+    return false;
+  });
+  
   if (selectedCases.length === 0) {
-    alert("Aucun cas pilote sélectionné. Sélectionnez au moins un cas en V1 ou V2 dans la phase 1 de la feuille de route.");
+    alert("Aucun cas pilote retenu.\n\nRappel : un cas V2 (RAG / Agent) n'est consolidé dans la feuille de route que si sa mission de conseil est cochée en phase 4.");
     return;
   }
   
@@ -3845,8 +3867,25 @@ async function exportFeuilleRoutePDF() {
     doc.text(String(k.val), x + 3, y + 18);
   });
   
+  // Encadré pédagogique : règle de consolidation
+  y = 98;
+  doc.setFillColor(252, 245, 235);
+  doc.rect(M, y, W - 2*M, 14, 'F');
+  doc.setFillColor(245, 158, 11);
+  doc.rect(M, y, 3, 14, 'F');
+  doc.setTextColor(180, 90, 0);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(8);
+  doc.text('RÈGLE DE CONSOLIDATION', M + 6, y + 5);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8);
+  doc.setTextColor(80, 80, 80);
+  const ruleText = 'Les cas V1 (assistants) sont mis en œuvre directement après formation. Les cas V2 (RAG / Agents) ne sont consolidés dans la feuille de route que s\'ils sont accompagnés d\'une mission de conseil — sans accompagnement, l\'autonomie technique n\'est pas atteignable.';
+  const ruleLines = doc.splitTextToSize(ruleText, W - 2*M - 10);
+  doc.text(ruleLines, M + 6, y + 9);
+  
   // Distribution par niveau (uniquement cas retenus)
-  y = 105;
+  y = 118;
   doc.setTextColor(30,58,138);
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(14);
@@ -4864,9 +4903,17 @@ function scrollToRm(n) {
 // ============================================================
 function renderRmSelection() {
   const v1Cases = cases.map((c, i) => ({c, i})).filter(x => rmSelections[x.i] === 'v1');
-  const v2Cases = cases.map((c, i) => ({c, i})).filter(x => rmSelections[x.i] === 'v2');
+  // Règle de consolidation : V2 retenus = uniquement ceux avec conseil coché
+  // (cohérence avec ROI et PDF)
+  const v2AllCases = cases.map((c, i) => ({c, i})).filter(x => rmSelections[x.i] === 'v2');
+  const v2Cases = v2AllCases.filter(x => rmConseilInclude[x.i]);
+  const v2PendingCount = v2AllCases.length - v2Cases.length;
   const v1H = v1Cases.reduce((s, x) => s + x.c.gainAnnuelHeures, 0);
   const v2H = v2Cases.reduce((s, x) => s + x.c.gainAnnuelHeures, 0);
+  
+  const v2PendingMention = v2PendingCount > 0
+    ? `<div class="summary-card-pending">⚠ ${v2PendingCount} cas V2 en attente de validation conseil (phase 4)</div>`
+    : '';
   
   document.getElementById('selectionSummary').innerHTML = `
     <div class="summary-card v1">
@@ -4886,6 +4933,7 @@ function renderRmSelection() {
         <div class="summary-stat"><strong>${formatHours(v2H)}</strong><br/><span class="summary-stat-label">gain/an</span></div>
         <div class="summary-stat"><strong>${v2Cases.filter(x => x.c.niveau === 'N1').length}</strong> N1 / <strong>${v2Cases.filter(x => x.c.niveau === 'N2').length}</strong> N2 / <strong>${v2Cases.filter(x => x.c.niveau === 'N3').length}</strong> N3<br/><span class="summary-stat-label">répartition</span></div>
       </div>
+      ${v2PendingMention}
     </div>
   `;
   
@@ -5297,8 +5345,15 @@ function computeRmROI() {
   const roiSlider = document.getElementById('roiSlider');
   const hourlyRate = roiSlider ? parseFloat(roiSlider.value) : 35;
   
-  // Cas retenus en V1 ou V2
-  const retainedCases = cases.map((c, i) => ({c, i})).filter(x => rmSelections[x.i] === 'v1' || rmSelections[x.i] === 'v2');
+  // Cas retenus dans le calcul ROI :
+  // - V1 : tous retenus (mis en œuvre directement après formation)
+  // - V2 : retenus UNIQUEMENT si la checkbox conseil est cochée
+  //        (un cas V2 sans accompagnement conseil n'est pas atteignable techniquement)
+  const retainedCases = cases.map((c, i) => ({c, i})).filter(x => {
+    if (rmSelections[x.i] === 'v1') return true;
+    if (rmSelections[x.i] === 'v2' && rmConseilInclude[x.i]) return true;
+    return false;
+  });
   
   // ===== INVESTISSEMENT FORMATION =====
   let investForm = 0;
@@ -5576,6 +5631,7 @@ function setRmFormation(i, days) {
 
 function toggleRmConseil(i, included) {
   rmConseilInclude[i] = included;
+  renderRmSelection(); // mettre à jour la card V2 (consolidation)
   renderRmFormConseil();
   renderRmFinal();
 }
@@ -5586,9 +5642,20 @@ function toggleRmConseil(i, included) {
 function renderRmFinal() {
   ['v1', 'v2'].forEach(v => {
     const el = document.getElementById('roadmap' + v.toUpperCase());
-    const items = cases.map((c, i) => ({c, i})).filter(x => rmSelections[x.i] === v);
+    // Règle de consolidation (cohérente avec ROI et PDF) :
+    // - V1 : tous les cas
+    // - V2 : uniquement les cas dont la mission de conseil est cochée
+    let items;
+    if (v === 'v1') {
+      items = cases.map((c, i) => ({c, i})).filter(x => rmSelections[x.i] === 'v1');
+    } else {
+      items = cases.map((c, i) => ({c, i})).filter(x => rmSelections[x.i] === 'v2' && rmConseilInclude[x.i]);
+    }
     if (items.length === 0) {
-      el.innerHTML = '<div class="roadmap-empty">Aucun cas dans cette vague</div>';
+      const msg = v === 'v2'
+        ? 'Aucune mission de conseil cochée — aucun cas V2 consolidé pour le moment'
+        : 'Aucun cas dans cette vague';
+      el.innerHTML = `<div class="roadmap-empty">${msg}</div>`;
     } else {
       items.sort((a, b) => {
         const na = parseInt(a.c.niveau.substring(1));
