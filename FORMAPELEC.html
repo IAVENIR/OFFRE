@@ -2521,14 +2521,27 @@ function readFile(file) {
   }
   
   Papa.parse(file, {
-    header: true,
+    header: false, // header:true a un bug sur ce type de CSV (apostrophes répétées)
     skipEmptyLines: true,
     encoding: 'UTF-8',
-    delimitersToGuess: [',', ';', '\t', '|'],
     complete: (results) => {
-      setStatus(`${results.data.length} lignes lues. Analyse en cours…`, 'var(--n1-green)');
+      // Convertir array d'arrays en array d'objets manuellement
+      // car header:true cause un bug "Trailing quote" sur ces CSV
+      if (!results.data || results.data.length === 0) {
+        setStatus('Le CSV est vide.', '#DC2626');
+        return;
+      }
+      const headers = results.data[0].map(h => String(h || '').trim());
+      const dataRows = results.data.slice(1).map(row => {
+        const obj = {};
+        headers.forEach((h, i) => {
+          obj[h] = row[i] !== undefined ? row[i] : '';
+        });
+        return obj;
+      });
+      setStatus(`${dataRows.length} lignes lues. Analyse en cours…`, 'var(--n1-green)');
       try {
-        processCSV(results.data, file.name);
+        processCSV(dataRows, file.name);
       } catch (err) {
         console.error(err);
         setStatus('Erreur : ' + err.message, '#DC2626');
@@ -5130,12 +5143,15 @@ function renderRmServices() {
       
       const isCustom = cov.custom;
       
+      // IMPORTANT : on stocke le nom du service en data-attribute (échappé via escapeHtml côté DOM)
+      // plutôt que dans la chaîne JS d'un handler inline, sinon une apostrophe dans le nom
+      // (ex: "C'est le processus administratif") casse silencieusement l'event.
       return `
-        <div class="service-card ${isCustom ? 'custom' : ''}">
-          ${isCustom ? `<button class="service-card-delete" onclick="deleteService('${escapeHtml(service)}')" title="Supprimer ce service">×</button>` : ''}
+        <div class="service-card ${isCustom ? 'custom' : ''}" data-service-name="${escapeHtml(service)}">
+          ${isCustom ? `<button class="service-card-delete" data-action="delete-service" title="Supprimer ce service">×</button>` : ''}
           <div class="service-card-name">
             ${isCustom 
-              ? `<input type="text" value="${escapeHtml(service)}" onchange="renameService('${escapeHtml(service)}', this.value)" placeholder="Nom du service" />`
+              ? `<input type="text" value="${escapeHtml(service)}" data-action="rename-service" placeholder="Nom du service" />`
               : escapeHtml(service)
             }
           </div>
@@ -5147,15 +5163,39 @@ function renderRmServices() {
           </div>
           <div class="coverage-input-row">
             <span class="coverage-input-label">À équiper :</span>
-            <input type="number" class="coverage-input" min="0" value="${cov.target}" oninput="setRmCoverage('${escapeHtml(service)}', 'target', this.value)" />
+            <input type="number" class="coverage-input" min="0" value="${cov.target}" data-action="set-coverage" data-key="target" />
             <span class="coverage-slash">/</span>
-            <input type="number" class="coverage-total" min="0" value="${cov.total}" oninput="setRmCoverage('${escapeHtml(service)}', 'total', this.value)" />
+            <input type="number" class="coverage-total" min="0" value="${cov.total}" data-action="set-coverage" data-key="total" />
             <span style="font-size:11px;color:var(--text-muted)">pers.</span>
           </div>
           <span class="coverage-mode ${mode}">${modeLabel}</span>
         </div>
       `;
     }).join('');
+    
+    // Brancher les handlers via event delegation (immunisé aux apostrophes et autres caractères spéciaux)
+    grid.querySelectorAll('.service-card').forEach(card => {
+      const serviceName = card.dataset.serviceName;
+      
+      // Inputs target/total
+      card.querySelectorAll('input[data-action="set-coverage"]').forEach(input => {
+        input.addEventListener('input', (e) => {
+          setRmCoverage(serviceName, e.target.dataset.key, e.target.value);
+        });
+      });
+      
+      // Bouton supprimer (service custom)
+      const delBtn = card.querySelector('button[data-action="delete-service"]');
+      if (delBtn) {
+        delBtn.addEventListener('click', () => deleteService(serviceName));
+      }
+      
+      // Input rename (service custom)
+      const renameInput = card.querySelector('input[data-action="rename-service"]');
+      if (renameInput) {
+        renameInput.addEventListener('change', (e) => renameService(serviceName, e.target.value));
+      }
+    });
   }
   
   // Recap
@@ -5395,7 +5435,42 @@ function computeRmROI() {
   const licensesPerYear = persLicensed * LICENSE_RATE_PER_YEAR;
   
   // ===== GAINS ANNUELS =====
-  const totalHours = retainedCases.reduce((s, x) => s + (x.c.gainAnnuelHeures || 0), 0);
+  // Règle : un utilisateur non outillé n'a pas de gain de temps.
+  // Pour chaque cas, on calcule un ratio = target_service / max(personnes_cas du même service),
+  // plafonné à 1 (pas d'extrapolation au-delà de ce qui a été remonté).
+  // Ce ratio est appliqué au gain brut du cas.
+  // Cas particuliers : si pas de service identifié, ou personnes = 0 → gain = 0.
+  
+  // Pré-calcul du max(personnes) par service (sur les cas retenus uniquement)
+  const maxPersByService = {};
+  retainedCases.forEach(({c}) => {
+    if (!c.metier) return;
+    const p = c.personnes || 0;
+    if (!maxPersByService[c.metier] || p > maxPersByService[c.metier]) {
+      maxPersByService[c.metier] = p;
+    }
+  });
+  
+  const totalHours = retainedCases.reduce((s, x) => {
+    const c = x.c;
+    const gainBrut = c.gainAnnuelHeures || 0;
+    if (gainBrut === 0) return s;
+    
+    // Pas de service identifié ou pas de couverture → 0 gain
+    const serviceCov = rmServiceCoverage[c.metier];
+    if (!serviceCov) return s;
+    
+    const target = serviceCov.target || 0;
+    const maxPers = maxPersByService[c.metier] || 0;
+    
+    // personnes=0 ou maxPers=0 → 0 gain
+    if (maxPers === 0) return s;
+    
+    // Ratio plafonné à 1 (pas d'extrapolation au-delà de personnes_cas remontées)
+    const ratio = Math.min(target / maxPers, 1);
+    return s + gainBrut * ratio;
+  }, 0);
+  
   const gainsAnnuels = totalHours * hourlyRate;
   
   // ===== INVESTISSEMENTS PAR ANNÉE =====
