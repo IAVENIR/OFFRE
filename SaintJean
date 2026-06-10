@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IAvenir × Saint Jean — Plan de déploiement IA</title>
+<style>
+  :root{
+    --v50:#f5f3ff; --v100:#ede9fe; --v200:#ddd6fe; --v300:#c4b5fd; --v400:#a78bfa;
+    --v500:#8B5CF6; --v600:#7c3aed; --v700:#6d28d9; --v800:#5b21b6; --v900:#4c1d95;
+    --ink:#111827; --muted:#6b7280; --line:#e5e7eb;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,-apple-system,Arial,sans-serif;color:var(--ink);background:#fff;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+  a{color:inherit;text-decoration:none}
+
+  .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+  .nav-in{max-width:1040px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+  .logo{font-size:22px;font-weight:800}
+  .logo .v{color:var(--v500)} .logo .x{color:var(--v300)} .logo .c{color:#4b5563}
+  .nav-links{display:flex;gap:22px;align-items:center;font-size:14px}
+  .nav-links a{color:var(--muted)}
+  .nav-cta{background:var(--v500);color:#fff!important;padding:9px 18px;border-radius:999px;font-weight:600}
+
+  .hero{background:linear-gradient(180deg,var(--v50),#fff);padding:58px 0 44px;text-align:center}
+  .badge{display:inline-block;background:#fff;border:1px solid var(--v200);color:var(--v700);
+    padding:8px 16px;border-radius:999px;font-size:13px;font-weight:600;margin-bottom:22px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+  h1{font-size:42px;line-height:1.12;font-weight:800;letter-spacing:-.5px;margin-bottom:16px}
+  .sub{font-size:19px;color:var(--muted);max-width:660px;margin:0 auto 34px}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:760px;margin:0 auto}
+  .kpi{background:#fff;border:1px solid var(--v100);border-radius:16px;padding:18px 12px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+  .kpi b{display:block;font-size:24px;color:var(--v600);font-weight:800}
+  .kpi span{font-size:12px;color:var(--muted);margin-top:4px;display:block}
+
+  .ctx{padding:34px 0}
+  .ctx-box{background:var(--v50);border:1px solid var(--v200);border-radius:18px;padding:24px 26px}
+  .eyebrow{font-size:12px;font-weight:700;color:var(--v700);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+  .ctx-box p{font-size:14.5px;color:#374151}
+
+  .scope{padding:46px 0 12px;background:#f9fafb}
+  .funnel{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:10px;align-items:center}
+  .frow{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#fff;border-radius:12px;padding:14px 20px;box-shadow:0 4px 14px rgba(124,58,237,.16)}
+  .frow .fl{font-weight:700;font-size:14.5px}
+  .frow .fl small{font-weight:600;opacity:.82;font-size:12px}
+  .frow .fr{font-size:13px;opacity:.95;white-space:nowrap;font-weight:600}
+
+  .hint{padding:6px 0 0}
+  .hint-box{max-width:880px;margin:0 auto;background:#fffbeb;border:1px solid #fde68a;border-radius:12px;
+    padding:12px 16px;font-size:13px;color:#92580a;text-align:center}
+
+  h2{font-size:30px;font-weight:800;text-align:center;letter-spacing:-.3px}
+  .lead{color:var(--muted);text-align:center;max-width:660px;margin:10px auto 34px}
+
+  .plan{padding:42px 0 60px}
+  .plan-head{text-align:center;margin-bottom:38px}
+  .timeline{position:relative;margin:0 auto}
+  .tl-line{position:absolute;left:31px;top:8px;bottom:40px;width:3px;
+    background:linear-gradient(180deg,var(--v300),var(--v600));border-radius:3px}
+  .phase{position:relative;display:flex;gap:18px;align-items:stretch;padding-left:84px;margin-bottom:26px}
+  .node{position:absolute;left:8px;top:6px;width:48px;height:48px;border-radius:999px;
+    background:#fff;border:3px solid var(--v500);color:var(--v700);font-weight:800;font-size:20px;
+    display:flex;align-items:center;justify-content:center;z-index:2;box-shadow:0 0 0 5px #fff}
+  .pcard{flex:1;min-width:0;border:1px solid var(--v200);border-radius:18px;overflow:hidden;
+    box-shadow:0 8px 22px rgba(124,58,237,.08);background:#fff}
+  .pcard-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    padding:16px 22px;background:linear-gradient(90deg,var(--v50),#fff);border-bottom:1px solid var(--v100)}
+  .pstep{font-size:11.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--v600)}
+  .ptitle{font-size:19px;font-weight:800;color:var(--ink);margin-top:1px}
+  .ptags{display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:12px;font-weight:700;padding:6px 12px;border-radius:999px;white-space:nowrap}
+  .tag-dur{background:var(--v600);color:#fff}
+  .tag-pub{background:var(--v100);color:var(--v700)}
+  .tag-pres{background:#ecfdf5;color:#047857;border:1px solid #a7f3d0}
+  .tag-dist{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}
+  .slot{display:flex;align-items:center;gap:12px;padding:12px 22px;background:linear-gradient(90deg,#faf5ff,#fff);border-bottom:1px solid var(--v100)}
+  .slot .cal{min-width:48px;height:48px;border-radius:10px;background:var(--v500);color:#fff;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;flex-shrink:0;line-height:1.1;padding:0 6px}
+  .slot .cal .mo{font-size:12px;font-weight:800;text-transform:uppercase}
+  .slot .cal .yr{font-size:10px;opacity:.9}
+  .slot .stt b{display:block;color:var(--ink);font-size:13.5px}
+  .slot .stt span{color:var(--muted);font-size:12.5px}
+  .pmeta{display:flex;flex-wrap:wrap;gap:26px;padding:13px 22px;background:#faf9ff;border-bottom:1px solid var(--v100)}
+  .pmeta .m{display:flex;flex-direction:column;gap:5px}
+  .pmeta .ml{font-weight:700;color:var(--v700);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em}
+  .pmeta .mv{color:#374151;font-size:13px;font-weight:600}
+  .tools{display:flex;gap:6px;flex-wrap:wrap}
+  .tool{background:#fff;border:1px solid var(--v300);color:var(--v700);font-weight:600;font-size:12px;padding:4px 10px;border-radius:8px}
+  .pcard-body{padding:18px 22px;display:grid;grid-template-columns:1fr 1.25fr;gap:22px}
+  .col-label{font-size:11.5px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+  .pcard-body p{font-size:13.5px;color:#374151}
+  .obj{background:var(--v50);border-left:3px solid var(--v500);border-radius:8px;padding:10px 12px;font-size:13.5px;color:#374151}
+  ul{list-style:none}
+  .pcard-body li{font-size:13.5px;color:#374151;padding-left:18px;position:relative;margin-bottom:6px}
+  .pcard-body li:before{content:"";position:absolute;left:0;top:7px;width:7px;height:7px;border-radius:50%;background:var(--v500)}
+
+  .estim{width:250px;flex-shrink:0;background:#fff;border:1px solid var(--v300);border-radius:18px;padding:16px;
+    box-shadow:0 8px 22px rgba(124,58,237,.10);display:flex;flex-direction:column}
+  .estim-h{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--v700);
+    margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--v100)}
+  .ef{margin-bottom:11px}
+  .ef label{display:block;font-size:11.5px;color:var(--muted);font-weight:600;margin-bottom:5px}
+  .ef input{width:100%;border:1.5px solid var(--line);border-radius:9px;padding:9px 11px;font-size:15px;font-weight:700;color:var(--ink);font-family:inherit}
+  .ef input:focus{outline:none;border-color:var(--v500)}
+  .estim-res{margin-top:6px;background:var(--v50);border:1px solid var(--v100);border-radius:12px;padding:12px;text-align:center}
+  .estim-res b{display:block;font-size:20px;color:var(--v700);font-weight:800}
+  .estim-res span{font-size:12px;color:var(--muted)}
+
+  .pcard-foot{padding:14px 22px;border-top:1px solid var(--v100);background:#fafafa}
+  .btn-prog{display:inline-flex;align-items:center;gap:8px;background:var(--v500);color:#fff;border:none;
+    font-weight:700;font-size:13px;padding:10px 16px;border-radius:10px;cursor:pointer;font-family:inherit}
+  .btn-prog:hover{background:var(--v600)}
+  .modal{position:fixed;inset:0;background:rgba(17,24,39,.55);display:none;align-items:flex-start;justify-content:center;z-index:100;padding:40px 16px;overflow-y:auto}
+  .modal.open{display:flex}
+  .modal-card{background:#fff;max-width:680px;width:100%;border-radius:20px;overflow:hidden;box-shadow:0 30px 60px rgba(0,0,0,.3)}
+  .modal-head{background:linear-gradient(90deg,var(--v500),var(--v700));color:#fff;padding:22px 26px;position:relative}
+  .modal-head .mk{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--v100)}
+  .modal-head h3{font-size:22px;font-weight:800;margin-top:2px;padding-right:40px}
+  .modal-close{position:absolute;top:16px;right:18px;background:rgba(255,255,255,.2);border:none;color:#fff;
+    width:34px;height:34px;border-radius:999px;font-size:20px;cursor:pointer;line-height:1}
+  .modal-body{padding:24px 26px}
+  .mb-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+  .mb-meta .mt{background:var(--v50);border:1px solid var(--v200);color:var(--v700);font-size:12px;font-weight:700;padding:6px 12px;border-radius:999px}
+  .seq{border-left:3px solid var(--v300);padding:2px 0 2px 16px;margin-bottom:16px}
+  .seq .time{font-size:11.5px;font-weight:800;color:var(--v600);text-transform:uppercase;letter-spacing:.04em}
+  .seq h4{font-size:15px;font-weight:700;margin:2px 0 6px}
+  .seq li{font-size:13.5px;color:#374151;padding-left:16px;position:relative;margin-bottom:4px}
+  .seq li:before{content:"";position:absolute;left:0;top:7px;width:6px;height:6px;border-radius:50%;background:var(--v400)}
+  .modal-foot{padding:16px 26px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted);background:#fafafa}
+
+  /* FRISE 12 MOIS */
+  .frise{margin:50px 0 0}
+  .fr-head{text-align:center;margin-bottom:22px}
+  .fr-wrap{position:relative;overflow-x:auto;padding-bottom:6px}
+  .fr-grid{display:grid;grid-template-columns:repeat(12,minmax(84px,1fr));position:relative;min-width:1010px}
+  .fr-grid:before{content:"";position:absolute;left:8px;right:8px;top:157px;height:3px;
+    background:linear-gradient(90deg,var(--v300),var(--v600));border-radius:3px;z-index:1}
+  .fr-col{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 5px;position:relative}
+  .fr-events{height:150px;display:flex;flex-direction:column;justify-content:flex-end;gap:5px;width:100%}
+  .fr-ev{font-size:10px;font-weight:700;border-radius:7px;padding:5px 6px;line-height:1.25;white-space:normal;word-break:keep-all;overflow-wrap:normal}
+  .fr-ev.ph{background:var(--v600);color:#fff}
+  .fr-ev.opt{background:#fff;border:1px dashed var(--v400);color:var(--v700)}
+  .fr-dot{width:14px;height:14px;border-radius:50%;background:#d1d5db;z-index:2;position:relative}
+  .fr-dot.on{background:var(--v600);box-shadow:0 0 0 4px var(--v100)}
+  .fr-dot.opt{background:#fff;border:2px dashed var(--v400)}
+  .fr-month{font-size:11px;color:var(--muted);font-weight:600;margin-top:8px}
+  .fr-legend{display:flex;gap:22px;justify-content:center;margin-top:18px;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}
+  .fr-legend .lg{display:flex;align-items:center;gap:7px}
+  .lg .d{width:12px;height:12px;border-radius:50%}
+  .lg .d.on{background:var(--v600)} .lg .d.opt{background:#fff;border:2px dashed var(--v400)}
+
+  .opcobox{margin:14px auto 0;background:#ecfdf5;border:1px solid #a7f3d0;border-radius:16px;padding:18px 22px;display:flex;gap:14px;align-items:flex-start}
+  .opcobox .oic{font-size:22px;line-height:1.1}
+  .opcobox b{display:block;color:#065f46;font-size:14.5px;margin-bottom:3px}
+  .opcobox span{color:#047857;font-size:13px}
+  .totalbox{margin:36px auto 0;background:linear-gradient(90deg,var(--v600),var(--v800));color:#fff;
+    border-radius:22px;padding:30px 28px;text-align:center;box-shadow:0 14px 34px rgba(91,33,182,.25)}
+  .tb-l{font-size:13px;text-transform:uppercase;letter-spacing:.07em;opacity:.9;font-weight:700}
+  .tb-big{font-size:48px;font-weight:800;margin:6px 0;letter-spacing:-1.5px}
+  .tb-s{font-size:13px;opacity:.92}
+  .tb-break{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+  .tb-chip{background:rgba(255,255,255,.16);border-radius:999px;padding:8px 15px;font-size:12.5px;font-weight:600}
+
+  .result{margin:26px auto 0;background:#f9fafb;border:1px solid var(--line);
+    border-radius:18px;padding:20px 24px;display:flex;gap:16px;align-items:center}
+  .result .ic{font-size:26px;line-height:1;color:var(--v600)}
+  .result b{display:block;font-size:15px;margin-bottom:2px;color:var(--ink)}
+  .result span{font-size:13.5px;color:var(--muted)}
+
+  .contact{padding:54px 0;background:#111827;text-align:center;color:#fff}
+  .contact h2{color:#fff}
+  .contact .lead{color:#9ca3af}
+  .card{background:#1f2937;border:1px solid #374151;border-radius:18px;padding:26px 34px;display:inline-block;margin-top:6px}
+  .avatar{width:56px;height:56px;background:var(--v500);border-radius:999px;display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:18px;margin:0 auto 12px}
+  .card .name{font-weight:700}
+  .card .role{color:#9ca3af;font-size:12px;margin-bottom:12px}
+  .card .li{color:#d1d5db;font-size:14px}
+  .card .q{margin-top:12px;color:var(--v300);font-size:12px;font-weight:600}
+
+  footer{background:#030712;color:#6b7280;text-align:center;padding:26px;font-size:13px}
+  footer .fl{color:var(--v400);font-weight:800;font-size:18px;margin-bottom:4px}
+
+  @media(max-width:820px){
+    h1{font-size:32px}
+    .kpis{grid-template-columns:repeat(2,1fr)}
+    .phase{flex-direction:column}
+    .estim{width:100%}
+    .pcard-body{grid-template-columns:1fr}
+    .nav-links a:not(.nav-cta){display:none}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <div class="logo"><span class="v">IAvenir</span> <span class="x">×</span> <span class="c">Saint Jean</span></div>
+    <div class="nav-links">
+      <a href="#plan">Le plan</a>
+      <a href="#total">Estimation</a>
+      <a href="#contact" class="nav-cta">Échanger</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="badge">Organisme certifié Qualiopi · Plan de déploiement sur-mesure</div>
+    <h1>Votre plan de déploiement<br>de l'IA chez Saint&nbsp;Jean</h1>
+    <p class="sub">Un plan structuré en 5 phases, de la configuration technique au terrain, conçu pour être déployé pas à pas — avec une estimation financière qui se calcule en direct selon vos effectifs.</p>
+    <div class="kpis">
+      <div class="kpi"><b>5</b><span>phases séquencées</span></div>
+      <div class="kpi"><b>220</b><span>collaborateurs embarqués</span></div>
+      <div class="kpi"><b>Qualiopi</b><span>prise en charge OPCO</span></div>
+      <div class="kpi"><b>M365</b><span>Copilot &amp; AI Builder</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="ctx">
+  <div class="wrap">
+    <div class="ctx-box">
+      <div class="eyebrow">Votre contexte</div>
+      <p>Groupe agroalimentaire de 500 personnes réparties sur 4 sites, données consolidées dans un datalake Snowflake, ERP métier VIF et écosystème Microsoft 365. Priorité confirmée par l'audit 2024 : digitaliser les processus avant d'industrialiser l'IA. Ce plan sécurise la montée en puissance — via des ambassadeurs internes et des outils maîtrisés comme Copilot — pour générer des gains rapides tout en limitant le Shadow AI.</p>
+    </div>
+  </div>
+</section>
+
+<section class="scope" id="portee">
+  <div class="wrap">
+    <h2>Un plan qui touche toute l'entreprise</h2>
+    <p class="lead">Du plus large au plus ciblé : chaque niveau de formation s'adresse à un public précis.</p>
+    <div class="funnel">
+      <div class="frow" style="width:50%;background:var(--v400)"><span class="fl">Phase 1 · Comité de direction</span></div>
+      <div class="frow" style="width:40%;background:var(--v500)"><span class="fl">Phase 2 · Équipe DSI</span></div>
+      <div class="frow" style="width:100%;background:var(--v600)"><span class="fl">Phase 3 · Tous les salariés <small>· Webinaire</small></span></div>
+      <div class="frow" style="width:62%;background:var(--v700)"><span class="fl">Phase 4 · Ambassadeurs métiers</span></div>
+      <div class="frow" style="width:72%;background:var(--v800)"><span class="fl">Phase 5 · Utilisateurs Copilot</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="plan" id="plan">
+  <div class="wrap">
+    <div class="plan-head">
+      <h2>Le plan, phase par phase</h2>
+      <p class="lead">Renseignez le nombre de collaborateurs à former dans chaque phase : le nombre de sessions et le coût se calculent automatiquement.</p>
+    </div>
+    <div class="hint"><div class="hint-box">Indiquez vos effectifs dans les encarts violets à droite de chaque phase — l'estimation totale s'affiche en bas.</div></div>
+
+    <div class="timeline" style="margin-top:30px">
+      <div class="tl-line"></div>
+
+      <!-- Phase 1 -->
+      <div class="phase">
+        <div class="node">1</div>
+        <div class="pcard">
+          <div class="pcard-head">
+            <div>
+              <div class="pstep">Phase 1 · Engager la direction</div>
+              <div class="ptitle">IA : enjeux, opportunités et gouvernance pour le CODIR</div>
+            </div>
+            <div class="ptags"><span class="tag tag-dur">0,5 jour</span><span class="tag tag-pub">Comité de direction</span><span class="tag tag-pres">Présentiel</span></div>
+          </div>
+          <div class="pmeta">
+            <div class="m"><span class="ml">Outils</span><div class="tools"><span class="tool">Microsoft 365 Copilot</span></div></div>
+            <div class="m"><span class="ml">Capacité</span><span class="mv">~12 personnes / session</span></div>
+          </div>
+          <div class="slot">
+            <div class="cal"><span class="mo">Juil.</span><span class="yr">2026</span></div>
+            <div class="stt"><b>Créneau proposé : dès juillet 2026</b><span>Lancement du dispositif, en présentiel</span></div>
+          </div>
+          <div class="pcard-body">
+            <div>
+              <div class="col-label">Objectif</div>
+              <div class="obj">Créer l'alignement au sommet, donner le cap et poser le cadre de gouvernance indispensable à une adoption durable.</div>
+            </div>
+            <div>
+              <div class="col-label">Au programme</div>
+              <ul>
+                <li>Enjeux et opportunités de l'IA pour l'agroalimentaire</li>
+                <li>Gouvernance, sécurité des données et maîtrise du Shadow AI</li>
+                <li>Rôle du CODIR dans la conduite du changement</li>
+                <li>Définition des ambitions et des premiers cas d'usage</li>
+              </ul>
+            </div>
+          </div>
+          <div class="pcard-foot">
+            <button class="btn-prog" onclick="openProg('prog1')">📄 Voir le programme détaillé</button>
+          </div>
+        </div>
+        <div class="estim">
+          <div class="estim-h">Estimation</div>
+          <div class="ef"><label>Collaborateurs à former</label><input type="number" id="c1" value="10" min="0" oninput="recalc()"></div>
+          <div class="estim-res"><b id="s1">1 session</b><span>12 personnes / session</span></div>
+        </div>
+      </div>
+
+      <!-- Phase 2 (nouvelle) -->
+      <div class="phase">
+        <div class="node">2</div>
+        <div class="pcard">
+          <div class="pcard-head">
+            <div>
+              <div class="pstep">Phase 2 · Préparer l'environnement</div>
+              <div class="ptitle">Paramétrage de la centrale d'administration</div>
+            </div>
+            <div class="ptags"><span class="tag tag-dur">0,5 jour</span><span class="tag tag-pub">DSI</span><span class="tag tag-dist">Distanciel</span></div>
+          </div>
+          <div class="pmeta">
+            <div class="m"><span class="ml">Outils</span><div class="tools"><span class="tool">Console d'administration Microsoft 365 Copilot</span></div></div>
+            <div class="m"><span class="ml">Public</span><span class="mv">Équipe DSI</span></div>
+          </div>
+          <div class="slot">
+            <div class="cal"><span class="mo">Juil.</span><span class="yr">2026</span></div>
+            <div class="stt"><b>Créneau proposé : juillet 2026</b><span>En amont du déploiement, en distanciel</span></div>
+          </div>
+          <div class="pcard-body">
+            <div>
+              <div class="col-label">Objectif</div>
+              <div class="obj">Configurer Copilot au plus juste avant le déploiement : sécurité, périmètre des données et expérience utilisateur optimale dès le départ.</div>
+            </div>
+            <div>
+              <div class="col-label">Au programme</div>
+              <ul>
+                <li>Paramétrage de la centrale d'administration Copilot</li>
+                <li>Configuration des Frontiers et de l'accès aux modèles (Claude, etc.)</li>
+                <li>Mise en place d'assistants préconfigurés pour les équipes</li>
+                <li>Réglages de sécurité et de périmètre des données</li>
+              </ul>
+            </div>
+          </div>
+          <div class="pcard-foot">
+            <button class="btn-prog" onclick="openProg('prog2')">📄 Voir le programme détaillé</button>
+          </div>
+        </div>
+        <div class="estim">
+          <div class="estim-h">Estimation</div>
+          <div class="ef"><label>Personnes concernées (DSI)</label><input type="number" id="c2" value="3" min="0" oninput="recalc()"></div>
+          <div class="estim-res"><b id="s2">1 session</b><span>équipe DSI</span></div>
+        </div>
+      </div>
+
+      <!-- Phase 3 -->
+      <div class="phase">
+        <div class="node">3</div>
+        <div class="pcard">
+          <div class="pcard-head">
+            <div>
+              <div class="pstep">Phase 3 · Sensibiliser &amp; acculturer</div>
+              <div class="ptitle">Webinaire « Bien démarrer avec l'IA »</div>
+            </div>
+            <div class="ptags"><span class="tag tag-dur">1 heure</span><span class="tag tag-pub">Tous les salariés</span><span class="tag tag-dist">Distanciel</span></div>
+          </div>
+          <div class="pmeta">
+            <div class="m"><span class="ml">Outils</span><div class="tools"><span class="tool">Copilot Chat</span></div></div>
+            <div class="m"><span class="ml">Capacité</span><span class="mv">~50 personnes / webinaire</span></div>
+          </div>
+          <div class="slot">
+            <div class="cal"><span class="mo">Juil.</span><span class="yr">2026</span></div>
+            <div class="stt"><b>Créneau proposé : mardis &amp; mercredis soir de juillet</b><span>~10 webinaires répartis sur le mois, en distanciel</span></div>
+          </div>
+          <div class="pcard-body">
+            <div>
+              <div class="col-label">Objectif</div>
+              <div class="obj">Démystifier l'IA, donner les bons réflexes de prompting et poser les règles de confidentialité : un socle commun pour toute l'entreprise.</div>
+            </div>
+            <div>
+              <div class="col-label">Au programme</div>
+              <ul>
+                <li>Comprendre ce qu'est (et n'est pas) l'IA générative</li>
+                <li>Les bases du prompting, avec exemples concrets</li>
+                <li>Confidentialité des données et bons usages</li>
+                <li>Réflexes pour éviter le Shadow AI</li>
+              </ul>
+            </div>
+          </div>
+          <div class="pcard-foot">
+            <button class="btn-prog" onclick="openProg('prog3')">📄 Voir le programme détaillé</button>
+          </div>
+        </div>
+        <div class="estim">
+          <div class="estim-h">Estimation</div>
+          <div class="ef"><label>Collaborateurs à former</label><input type="number" id="c3" value="220" min="0" oninput="recalc()"></div>
+          <div class="estim-res"><b id="s3">10 webinaires</b><span>50 personnes / webinaire</span></div>
+        </div>
+      </div>
+
+      <!-- Phase 4 -->
+      <div class="phase">
+        <div class="node">4</div>
+        <div class="pcard">
+          <div class="pcard-head">
+            <div>
+              <div class="pstep">Phase 4 · Rendre autonomes</div>
+              <div class="ptitle">Former les ambassadeurs IA</div>
+            </div>
+            <div class="ptags"><span class="tag tag-dur">2 jours</span><span class="tag tag-pub">Ambassadeurs métiers</span><span class="tag tag-pres">Présentiel</span></div>
+          </div>
+          <div class="pmeta">
+            <div class="m"><span class="ml">Outils</span><div class="tools"><span class="tool">Microsoft 365 Copilot</span><span class="tool">Initiation Power Automate &amp; AI Builder (option)</span></div></div>
+            <div class="m"><span class="ml">Capacité</span><span class="mv">~10 personnes / session</span></div>
+          </div>
+          <div class="slot">
+            <div class="cal"><span class="mo">Juil.</span><span class="yr">2026</span></div>
+            <div class="stt"><b>Créneau proposé : juillet 2026</b><span>Sessions de 2 jours, en présentiel</span></div>
+          </div>
+          <div class="pcard-body">
+            <div>
+              <div class="col-label">Objectif</div>
+              <div class="obj">Donner aux relais internes les clés pour créer des assistants IA adaptés à leur métier et diffuser les usages au plus près du terrain.</div>
+            </div>
+            <div>
+              <div class="col-label">Au programme</div>
+              <ul>
+                <li>Identification des cas d'usage par métier</li>
+                <li>Concevoir et paramétrer des assistants par cas d'usage</li>
+                <li>Initiation optionnelle à Power Automate &amp; AI Builder pour automatiser</li>
+                <li>Ateliers pratiques sur des cas Saint Jean (qualité, ADV, appels d'offres)</li>
+                <li>Posture d'ambassadeur : diffuser et accompagner ses collègues</li>
+              </ul>
+            </div>
+          </div>
+          <div class="pcard-foot">
+            <button class="btn-prog" onclick="openProg('prog4')">📄 Voir le programme détaillé</button>
+          </div>
+        </div>
+        <div class="estim">
+          <div class="estim-h">Estimation</div>
+          <div class="ef"><label>Collaborateurs à former</label><input type="number" id="c4" value="10" min="0" oninput="recalc()"></div>
+          <div class="estim-res"><b id="s4">2 sessions</b><span>10 personnes / session</span></div>
+        </div>
+      </div>
+
+      <!-- Phase 5 -->
+      <div class="phase">
+        <div class="node">5</div>
+        <div class="pcard">
+          <div class="pcard-head">
+            <div>
+              <div class="pstep">Phase 5 · Maîtriser l'outil</div>
+              <div class="ptitle">Maîtriser Microsoft Copilot</div>
+            </div>
+            <div class="ptags"><span class="tag tag-dur">1 jour</span><span class="tag tag-pub">Utilisateurs licences Copilot</span><span class="tag tag-pres">Présentiel</span></div>
+          </div>
+          <div class="pmeta">
+            <div class="m"><span class="ml">Outils</span><div class="tools"><span class="tool">Microsoft 365 Copilot</span></div></div>
+            <div class="m"><span class="ml">Capacité</span><span class="mv">~10 personnes / session</span></div>
+          </div>
+          <div class="slot">
+            <div class="cal"><span class="mo">Sept.</span><span class="yr">2026</span></div>
+            <div class="stt"><b>Créneau proposé : septembre 2026</b><span>Après la pause estivale, en présentiel</span></div>
+          </div>
+          <div class="pcard-body">
+            <div>
+              <div class="col-label">Objectif</div>
+              <div class="obj">Rentabiliser les licences payantes en rendant les utilisateurs pleinement autonomes sur Copilot dans leur quotidien bureautique.</div>
+            </div>
+            <div>
+              <div class="col-label">Au programme</div>
+              <ul>
+                <li>Copilot dans Outlook, Teams, Word, Excel et PowerPoint</li>
+                <li>Gagner du temps sur mails, comptes rendus et synthèses</li>
+                <li>Créer ses propres assistants personnels adaptés à son métier</li>
+                <li>Exploiter ses documents (OneDrive / SharePoint) en sécurité</li>
+                <li>Bonnes pratiques et limites à connaître</li>
+              </ul>
+            </div>
+          </div>
+          <div class="pcard-foot">
+            <button class="btn-prog" onclick="openProg('prog5')">📄 Voir le programme détaillé</button>
+          </div>
+        </div>
+        <div class="estim">
+          <div class="estim-h">Estimation</div>
+          <div class="ef"><label>Collaborateurs à former</label><input type="number" id="c5" value="20" min="0" oninput="recalc()"></div>
+          <div class="estim-res"><b id="s5">4 sessions</b><span>10 personnes / session</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="frise">
+      <div class="fr-head">
+        <h2>Plan de déploiement sur 12 mois</h2>
+        <p class="lead">Un démarrage groupé à l'été, puis des sessions « Maîtriser Copilot » optionnelles tous les 2 mois pour accompagner la montée en licences au fil de l'eau.</p>
+      </div>
+      <div class="fr-wrap">
+        <div class="fr-grid">
+          <div class="fr-col"><div class="fr-events"><div class="fr-ev ph">1 · CODIR</div><div class="fr-ev ph">2 · Paramétrage</div><div class="fr-ev ph">3 · Webinaires</div><div class="fr-ev ph">4 · Ambassadeurs</div></div><div class="fr-dot on"></div><div class="fr-month">Juil. 26</div></div>
+          <div class="fr-col"><div class="fr-events"></div><div class="fr-dot"></div><div class="fr-month">Août 26</div></div>
+          <div class="fr-col"><div class="fr-events"><div class="fr-ev ph">5 · Maîtriser Copilot</div></div><div class="fr-dot on"></div><div class="fr-month">Sept. 26</div></div>
+          <div class="fr-col"><div class="fr-events"></div><div class="fr-dot"></div><div class="fr-month">Oct. 26</div></div>
+          <div class="fr-col"><div class="fr-events"><div class="fr-ev opt">Maîtriser Copilot (option)</div></div><div class="fr-dot opt"></div><div class="fr-month">Nov. 26</div></div>
+          <div class="fr-col"><div class="fr-events"></div><div class="fr-dot"></div><div class="fr-month">Déc. 26</div></div>
+          <div class="fr-col"><div class="fr-events"><div class="fr-ev opt">Maîtriser Copilot (option)</div></div><div class="fr-dot opt"></div><div class="fr-month">Janv. 27</div></div>
+          <div class="fr-col"><div class="fr-events"></div><div class="fr-dot"></div><div class="fr-month">Févr. 27</div></div>
+          <div class="fr-col"><div class="fr-events"><div class="fr-ev opt">Maîtriser Copilot (option)</div></div><div class="fr-dot opt"></div><div class="fr-month">Mars 27</div></div>
+          <div class="fr-col"><div class="fr-events"></div><div class="fr-dot"></div><div class="fr-month">Avr. 27</div></div>
+          <div class="fr-col"><div class="fr-events"><div class="fr-ev opt">Maîtriser Copilot (option)</div></div><div class="fr-dot opt"></div><div class="fr-month">Mai 27</div></div>
+          <div class="fr-col"><div class="fr-events"></div><div class="fr-dot"></div><div class="fr-month">Juin 27</div></div>
+        </div>
+      </div>
+      <div class="fr-legend">
+        <div class="lg"><span class="d on"></span> Phases planifiées</div>
+        <div class="lg"><span class="d opt"></span> Sessions « Maîtriser Copilot » optionnelles, selon la montée en licences</div>
+      </div>
+    </div>
+
+    <div id="total" class="totalbox">
+      <div class="tb-l">Estimation totale du plan</div>
+      <div class="tb-big" id="grandTotal">—</div>
+      <div class="tb-s">HT · hors frais de déplacement du formateur · hors prise en charge OPCO (organisme certifié Qualiopi)</div>
+      <div class="tb-break">
+        <span class="tb-chip" id="tbc1">Phase 1 : —</span>
+        <span class="tb-chip" id="tbc2">Phase 2 : —</span>
+        <span class="tb-chip" id="tbc3">Phase 3 : —</span>
+        <span class="tb-chip" id="tbc4">Phase 4 : —</span>
+        <span class="tb-chip" id="tbc5">Phase 5 : —</span>
+      </div>
+    </div>
+
+    <div class="opcobox">
+      <div class="oic">💶</div>
+      <div>
+        <b>Financement OPCO</b>
+        <span>IAvenir est un organisme certifié Qualiopi : ces formations sont éligibles à une prise en charge par votre OPCO — OCAPIAT pour les industries alimentaires. Le reste à charge réel peut donc être nettement inférieur au total affiché ci-dessus, selon votre dossier et vos fonds disponibles.</span>
+      </div>
+    </div>
+
+    <div class="result">
+      <div class="ic">✓</div>
+      <div>
+        <b>À l'issue du plan</b>
+        <span>Un environnement Copilot configuré et sécurisé, une direction alignée, des collaborateurs sensibilisés, des ambassadeurs autonomes et des utilisateurs performants — l'IA devient un processus d'amélioration continue, accompagné dans la durée par IAvenir.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="wrap">
+    <h2>Construisons ce plan ensemble</h2>
+    <p class="lead">Nous adaptons chaque phase à vos services et à vos cas d'usage prioritaires. Prochaine étape : structurer le programme autour de Copilot.</p>
+    <div class="card">
+      <div class="avatar">ML</div>
+      <div class="name">Mathieu Legeas</div>
+      <div class="role">Cofondateur · Expert IA — IAvenir</div>
+      <div class="li">07 61 60 22 77</div>
+      <div class="li">mathieu.legeas@iavenir-formation.fr</div>
+      <div class="q">Organisme certifié Qualiopi · Financement OPCO possible</div>
+    </div>
+  </div>
+</section>
+
+<div class="modal" id="prog2" onclick="if(event.target===this)closeProg('prog2')">
+  <div class="modal-card">
+    <div class="modal-head">
+      <button class="modal-close" onclick="closeProg('prog2')">&times;</button>
+      <div class="mk">Phase 2 · Programme détaillé</div>
+      <h3>Paramétrage de la centrale d'administration</h3>
+    </div>
+    <div class="modal-body">
+      <div class="mb-meta"><span class="mt">0,5 jour (≈ 3h30)</span><span class="mt">Distanciel</span><span class="mt">Équipe DSI</span><span class="mt">Console d'administration Copilot</span></div>
+      <p style="font-size:13.5px;color:#374151;margin-bottom:18px">Objectif : configurer Copilot au plus juste avant le déploiement — sécurité, périmètre des données et expérience utilisateur optimale dès le départ.</p>
+      <div class="seq"><div class="time">15 min · Ouverture</div><h4>Cadrage technique</h4><ul><li>Contexte SI : Microsoft 365, ERP VIF, datalake Snowflake</li><li>Objectifs et prérequis de la configuration</li></ul></div>
+      <div class="seq"><div class="time">45 min</div><h4>Tour de la centrale d'administration Copilot</h4><ul><li>Rôles, licences et paramètres clés</li><li>Bonnes pratiques d'administration</li></ul></div>
+      <div class="seq"><div class="time">45 min</div><h4>Frontiers &amp; accès aux modèles</h4><ul><li>Configuration des Frontiers et accès aux modèles (Claude, etc.)</li><li>Définition des politiques d'usage</li></ul></div>
+      <div class="seq"><div class="time">45 min</div><h4>Assistants préconfigurés</h4><ul><li>Création d'assistants prêts à l'emploi pour les équipes</li><li>Déploiement par métier / service</li></ul></div>
+      <div class="seq"><div class="time">30 min</div><h4>Sécurité &amp; périmètre des données</h4><ul><li>Accès aux données SharePoint / OneDrive et niveaux de sensibilité</li><li>Conformité RGPD et maîtrise du Shadow AI</li></ul></div>
+      <div class="seq"><div class="time">30 min · Clôture</div><h4>Mise en production</h4><ul><li>Checklist de bascule et points de vigilance</li><li>Suivi et ajustements post-déploiement</li></ul></div>
+    </div>
+    <div class="modal-foot">Programme indicatif, ajusté lors du cadrage. IAvenir — organisme certifié Qualiopi.</div>
+  </div>
+</div>
+
+<div class="modal" id="prog3" onclick="if(event.target===this)closeProg('prog3')">
+  <div class="modal-card">
+    <div class="modal-head">
+      <button class="modal-close" onclick="closeProg('prog3')">&times;</button>
+      <div class="mk">Phase 3 · Programme détaillé</div>
+      <h3>Webinaire « Bien démarrer avec l'IA »</h3>
+    </div>
+    <div class="modal-body">
+      <div class="mb-meta"><span class="mt">1 heure</span><span class="mt">Distanciel</span><span class="mt">Tous les salariés</span><span class="mt">Copilot Chat</span></div>
+      <p style="font-size:13.5px;color:#374151;margin-bottom:18px">Objectif : démystifier l'IA, donner les bons réflexes de prompting et poser les règles de confidentialité — un socle commun pour toute l'entreprise.</p>
+      <div class="seq"><div class="time">10 min</div><h4>L'IA générative, c'est quoi ?</h4><ul><li>Principes simples, mythes et réalités</li><li>Ce que ça change au quotidien</li></ul></div>
+      <div class="seq"><div class="time">20 min</div><h4>Les bases du prompting</h4><ul><li>Méthode pour formuler une bonne demande</li><li>Exemples concrets applicables aux métiers Saint Jean</li></ul></div>
+      <div class="seq"><div class="time">15 min</div><h4>Copilot Chat en pratique</h4><ul><li>Démonstration en direct</li><li>Premiers cas d'usage accessibles à tous</li></ul></div>
+      <div class="seq"><div class="time">10 min</div><h4>Confidentialité &amp; Shadow AI</h4><ul><li>Données sensibles et bons réflexes</li><li>Pourquoi privilégier les outils maîtrisés</li></ul></div>
+      <div class="seq"><div class="time">5 min · Clôture</div><h4>Questions &amp; ressources</h4><ul><li>Échanges et pour aller plus loin</li></ul></div>
+    </div>
+    <div class="modal-foot">Programme indicatif, ajusté lors du cadrage. IAvenir — organisme certifié Qualiopi.</div>
+  </div>
+</div>
+
+<div class="modal" id="prog4" onclick="if(event.target===this)closeProg('prog4')">
+  <div class="modal-card">
+    <div class="modal-head">
+      <button class="modal-close" onclick="closeProg('prog4')">&times;</button>
+      <div class="mk">Phase 4 · Programme détaillé</div>
+      <h3>Former les ambassadeurs IA</h3>
+    </div>
+    <div class="modal-body">
+      <div class="mb-meta"><span class="mt">2 jours</span><span class="mt">Présentiel</span><span class="mt">Ambassadeurs métiers</span><span class="mt">Copilot · Power Automate &amp; AI Builder (option)</span></div>
+      <p style="font-size:13.5px;color:#374151;margin-bottom:18px">Objectif : donner aux relais internes les clés pour créer des assistants IA adaptés à leur métier et diffuser les usages au plus près du terrain.</p>
+      <div class="seq"><div class="time">Jour 1 · Matin</div><h4>Le socle Copilot dans M365</h4><ul><li>Copilot dans Outlook, Teams, Word, Excel et PowerPoint</li><li>Prise en main guidée, gagner du temps au quotidien (mails, comptes rendus, synthèses)</li></ul></div>
+      <div class="seq"><div class="time">Jour 1 · Après-midi</div><h4>Premiers assistants &amp; cas d'usage</h4><ul><li>Identification des cas d'usage par métier</li><li>Créer ses premiers assistants personnels</li></ul></div>
+      <div class="seq"><div class="time">Jour 2 · Matin</div><h4>Concevoir des assistants par cas d'usage (approfondi)</h4><ul><li>Conception et paramétrage avancés d'assistants</li><li>Atelier pratique sur des cas Saint Jean (qualité, ADV, appels d'offres)</li></ul></div>
+      <div class="seq"><div class="time">Jour 2 · Après-midi</div><h4>Automatisation (option) &amp; posture d'ambassadeur</h4><ul><li>Initiation à Power Automate &amp; AI Builder : une première automatisation simple</li><li>Diffuser et accompagner ses collègues, plan de déploiement interne par service</li></ul></div>
+    </div>
+    <div class="modal-foot">Programme indicatif, ajusté lors du cadrage. IAvenir — organisme certifié Qualiopi.</div>
+  </div>
+</div>
+
+<div class="modal" id="prog5" onclick="if(event.target===this)closeProg('prog5')">
+  <div class="modal-card">
+    <div class="modal-head">
+      <button class="modal-close" onclick="closeProg('prog5')">&times;</button>
+      <div class="mk">Phase 5 · Programme détaillé</div>
+      <h3>Maîtriser Microsoft Copilot</h3>
+    </div>
+    <div class="modal-body">
+      <div class="mb-meta"><span class="mt">1 jour</span><span class="mt">Présentiel</span><span class="mt">Utilisateurs licences Copilot</span><span class="mt">Microsoft 365 Copilot</span></div>
+      <p style="font-size:13.5px;color:#374151;margin-bottom:18px">Objectif : rentabiliser les licences payantes en rendant les utilisateurs pleinement autonomes sur Copilot dans leur quotidien bureautique.</p>
+      <div class="seq"><div class="time">Matin</div><h4>Copilot dans les outils M365</h4><ul><li>Outlook, Teams, Word, Excel et PowerPoint</li><li>Prise en main guidée par outil</li></ul></div>
+      <div class="seq"><div class="time">Matin</div><h4>Gagner du temps au quotidien</h4><ul><li>Mails, comptes rendus et synthèses</li><li>Cas pratiques sur des documents réels</li></ul></div>
+      <div class="seq"><div class="time">Après-midi</div><h4>Assistants personnels</h4><ul><li>Créer ses propres assistants adaptés à son métier</li><li>Exploiter ses documents (OneDrive / SharePoint) en sécurité</li></ul></div>
+      <div class="seq"><div class="time">Après-midi · Clôture</div><h4>Bonnes pratiques</h4><ul><li>Limites à connaître et réflexes de vérification</li><li>Plan d'ancrage des usages</li></ul></div>
+    </div>
+    <div class="modal-foot">Programme indicatif, ajusté lors du cadrage. IAvenir — organisme certifié Qualiopi.</div>
+  </div>
+</div>
+
+<div class="modal" id="prog1" onclick="if(event.target===this)closeProg('prog1')">
+  <div class="modal-card">
+    <div class="modal-head">
+      <button class="modal-close" onclick="closeProg('prog1')">&times;</button>
+      <div class="mk">Phase 1 · Programme détaillé</div>
+      <h3>IA : enjeux, opportunités et gouvernance pour le CODIR</h3>
+    </div>
+    <div class="modal-body">
+      <div class="mb-meta"><span class="mt">0,5 jour (≈ 3h30)</span><span class="mt">Présentiel</span><span class="mt">Comité de direction</span><span class="mt">Microsoft 365 Copilot</span></div>
+      <p style="font-size:13.5px;color:#374151;margin-bottom:18px">Objectif : permettre au comité de direction de comprendre les enjeux de l'IA, de décider d'une trajectoire et de poser le cadre de gouvernance pour un déploiement maîtrisé.</p>
+      <div class="seq"><div class="time">15 min · Ouverture</div><h4>Accueil &amp; cadrage</h4><ul><li>Attentes du comité et objectifs de la demi-journée</li><li>Niveau de maturité et usages actuels</li></ul></div>
+      <div class="seq"><div class="time">45 min</div><h4>Panorama de l'IA générative</h4><ul><li>Ce que l'IA change concrètement, mythes et réalités</li><li>Exemples appliqués à l'agroalimentaire</li></ul></div>
+      <div class="seq"><div class="time">45 min</div><h4>Opportunités &amp; cas d'usage pour Saint Jean</h4><ul><li>Gains par fonction : qualité, ADV, support, production</li><li>Quick wins et vision multi-sites</li></ul></div>
+      <div class="seq"><div class="time">45 min</div><h4>Gouvernance, sécurité &amp; Shadow AI</h4><ul><li>Risques données / RGPD et cadre d'usage</li><li>Copilot comme alternative sécurisée aux outils non maîtrisés</li></ul></div>
+      <div class="seq"><div class="time">30 min</div><h4>Conduite du changement &amp; rôle du CODIR</h4><ul><li>Sponsorship de la direction et réseau d'ambassadeurs</li><li>Communication interne et levée des craintes</li></ul></div>
+      <div class="seq"><div class="time">30 min · Clôture</div><h4>Feuille de route &amp; décisions</h4><ul><li>Ambitions et priorisation des premiers cas d'usage</li><li>Prochaines étapes et engagements</li></ul></div>
+    </div>
+    <div class="modal-foot">Programme indicatif, ajusté lors du cadrage. IAvenir — organisme certifié Qualiopi.</div>
+  </div>
+</div>
+
+<footer>
+  <div class="fl">IAvenir</div>
+  Formation &amp; Conseil en Intelligence Artificielle · Qualiopi
+</footer>
+
+<script>
+  var CAP={1:12,2:8,3:50,4:10,5:10};
+  var PRICE={1:1400,2:350,3:600,4:4300,5:2400};
+  function eur(n){return new Intl.NumberFormat('fr-FR').format(Math.round(n))+' €';}
+  function recalc(){
+    var total=0;
+    for(var i=1;i<=5;i++){
+      var c=Math.max(0,parseInt(document.getElementById('c'+i).value,10)||0);
+      var s=c>0?Math.ceil(c/CAP[i]):0;
+      var sub=s*PRICE[i];
+      total+=sub;
+      var unit=(i===3)?(s>1?' webinaires':' webinaire'):(s>1?' sessions':' session');
+      document.getElementById('s'+i).textContent=s+unit;
+      document.getElementById('tbc'+i).textContent='Phase '+i+' : '+eur(sub);
+    }
+    document.getElementById('grandTotal').textContent=eur(total);
+  }
+  document.addEventListener('DOMContentLoaded',recalc);
+  recalc();
+  function openProg(id){document.getElementById(id).classList.add('open');document.body.style.overflow='hidden';}
+  function closeProg(id){document.getElementById(id).classList.remove('open');document.body.style.overflow='';}
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){var m=document.querySelector('.modal.open');if(m){m.classList.remove('open');document.body.style.overflow='';}}});
+</script>
+
+</body>
+</html>
