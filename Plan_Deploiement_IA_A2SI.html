@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan de déploiement IA · A2SI PROCESS</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F5F1;--surface:#EFEEE9;--white:#FDFCFA;--violet:#8B5CF6;--violet-dark:#6D28D9;
+  --violet-light:#F0ECF6;--violet-lighter:#F5F2F9;--text:#3D3929;--text-dim:#7A7568;
+  --text-bright:#1C1A14;--green:#059669;--green-bg:#ECFDF5;--green-bd:#A7F3D0;
+  --blue:#2563EB;--blue-bg:#EDF0F8;--blue-bd:#BFDBFE;--amber:#D97706;--amber-bg:#FBF6E8;
+  --gray:#6B7280;--gray-bg:#F1F0EC;--border:#DDD9D1;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:2.5rem 2rem 4rem}
+.brand{font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--violet-dark);letter-spacing:.01em}
+.eyebrow{font-size:.66rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--violet-dark);margin-bottom:.7rem}
+h1{font-family:'DM Serif Display',serif;font-size:2.3rem;color:var(--text-bright);line-height:1.1;margin-bottom:.5rem}
+.sub{font-size:1rem;color:var(--text-dim);max-width:680px}
+.note-sample{display:flex;gap:.8rem;align-items:flex-start;background:var(--violet-lighter);border:1px solid var(--border);border-left:3px solid var(--violet);border-radius:8px;padding:.9rem 1.1rem;margin:1.6rem 0 0;font-size:.85rem;color:var(--text)}
+.note-sample b{color:var(--violet-dark)}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:.8rem;margin:2rem 0 1.4rem}
+.stat{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:1rem .9rem;text-align:center}
+.stat-num{font-family:'DM Serif Display',serif;font-size:2rem;line-height:1}
+.stat-label{font-size:.7rem;color:var(--text-dim);margin-top:.35rem;text-transform:uppercase;letter-spacing:.05em}
+.violet{color:var(--violet)}.green{color:var(--green)}.blue{color:var(--blue)}.amber{color:var(--amber)}.gray{color:var(--gray)}
+.tabs{display:flex;flex-wrap:wrap;gap:.4rem;margin:1.6rem 0 1.8rem;border-bottom:1px solid var(--border);padding-bottom:.9rem}
+.tab{font-family:inherit;font-size:.82rem;font-weight:600;color:var(--text-dim);background:var(--white);border:1px solid var(--border);border-radius:20px;padding:.5rem 1rem;cursor:pointer;transition:.15s}
+.tab:hover{color:var(--violet-dark);border-color:var(--violet)}
+.tab.active{background:var(--violet);color:#fff;border-color:var(--violet)}
+.horizon{margin-bottom:1.7rem;border-radius:10px;overflow:hidden;border:1px solid var(--border);background:var(--white)}
+.horizon-head{padding:.8rem 1.1rem;font-weight:700;font-size:.9rem;color:#fff;display:flex;justify-content:space-between;align-items:center}
+.hz-ct{background:linear-gradient(90deg,#059669,#0a8f63)}
+.hz-mt{background:linear-gradient(90deg,#2563EB,#3b6fe0)}
+.hz-lt{background:linear-gradient(90deg,#D97706,#e08a2b)}
+.hz-hx{background:linear-gradient(90deg,#6B7280,#828a96)}
+.horizon-head .cnt{font-size:.78rem;font-weight:600;opacity:.92}
+.perim{font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);padding:.9rem 1.1rem .3rem}
+.case{display:grid;grid-template-columns:54px 1fr 118px 132px;gap:.7rem;align-items:center;padding:.7rem 1.1rem;border-top:1px solid var(--border);cursor:pointer;transition:background .12s}
+.case:hover{background:var(--violet-lighter)}
+.case:nth-child(even){background:var(--violet-lighter)}
+.case:hover{background:var(--violet-light)}
+.case-id{font-weight:700;color:var(--violet-dark);font-size:.82rem}
+.case-name{font-weight:600;color:var(--text-bright);font-size:.9rem}
+.case-name span{display:block;font-weight:400;color:var(--text-dim);font-size:.76rem;margin-top:.1rem}
+.case-gain{font-size:.74rem;color:var(--text-dim)}
+.case-gain b{color:var(--green);font-weight:700}
+.badge{font-size:.66rem;font-weight:700;padding:.3rem .55rem;border-radius:5px;text-align:center;letter-spacing:.02em}
+.b-assist{background:var(--green-bg);color:#065F46;border:1px solid var(--green-bd)}
+.b-rag{background:var(--blue-bg);color:#1E40AF;border:1px solid var(--blue-bd)}
+.b-agent{background:var(--amber-bg);color:#92400E;border:1px solid #F3D9A4}
+.b-hors{background:var(--gray-bg);color:#4B5563;border:1px solid var(--border)}
+.detail{display:none;padding:1.1rem 1.1rem 1.3rem;background:var(--surface);border-top:1px solid var(--border);font-size:.86rem}
+.detail.open{display:block}
+.detail .d-desc{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:.85rem 1rem;margin-bottom:.9rem;line-height:1.6}
+.d-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:.9rem}
+.d-box{border-radius:8px;padding:.8rem .9rem;font-size:.8rem}
+.d-box h4{font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.4rem}
+.d-n1{background:var(--green-bg);border:1px solid var(--green-bd)}.d-n1 h4{color:#065F46}
+.d-n2{background:var(--blue-bg);border:1px solid var(--blue-bd)}.d-n2 h4{color:#1E40AF}
+.d-tags{display:flex;flex-wrap:wrap;gap:.4rem}
+.d-tag{font-size:.7rem;background:var(--white);border:1px solid var(--border);border-radius:5px;padding:.25rem .55rem;color:var(--text-dim)}
+.d-tag b{color:var(--text-bright);font-weight:600}
+.d-verb{margin-top:.8rem;font-size:.8rem;font-style:italic;color:var(--text-dim);border-left:2px solid var(--violet);padding-left:.8rem;line-height:1.5}
+/* Vision mockups */
+.vision-intro{font-size:.92rem;color:var(--text-dim);margin-bottom:1.3rem;max-width:720px}
+.mock{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:grid;grid-template-columns:230px 1fr;min-height:430px}
+.mock-side{background:#1E2127;padding:1rem .8rem;color:#cfd2d8}
+.mock-side .ms-title{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:#8a8f99;margin:.3rem .3rem .8rem}
+.ms-item{display:flex;gap:.6rem;align-items:flex-start;padding:.55rem .6rem;border-radius:7px;margin-bottom:.3rem;font-size:.78rem;cursor:default}
+.ms-item:hover{background:#2a2d35}
+.ms-dot{width:9px;height:9px;border-radius:3px;margin-top:.35rem;flex-shrink:0}
+.ms-item b{display:block;color:#f2f3f5;font-weight:600;font-size:.8rem}
+.ms-item span{color:#9aa0ab;font-size:.72rem}
+.mock-chat{background:#F8F8F6;padding:1.4rem 1.5rem;display:flex;flex-direction:column;gap:1rem}
+.bub{max-width:88%;padding:.8rem 1rem;border-radius:12px;font-size:.84rem;line-height:1.55}
+.bub-u{align-self:flex-end;background:var(--violet);color:#fff;border-bottom-right-radius:3px}
+.bub-a{align-self:flex-start;background:#fff;border:1px solid var(--border);border-bottom-left-radius:3px}
+.bub-a b{color:var(--violet-dark)}
+.src{margin-top:.6rem;font-size:.74rem}
+.src-row{display:flex;align-items:center;gap:.5rem;margin-top:.35rem}
+.src-name{flex-shrink:0;width:180px;color:var(--text-dim)}
+.src-bar{flex:1;height:6px;background:var(--surface);border-radius:3px;overflow:hidden}
+.src-bar i{display:block;height:100%;background:var(--blue)}
+.src-pct{width:34px;text-align:right;color:var(--blue);font-weight:600}
+.tag-pill{display:inline-block;font-size:.7rem;background:var(--green-bg);color:#065F46;border:1px solid var(--green-bd);border-radius:5px;padding:.2rem .5rem;margin:.15rem .15rem 0 0}
+/* CTA */
+.cta{margin-top:2.4rem;background:linear-gradient(135deg,#4C1D95,#6D28D9);border-radius:14px;padding:2rem 2.1rem;color:#fff}
+.cta h2{font-family:'DM Serif Display',serif;font-size:1.55rem;margin-bottom:.6rem}
+.cta p{color:#E9E3F7;font-size:.92rem;max-width:760px;margin-bottom:1.3rem}
+.cta-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem;margin-bottom:1.3rem}
+.cta-item{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);border-radius:9px;padding:.85rem 1rem;font-size:.84rem}
+.cta-item b{display:block;color:#fff;margin-bottom:.2rem;font-size:.9rem}
+.cta-quote{border-left:3px solid #C4B5FD;padding-left:1rem;font-style:italic;color:#EDE9FE;font-size:.88rem;line-height:1.6;margin-top:.4rem}
+.cta-quote span{display:block;font-style:normal;font-size:.76rem;color:#C4B5FD;margin-top:.35rem}
+.footer{margin-top:2.6rem;padding-top:1.4rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:.78rem;color:var(--text-dim)}
+.footer .footer-brand{font-family:'DM Serif Display',serif;color:var(--violet-dark);font-size:1rem}
+.hidden{display:none}
+@media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}.case{grid-template-columns:48px 1fr;gap:.4rem}.case-gain,.case .badge{display:none}.d-grid,.cta-grid{grid-template-columns:1fr}.mock{grid-template-columns:1fr}.mock-side{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="brand">IAvenir</div>
+  <div class="eyebrow" style="margin-top:1rem">Audit de cadrage IA · Plan de déploiement</div>
+  <h1>A2SI PROCESS</h1>
+  <p class="sub">Intégration EIA industrielle (électrotechnique, automatisme, supervision). Cartographie des cas d'usage IA priorisés par horizon de déploiement, sur l'environnement Google Workspace existant.</p>
+
+  <div class="note-sample">
+    <span>◆</span>
+    <div><b>Ébauche issue d'un cadrage.</b> Cette cartographie est construite à partir d'un seul entretien (process Études, 3 participants, 1h49) sur les dix métiers de l'entreprise. Les 26 cas ci-dessous sont déjà actionnables ; ils donnent un aperçu d'un potentiel estimé à plus de 100 cas en audit complet.</div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num violet">26</div><div class="stat-label">Cas d'usage</div></div>
+    <div class="stat"><div class="stat-num green">13</div><div class="stat-label">Court terme</div></div>
+    <div class="stat"><div class="stat-num blue">7</div><div class="stat-label">Moyen terme</div></div>
+    <div class="stat"><div class="stat-num amber">5</div><div class="stat-label">Long terme</div></div>
+    <div class="stat"><div class="stat-num gray">1</div><div class="stat-label">Process audité / 10</div></div>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-view="all">Vue d'ensemble</button>
+    <button class="tab" data-view="Études &amp; Projet">Études &amp; Projet</button>
+    <button class="tab" data-view="Achats &amp; Appro">Achats &amp; Appro</button>
+    <button class="tab" data-view="Admin &amp; Capitalisation">Admin &amp; Capitalisation</button>
+    <button class="tab" data-view="visionG">Vision Gemini</button>
+    <button class="tab" data-view="visionR">Vision RAG</button>
+  </div>
+
+  <div id="board"></div>
+
+  <div id="visionG" class="hidden">
+    <p class="vision-intro">Premier socle, immédiat. Des assistants configurés dans Gemini (Gems) et des compétences Claude qui génèrent la documentation répétitive à partir de vos modèles A2SI. L'utilisateur parle ou écrit, le document sort au bon format.</p>
+    <div class="mock">
+      <div class="mock-side">
+        <div class="ms-title">Assistants A2SI</div>
+        <div class="ms-item"><span class="ms-dot" style="background:#8B5CF6"></span><div><b>Générateur de devis</b><span>Offre technico-commerciale au format A2SI</span></div></div>
+        <div class="ms-item"><span class="ms-dot" style="background:#2563EB"></span><div><b>Contrat de sous-traitance</b><span>Contrat + mail d'envoi</span></div></div>
+        <div class="ms-item"><span class="ms-dot" style="background:#059669"></span><div><b>Feuilles de test FAT</b><span>Tableur généré depuis l'AF</span></div></div>
+        <div class="ms-item"><span class="ms-dot" style="background:#D97706"></span><div><b>Relances factures</b><span>Mails de relance par client</span></div></div>
+        <div class="ms-item"><span class="ms-dot" style="background:#0891B2"></span><div><b>Comparatif équipements</b><span>Équivalences fournisseurs</span></div></div>
+      </div>
+      <div class="mock-chat">
+        <div class="bub bub-u">Génère le devis A2SI pour BFZ, prestation programmation automate 1000 heures, montant 84 000 euros HT.</div>
+        <div class="bub bub-a"><b>Devis A2SI PROCESS prêt.</b> J'ai repris votre modèle (en-tête, conditions GAMP 5, mentions légales). Client BFZ, prestation programmation automate, 1000 h, 84 000 € HT, validité 30 jours.
+          <div style="margin-top:.6rem"><span class="tag-pill">PDF généré</span><span class="tag-pill">Modifiable</span><span class="tag-pill">Brouillon mail prêt</span></div>
+        </div>
+        <div class="bub bub-u">Parfait. Génère aussi le mail d'envoi pour Olivier.</div>
+        <div class="bub bub-a">Brouillon créé dans Gmail. Objet « Devis A2SI · Programmation automate BFZ », corps rédigé, devis en pièce jointe. Plus qu'à vérifier et envoyer.</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="visionR" class="hidden">
+    <p class="vision-intro">Deuxième socle, structurant. Une fois le Drive organisé, le savoir-faire de l'entreprise depuis 2008 (DOE, AF, comptes-rendus, devis) devient interrogeable en langage naturel. On capitalise au lieu de réinventer à chaque projet.</p>
+    <div class="mock">
+      <div class="mock-side">
+        <div class="ms-title">Bases connectées</div>
+        <div class="ms-item"><span class="ms-dot" style="background:#2563EB"></span><div><b>Historique d'affaires</b><span>Dossiers projets depuis 2008</span></div></div>
+        <div class="ms-item"><span class="ms-dot" style="background:#8B5CF6"></span><div><b>Analyses de risques</b><span>Matrices des projets passés</span></div></div>
+        <div class="ms-item"><span class="ms-dot" style="background:#059669"></span><div><b>Historique de prix</b><span>Devis et factures fournisseurs</span></div></div>
+        <div class="ms-item"><span class="ms-dot" style="background:#D97706"></span><div><b>Bibliothèque AF / DOE</b><span>Documentation technique</span></div></div>
+      </div>
+      <div class="mock-chat">
+        <div class="bub bub-u">On démarre une affaire de tri pneumatique de poussières métalliques. A-t-on déjà fait un projet similaire ?</div>
+        <div class="bub bub-a"><b>Oui, trois projets proches identifiés.</b> Le plus similaire est la F2 PFA (récupération de métaux rares par tri). Je remonte l'AF, le DOE et l'offre associée.
+          <div class="src">
+            <div class="src-row"><span class="src-name">Affaire F2 PFA (2023)</span><span class="src-bar"><i style="width:94%"></i></span><span class="src-pct">94%</span></div>
+            <div class="src-row"><span class="src-name">Affaire silo tri métaux (2021)</span><span class="src-bar"><i style="width:81%"></i></span><span class="src-pct">81%</span></div>
+            <div class="src-row"><span class="src-name">Affaire dépoussiérage (2019)</span><span class="src-bar"><i style="width:73%"></i></span><span class="src-pct">73%</span></div>
+          </div>
+        </div>
+        <div class="bub bub-u">Quel prix moyen pour un disjoncteur 10 A courbe C sur nos 5 dernières affaires ?</div>
+        <div class="bub bub-a">Prix moyen constaté <b>32 €</b> sur 5 affaires (mini 28 €, maxi 37 €). Dernier achat 36 €. Utile comme argumentaire de négociation fournisseur.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta">
+    <div class="eyebrow" style="color:#C4B5FD">Vers l'audit complet</div>
+    <h2>Ce que le 360° débloque</h2>
+    <p>Ce cadrage a creusé un seul process. L'audit complet réinterroge chaque métier (10 à 15 cas par poste), puis consolide ce qu'un échantillon ne peut pas voir.</p>
+    <div class="cta-grid">
+      <div class="cta-item"><b>Mutualisation inter-métiers</b>Une base de connaissances et des assistants partagés entre BE, achats, chantier et administration, plutôt que des usages isolés.</div>
+      <div class="cta-item"><b>Stratégie de licences et référents</b>Qui construit les Gems et compétences, qui les partage, quel niveau de licence par rôle.</div>
+      <div class="cta-item"><b>Gouvernance des données</b>Cadrage confidentialité et souveraineté, la question soulevée en séance sur les données clients et stratégiques.</div>
+      <div class="cta-item"><b>Roadmap et plan de formation</b>Séquencement budgété et formation par population, sur l'ensemble des équipes.</div>
+    </div>
+    <div class="cta-quote">« C'est un vrai investissement qu'il faut faire de manière collective, sinon on va se planter. Il faut être tous ensemble sur le sujet, par service ou par discipline. »<span>Olivier Vrammout, Directeur général A2SI, en séance</span></div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-brand">IAvenir</div>
+    <div>Confidentiel · Cadrage A2SI PROCESS · Juin 2026</div>
+  </div>
+</div>
+
+<script>
+const CASES=[
+// perimetre, horizon(ct/mt/lt/hx), famille(assist/rag/agent/hors)
+{id:"ADM-01",p:"Admin & Capitalisation",h:"ct",f:"assist",fl:"Assistant",n:"Génération de devis et offres technico-commerciales",d:"Court actuel ~30 min, généré en 2 min",desc:"Assistant générant les devis et offres au format A2SI à partir d'informations minimales saisies à l'oral ou à l'écrit (client, prestation, montant). Démontré en séance.",outil:"Gemini (Gem) / Claude (compétence)",crit:"Fort",freq:"Quotidienne",prof:"Chargés d'affaires, chefs de projet",pre:"Modèles de devis A2SI, assistant configuré",ph:"Phase 1",verb:"« Générer des devis, ça se fait super simplement. »"},
+{id:"ADM-02",p:"Admin & Capitalisation",h:"ct",f:"assist",fl:"Assistant",n:"Génération de contrats de sous-traitance",d:"Document + mail en un échange",desc:"Assistant générant le contrat de sous-traitance au format A2SI (nom du sous-traitant, prestation, date) avec le mail d'envoi ou de relance. Contrats aujourd'hui établis par le chef de projet.",outil:"Gemini / Claude",crit:"Moyen",freq:"Hebdomadaire",prof:"Chefs de projet",pre:"Modèle de contrat A2SI",ph:"Phase 1",verb:"« Vous mettez le nom du sous-traitant, la prestation, la date, il vous génère le contrat avec votre format. »"},
+{id:"ADM-03",p:"Admin & Capitalisation",h:"mt",f:"agent",fl:"Workflow",n:"Relance des factures impayées et recouvrement",d:"Enjeu 40 à 60 j de CA dehors en permanence",desc:"Analyse du tableau des factures (export ERP) pour lister les impayés par client et générer les mails de relance au ton adaptatif (cordial 30 à 60 j, plus ferme au-delà). Automatisable en workflow Workspace Studio (brouillons générés).",outil:"Gemini (Sheets / Workspace Studio)",crit:"Fort",freq:"Hebdomadaire",prof:"Direction, ADV, chargés d'affaires",pre:"Export factures ERP Everwin vers Excel ou connexion ERP",ph:"Phase 1 → Phase 2",verb:"« Relance de paiement, c'est hyper chronophage et hyper récurrent. On a environ 40 à 60 jours de chiffre d'affaires dehors, tout le temps. »",n1:"Niveau 1. L'utilisateur dépose l'export Excel des factures dans l'assistant, qui restitue la liste des retards par client et les mails de relance, prêts à copier.",n2:"Niveau 2. Workflow Workspace Studio qui lit l'ERP, génère les brouillons de relance dans Gmail et les met en attente de validation."},
+{id:"ADM-04",p:"Admin & Capitalisation",h:"lt",f:"agent",fl:"Workflow",n:"Préparation paie, consolidation heures et frais",d:"Contrôle quasi quotidien, nombreuses anomalies",desc:"Semi-automatisation de la consolidation mensuelle des heures et frais (depuis Shifter et l'ERP) à transmettre au cabinet comptable. Données = heures et frais, pas de données salariales sensibles.",outil:"Shifter + ERP Everwin GX",crit:"Fort",freq:"Quotidienne",prof:"Administration, chefs de projet",pre:"Extraction Shifter / ERP, règles de contrôle des pointages",ph:"Phase 2",verb:"« Il faut un contrôle quasi quotidien, consolider en fin de mois pour le cabinet comptable. C'est hyper chronophage. »",n1:"Niveau 1. Assistant qui contrôle un export de pointages et signale les anomalies (heures manquantes, pointages absents).",n2:"Niveau 2. Workflow connecté à Shifter et l'ERP qui consolide et prépare l'envoi au cabinet comptable."},
+{id:"CAP-01",p:"Admin & Capitalisation",h:"mt",f:"rag",fl:"RAG",n:"RAG sur l'historique d'affaires depuis 2008",d:"Toute la mémoire de l'entreprise, interrogeable",desc:"Brique structurante. Organiser et exploiter par RAG l'historique d'affaires présent sur le Drive depuis 2008 (DOE, AF, comptes-rendus, devis), interrogeable en langage naturel. Prérequis fort de structuration et de gouvernance.",outil:"Google Drive + RAG / Gemini Enterprise",crit:"Fort",freq:"Quotidienne",prof:"Tous les métiers",pre:"Structuration et nettoyage du Drive, gouvernance des accès",ph:"Phase 2",verb:"« On a toute la base de l'entreprise depuis 2008, tous les dossiers d'affaires, tous les comptes-rendus, tout, sur un Drive. »"},
+{id:"CAP-02",p:"Admin & Capitalisation",h:"mt",f:"rag",fl:"RAG",n:"Recherche de projet similaire et aide au chiffrage",d:"Retrouve les 3 projets les plus proches",desc:"À la prise d'affaires, retrouver les projets passés les plus similaires (équipement, spec, client) pour réutiliser l'offre et l'historique de prix et accélérer le chiffrage. S'appuie sur la base capitalisée.",outil:"Drive + RAG / ERP Everwin",crit:"Fort",freq:"Hebdomadaire",prof:"Chargés d'affaires, chefs de projet",pre:"Base capitalisée structurée, historique de prix",ph:"Phase 2",verb:"« L'IA va dire, les trois projets qui correspondent le mieux, quelle offre on a faite. »"},
+{id:"CAP-03",p:"Admin & Capitalisation",h:"ct",f:"assist",fl:"Assistant",n:"Veille normative et réglementaire",d:"Synthèses sourcées multi-sites",desc:"Usage de la recherche approfondie (Deep Research) pour la veille sur les normes, la recherche de fournisseurs ou de prospects par région.",outil:"Gemini Deep Research / Claude",crit:"Faible",freq:"Mensuelle",prof:"BE, achats, direction",pre:"Licence avec recherche web approfondie",ph:"Phase 1",verb:"« Quand tu fais de la veille sur des normes, tu utilises des modèles de Deep Research. »"},
+{id:"ET-01",p:"Études & Projet",h:"ct",f:"assist",fl:"Assistant",n:"Structuration et amorçage des analyses fonctionnelles",d:"Parties récurrentes générées, cœur métier préservé",desc:"Aide à la rédaction des AF, génération des parties récurrentes (introduction, architecture matérielle, tableaux d'organes marche/arrêt, listes d'E-S) et pré-remplissage depuis le devis. Le cœur d'expertise (complexité du procédé) reste manuel.",outil:"Gemini (Google Docs)",crit:"Moyen",freq:"Quotidienne",prof:"Automaticiens, projeteurs",pre:"Modèles d'AF structurés, devis exploitable",ph:"Phase 1 → Phase 2",verb:"« On prend la précédente, on fait copier-coller. Le cœur de notre savoir-faire est dans l'appréciation de la complexité du procédé. »",n1:"Niveau 1. Assistant qui génère les sections génériques de l'AF à partir d'un modèle et du devis déposé.",n2:"Niveau 2. RAG sur les AF antérieures pour proposer des trames issues des projets similaires."},
+{id:"ET-02",p:"Études & Projet",h:"ct",f:"assist",fl:"Assistant",n:"Extraction et synthèse du devis pour les études",d:"Sort les éléments structurants du devis",desc:"Assistant qui lit le devis du chargé d'affaires et en extrait les éléments structurants (équipements, périmètre, moyens) pour amorcer l'AF et l'analyse organique.",outil:"Gemini (Google Docs)",crit:"Moyen",freq:"Quotidienne",prof:"Automaticiens, chefs de projet",pre:"Devis numérisés et exploitables",ph:"Phase 1",verb:"« Sortir toutes les informations intéressantes de ce fameux devis, faire la synthèse, ça peut vous le faire. »"},
+{id:"ET-03",p:"Études & Projet",h:"ct",f:"assist",fl:"Assistant",n:"Génération des feuilles de test FAT depuis l'AF",d:"Tableur de tests généré automatiquement",desc:"À partir de l'analyse fonctionnelle, générer le tableur des points à vérifier en FAT (comportements attendus organe par organe). Cas validé spontanément comme automatisable par l'interviewé.",outil:"Gemini (Google Sheets)",crit:"Fort",freq:"Hebdomadaire",prof:"Automaticiens, chefs de projet",pre:"AF structurées, gabarit de feuille de test",ph:"Phase 1 → Phase 2",verb:"« Toutes les FAT, c'est la description des essais en fonction de ce qui est défini dans l'AF. Là, ça peut clairement être automatisé. »",n1:"Niveau 1. L'AF est déposée dans l'assistant qui produit le tableur de tests prêt à l'emploi.",n2:"Niveau 2. Agent qui récupère les commentaires terrain et remplit le tableur, conforme ou non, en sortie de FAT."},
+{id:"ET-04",p:"Études & Projet",h:"lt",f:"agent",fl:"Agent / API",n:"Instanciation répétitive de la programmation automate",d:"~1000 vannes déclarées par copier-coller aujourd'hui",desc:"Automatiser l'instanciation en série des objets programme (ex. ~1000 vannes). Génération de blocs depuis un Excel et import dans TIA, déjà réalisé ponctuellement. Le pilotage métier reste à l'automaticien.",outil:"TIA Portal (V21/V20/V18), Excel",crit:"Fort",freq:"Quotidienne",prof:"Automaticiens",pre:"Connectivité import-export TIA, données structurées en Excel",ph:"Phase 2",verb:"« On a 1000 vannes, 1000 fois copier-coller. C'est long et fastidieux. » | « Un ancien collègue, à partir d'un fichier Excel, avait pu générer des blocs et les importer sur TIA V18. »"},
+{id:"ET-05",p:"Études & Projet",h:"ct",f:"assist",fl:"Assistant",n:"Aide à l'utilisation des logiciels métier par capture d'écran",d:"Débloque l'usage d'AutoCAD, Caneco, SCHEM'ELEC",desc:"Assistant interrogé par capture d'écran pour débloquer l'usage des logiciels métier (AutoCAD, Caneco, SCHEM'ELEC). Particulièrement utile pour la montée en compétence des nouveaux arrivants.",outil:"Gemini / Claude (vision)",crit:"Moyen",freq:"Hebdomadaire",prof:"BE, nouveaux arrivants",pre:"Licences avec vision activée",ph:"Phase 1",verb:"« Vous pouvez faire des screenshots, demander comment je fais ça, comment je mets mes bibliothèques d'équipement. »"},
+{id:"ET-06",p:"Études & Projet",h:"ct",f:"assist",fl:"Assistant",n:"Aide rédactionnelle et correction (mails, AF)",d:"Déjà utilisé individuellement, à généraliser",desc:"Usage transverse de Gemini intégré à Gmail et Docs pour la correction, la reformulation de mails et l'aide rédactionnelle sur les AF. Pratique déjà présente individuellement, à formaliser.",outil:"Gemini (Gmail, Docs)",crit:"Moyen",freq:"Quotidienne",prof:"Tous les collaborateurs",pre:"Licences Google Pro (en place), cadrage des bons usages",ph:"Phase 1",verb:"« Certains l'utilisent comme aide rédactionnelle sur les analyses fonctionnelles. »"},
+{id:"ET-07",p:"Études & Projet",h:"ct",f:"assist",fl:"Assistant",n:"Traduction de programmes et documentation technique",d:"Ex. programme mandarin traduit en C",desc:"Traduction de programmes et de documentation. Usage ponctuel déjà constaté individuellement avec Gemini.",outil:"Gemini",crit:"Faible",freq:"Ponctuelle",prof:"Automaticiens",pre:"Aucun, licence en place",ph:"Phase 1",verb:"« On avait reçu un programme en mandarin qui était traduit en C. »"},
+{id:"ET-08",p:"Études & Projet",h:"hx",f:"hors",fl:"Hors IA",n:"Plans et notes de calcul pré-remplis",d:"Dépend des fonctionnalités éditeur",desc:"Génération de plans pré-remplis depuis la note de calcul, capacité native de certains éditeurs (SeeElectrical depuis Caneco) absente chez A2SI. Hors périmètre IA à court terme, à suivre via les évolutions logicielles.",outil:"SCHEM'ELEC / AutoCAD / Caneco BT",crit:"Faible",freq:"Ponctuelle",prof:"Projeteurs élec",pre:"Connectivité native éditeur, non disponible à ce jour",ph:"Hors périmètre",verb:"« Il faudra attendre que ça se fasse directement sur l'outil. »"},
+{id:"GP-01",p:"Études & Projet",h:"ct",f:"assist",fl:"Assistant",n:"Génération du plan qualité et du support de revue de commande",d:"Kickoff généré depuis devis et CR",desc:"Génération du support de kickoff (plan qualité, périmètre, organisation, dates, plan d'action) depuis le devis, la description client et le CR d'enclenchement. Les parties process interne et GAMP 5 sont des standards.",outil:"Gemini (Google Slides)",crit:"Moyen",freq:"Mensuelle",prof:"Chefs de projet",pre:"Gabarit plan qualité, devis et CR exploitables",ph:"Phase 1",verb:"« Le périmètre du projet, ça peut être généré, c'est en lien avec la description fournie par le client. »"},
+{id:"GP-02",p:"Études & Projet",h:"ct",f:"assist",fl:"Assistant",n:"Génération de l'organigramme projet et parties prenantes",d:"À partir des noms et rôles de l'équipe",desc:"Génération automatique de l'organigramme projet et de la matrice des parties prenantes à partir des noms et rôles, sur la base d'exemples antérieurs.",outil:"Gemini (Slides / Docs)",crit:"Faible",freq:"Mensuelle",prof:"Chefs de projet",pre:"Exemples d'organigrammes, annuaire entreprise",ph:"Phase 1",verb:"« L'organigramme de l'équipe, ça peut très bien être généré, il suffit de donner les noms. »"},
+{id:"GP-03",p:"Études & Projet",h:"mt",f:"rag",fl:"RAG",n:"Génération de la matrice de risques projet",d:"S'appuie sur les risques des projets passés",desc:"Aide à l'établissement de l'analyse de risques (risque, cause, conséquence, solution), aujourd'hui basée sur la seule expérience du chef de projet. L'IA propose une matrice depuis les analyses des projets similaires.",outil:"Gemini + Drive (historique)",crit:"Moyen",freq:"Mensuelle",prof:"Chefs de projet",pre:"Base structurée des matrices de risques antérieures",ph:"Phase 1 → Phase 2",verb:"« C'est mon expérience, il n'y a pas vraiment de support. » | « Voici tous les risques que j'ai eus avant, établis-moi une analyse de risque liée à ce projet. »",n1:"Niveau 1. L'utilisateur fournit quelques exemples de matrices et l'assistant propose une trame pour le nouveau projet.",n2:"Niveau 2. RAG sur l'ensemble des analyses de risques passées pour proposer la matrice du projet le plus proche."},
+{id:"GP-04",p:"Études & Projet",h:"mt",f:"agent",fl:"Workflow",n:"Génération des MOS et feuilles de déclinaison sécurité",d:"Documentation très répétitive ré-écrite à la main",desc:"Génération des feuilles de déclinaison (sécurité, coordination) à partir d'un MOS déjà rédigé. Lignes de MOS aujourd'hui ré-écrites manuellement à chaque fois.",outil:"Gemini (Sheets / Docs)",crit:"Moyen",freq:"Hebdomadaire",prof:"Chefs de projet, conducteurs de travaux",pre:"Gabarit MOS et déclinaison, règles de génération",ph:"Phase 1 → Phase 2",verb:"« Ces feuilles de déclinaison peuvent être générées automatiquement après la réalisation d'un MOS. »",n1:"Niveau 1. Assistant qui produit la feuille de déclinaison depuis un MOS déposé.",n2:"Niveau 2. Workflow déclenché à la validation du MOS qui génère et classe la déclinaison."},
+{id:"GP-05",p:"Études & Projet",h:"lt",f:"agent",fl:"Agent",n:"Compte-rendu de FAT automatisé",d:"Tableur, mail et plan d'action en sortie de FAT",desc:"Agent qui, depuis l'AF et les commentaires saisis pendant la FAT, remplit le tableur de tests, trace les demandes de modification, puis génère le compte-rendu et le mail de diffusion avec le plan d'action.",outil:"Gemini (Workspace Studio)",crit:"Fort",freq:"Hebdomadaire",prof:"Automaticiens, chefs de projet",pre:"AF en entrée, saisie terrain structurée, connexion Gmail",ph:"Phase 2",verb:"« Quand on fait un compte-rendu de FAT, on dit ce qui s'est passé, les points bloquants, les demandes de modification. Ça peut être automatisé. »"},
+{id:"GP-06",p:"Études & Projet",h:"ct",f:"agent",fl:"Workflow",n:"Comptes-rendus de réunion automatisés",d:"Brouillon de CR prêt 5 min après la réunion",desc:"Workflow Gemini et Workspace Studio. En fin de réunion (Copil, revue de projet, RDV client), génération automatique du compte-rendu et d'un brouillon de mail structuré. Brique de transcription Gemini Meet déjà disponible.",outil:"Gemini (Meet + Workspace Studio)",crit:"Moyen",freq:"Mensuelle",prof:"Chefs de projet, direction",pre:"Activation Gemini Meet (en place), création du workflow Studio",ph:"Phase 1 → Phase 2",verb:"« Je quitte la réunion, dans 5 minutes j'ai mon brouillon prêt à partir, avec le compte-rendu, la synthèse. »",n1:"Niveau 1. Transcription Gemini Meet puis génération manuelle du CR via un prompt enregistré.",n2:"Niveau 2. Workflow Workspace Studio qui produit et dépose le brouillon de mail automatiquement."},
+{id:"ACH-01",p:"Achats & Appro",h:"ct",f:"assist",fl:"Assistant",n:"Recherche d'équivalences de références fournisseurs",d:"Tableau comparatif avec prix",desc:"Assistant qui trouve des équivalences de matériel entre fournisseurs (ex. disjoncteur Schneider vers concurrents) via recherche web approfondie ou extension navigateur. Sortie, un tableau comparatif synthétique.",outil:"Claude (extension) / Gemini Deep Research",crit:"Moyen",freq:"Quotidienne",prof:"Acheteur, BE, chefs de projet",pre:"Licence avec recherche web, gabarit de tableau comparatif",ph:"Phase 1",verb:"« Il arrive souvent de demander l'équivalent chez un autre fournisseur, mais souvent les IA n'ont pas accès aux sites fournisseurs. »"},
+{id:"ACH-02",p:"Achats & Appro",h:"mt",f:"rag",fl:"RAG",n:"Comparatif de devis fournisseurs et sourcing",d:"1 à 2 M€ d'achats par an, sous-consultés",desc:"Aide au sourcing et à la comparaison de devis sur un volume d'achats de 1 à 2 M€/an jugé sous-consulté. Comparaison multi-références et multi-fournisseurs pour dégager des opportunités.",outil:"Claude / Gemini + base achats",crit:"Fort",freq:"Hebdomadaire",prof:"Acheteur, BE",pre:"Numérisation des devis fournisseurs, structuration des références",ph:"Phase 1 → Phase 2",verb:"« On a à peu près 2 millions d'euros d'achat par an. On ne consulte pas assez. »",n1:"Niveau 1. L'acheteur dépose plusieurs devis et l'assistant produit le comparatif.",n2:"Niveau 2. RAG sur la base des devis et factures pour comparer automatiquement au marché."},
+{id:"ACH-03",p:"Achats & Appro",h:"mt",f:"rag",fl:"RAG",n:"Historique de prix et argumentaire d'achat",d:"Prix moyen sur 10 ans pour négocier",desc:"RAG sur l'historique de prix interne (devis et factures sur ~10 ans) pour donner le prix moyen d'un matériel et construire un argumentaire de négociation. Complète la recherche web par la donnée propriétaire.",outil:"Base vectorielle + Drive / ERP Everwin",crit:"Fort",freq:"Hebdomadaire",prof:"Acheteur, chargés d'affaires",pre:"Consolidation des devis et factures sur 10 ans, gouvernance",ph:"Phase 2",verb:"« L'IA va analyser la moyenne de prix, ça vous donne des argumentaires d'achat. »"},
+{id:"ACH-04",p:"Achats & Appro",h:"lt",f:"agent",fl:"Workflow",n:"Workflow de consultations fournisseurs",d:"Mails préétablis envoyés automatiquement",desc:"Workflow d'envoi de consultations, à partir d'une référence et d'une bibliothèque de fournisseurs par référence, génération et envoi des demandes de prix puis tri des réponses.",outil:"Gemini (Workspace Studio)",crit:"Moyen",freq:"Hebdomadaire",prof:"Acheteur",pre:"Bibliothèque fournisseurs et références, gabarits de mails, connexion Gmail",ph:"Phase 2",verb:"« Il peut avoir des mails préétablis, une liste de fournisseurs par référence, et les mails sont envoyés automatiquement. »"},
+{id:"ACH-05",p:"Achats & Appro",h:"lt",f:"agent",fl:"Agent",n:"Demande de devis sur sites fournisseurs",d:"Agent navigateur sous validation humaine",desc:"Agent navigateur qui se connecte aux portails fournisseurs (comptes existants, ex. Legrand) pour aller jusqu'à la demande de devis, sous validation humaine et sans paiement automatique. Dépend des règles SI.",outil:"Claude (extension navigateur)",crit:"Moyen",freq:"Hebdomadaire",prof:"Acheteur, BE",pre:"Extension navigateur autorisée par le SI, comptes fournisseurs, garde-fous",ph:"Phase 2",verb:"« On utilise Excel pour commander, on a des comptes chez eux. Est-ce qu'il pourrait faire des demandes de devis directement dessus ? »"}
+];
+
+const board=document.getElementById('board');
+const HZ=[["ct","Court terme · 0 à 3 mois","hz-ct"],["mt","Moyen terme · 3 à 6 mois","hz-mt"],["lt","Long terme · 6 à 12 mois","hz-lt"],["hx","Hors périmètre IA","hz-hx"]];
+const BCLASS={Assistant:"b-assist",RAG:"b-rag",Agent:"b-agent","Agent / API":"b-agent",Workflow:"b-agent","Hors IA":"b-hors"};
+
+function render(view){
+  document.getElementById('visionG').classList.add('hidden');
+  document.getElementById('visionR').classList.add('hidden');
+  board.classList.remove('hidden');
+  if(view==='visionG'){board.classList.add('hidden');document.getElementById('visionG').classList.remove('hidden');return;}
+  if(view==='visionR'){board.classList.add('hidden');document.getElementById('visionR').classList.remove('hidden');return;}
+  let list=CASES.slice();
+  if(view!=='all'){list=list.filter(c=>c.p===view);}
+  let html='';
+  for(const [hz,label,cls] of HZ){
+    const items=list.filter(c=>c.h===hz);
+    if(!items.length)continue;
+    html+=`<div class="horizon"><div class="horizon-head ${cls}"><span>${label}</span><span class="cnt">${items.length} cas</span></div>`;
+    let lastP=null;
+    for(const c of items){
+      if(view==='all'&&c.p!==lastP){html+=`<div class="perim">${c.p}</div>`;lastP=c.p;}
+      const bc=BCLASS[c.fl]||'b-hors';
+      html+=`<div class="case" onclick="toggle('${c.id}')">
+        <div class="case-id">${c.id}</div>
+        <div><div class="case-name">${c.n}<span>${c.d}</span></div></div>
+        <div class="case-gain">${c.outil}</div>
+        <div class="badge ${bc}">${c.fl}</div>
+      </div>
+      <div class="detail" id="d-${c.id}">
+        <div class="d-desc">${c.desc}</div>
+        ${c.n1?`<div class="d-grid"><div class="d-box d-n1"><h4>Niveau 1 · démarrage</h4>${c.n1}</div><div class="d-box d-n2"><h4>Niveau 2 · connecté</h4>${c.n2}</div></div>`:''}
+        <div class="d-tags">
+          <span class="d-tag"><b>Outil</b> ${c.outil}</span>
+          <span class="d-tag"><b>Phase</b> ${c.ph}</span>
+          <span class="d-tag"><b>Criticité</b> ${c.crit}</span>
+          <span class="d-tag"><b>Fréquence</b> ${c.freq}</span>
+          <span class="d-tag"><b>Profils</b> ${c.prof}</span>
+          <span class="d-tag"><b>Prérequis</b> ${c.pre}</span>
+        </div>
+        <div class="d-verb">${c.verb}</div>
+      </div>`;
+    }
+    html+=`</div>`;
+  }
+  board.innerHTML=html;
+}
+let openId=null;
+function toggle(id){
+  const el=document.getElementById('d-'+id);
+  if(openId&&openId!==id){const o=document.getElementById('d-'+openId);if(o)o.classList.remove('open');}
+  if(el.classList.contains('open')){el.classList.remove('open');openId=null;}
+  else{el.classList.add('open');openId=id;}
+}
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');openId=null;
+    render(t.dataset.view);
+  });
+});
+render('all');
+</script>
+</body>
+</html>
