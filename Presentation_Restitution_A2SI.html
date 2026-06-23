@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Restitution de cadrage IA · A2SI PROCESS</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F5F1;--surface:#EFEEE9;--surface2:#F0ECF6;--border:#DDD9D1;--text:#3D3929;
+  --text-dim:#7A7568;--text-bright:#1C1A14;--white:#FDFCFA;--violet:#8B5CF6;--violet-dark:#6D28D9;
+  --violet-deep:#4C1D95;--violet-light:#F0ECF6;--green:#059669;--green-bg:#EDF8F0;--green-text:#065F46;
+  --blue:#2563EB;--blue-bg:#EDF0F8;--blue-text:#1E40AF;--amber:#D97706;--amber-bg:#FBF6E8;
+  --amber-text:#92400E;--red:#DC2626;--red-bg:#FEF2F2;--red-text:#991B1B;--gray:#6B7280;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+.container{max-width:960px;margin:0 auto;padding:3rem 2.5rem}
+section{padding:4.2rem 0;border-bottom:1px solid var(--border)}
+section:first-of-type{padding-top:1.5rem}
+.section-num{font-size:.66rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--violet-dark);margin-bottom:1.6rem;display:flex;align-items:center;gap:.7rem}
+.section-num::before{content:"";width:24px;height:2px;background:var(--violet)}
+h1{font-family:'DM Serif Display',serif;font-size:2.7rem;line-height:1.08;color:var(--text-bright);margin-bottom:.6rem}
+h2{font-family:'DM Serif Display',serif;font-size:1.9rem;line-height:1.15;color:var(--text-bright);margin-bottom:1.1rem}
+.lead{font-size:1.05rem;color:var(--text-dim);max-width:720px;margin-bottom:1.4rem}
+p{font-size:.92rem}
+.brand{font-family:'DM Serif Display',serif;font-size:1.2rem;color:var(--violet-dark)}
+.tagline{font-size:.72rem;color:var(--text-dim);letter-spacing:.04em;margin-top:.1rem}
+.subtitle{font-size:1.05rem;color:var(--text-dim);margin-bottom:.4rem}
+.sample-banner{display:flex;gap:.8rem;align-items:flex-start;background:var(--surface2);border:1px solid var(--border);border-left:3px solid var(--violet);border-radius:8px;padding:1rem 1.2rem;margin:1.8rem 0 0;font-size:.88rem}
+.sample-banner b{color:var(--violet-dark)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin:2.4rem 0}
+.stat{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:1.3rem 1rem;text-align:center}
+.stat .num{font-family:'DM Serif Display',serif;font-size:2.4rem;line-height:1}
+.stat .label{font-size:.72rem;color:var(--text-dim);margin-top:.45rem;text-transform:uppercase;letter-spacing:.04em}
+.cards{display:grid;gap:1rem}
+.cols-2{grid-template-columns:1fr 1fr}
+.cols-3{grid-template-columns:repeat(3,1fr)}
+.card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:1.2rem 1.3rem}
+.card-accent{border-left:3px solid var(--violet)}
+.card h3{font-size:.98rem;color:var(--text-bright);margin-bottom:.4rem}
+.card p{font-size:.85rem;color:var(--text-dim)}
+.irritant{display:grid;grid-template-columns:42px 1fr 120px;gap:1rem;align-items:center;background:var(--white);border:1px solid var(--border);border-radius:10px;padding:1rem 1.2rem;margin-bottom:.8rem}
+.irritant-num{font-family:'DM Serif Display',serif;font-size:1.7rem;color:var(--violet);text-align:center}
+.irritant h3{font-size:.98rem;color:var(--text-bright);margin-bottom:.2rem}
+.irritant p{font-size:.83rem;color:var(--text-dim)}
+.irritant-badge{font-size:.68rem;font-weight:700;padding:.35rem .6rem;border-radius:6px;text-align:center}
+.badge-high{background:var(--red-bg);color:var(--red-text)}
+.badge-med{background:var(--amber-bg);color:var(--amber-text)}
+.takeaway{background:var(--violet-light);color:var(--violet-deep);border-radius:8px;padding:1.1rem 1.3rem;font-size:.95rem;font-weight:500;margin-top:1.6rem;line-height:1.55}
+.env-table{width:100%;border-collapse:collapse;background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden;font-size:.85rem;margin-bottom:1.4rem}
+.env-table th{background:var(--surface);text-align:left;padding:.7rem .9rem;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text-dim)}
+.env-table td{padding:.7rem .9rem;border-top:1px solid var(--border);vertical-align:top}
+.env-table td b{color:var(--text-bright)}
+.fam-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin:1.6rem 0}
+.fam{border-radius:10px;padding:1rem;text-align:center;border:1px solid var(--border)}
+.fam .fnum{font-family:'DM Serif Display',serif;font-size:1.9rem;line-height:1}
+.fam .flab{font-size:.74rem;margin-top:.3rem;font-weight:600}
+.fam-g{background:var(--green-bg)}.fam-g .fnum,.fam-g .flab{color:var(--green-text)}
+.fam-b{background:var(--blue-bg)}.fam-b .fnum,.fam-b .flab{color:var(--blue-text)}
+.fam-a{background:var(--amber-bg)}.fam-a .fnum,.fam-a .flab{color:var(--amber-text)}
+.fam-x{background:var(--surface)}.fam-x .fnum,.fam-x .flab{color:var(--gray)}
+.family-header{display:flex;align-items:center;gap:.6rem;font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-dim);margin:1.6rem 0 .7rem}
+.family-dot{width:11px;height:11px;border-radius:3px}
+.usecase{display:grid;grid-template-columns:60px 1fr 130px;gap:1rem;align-items:center;background:var(--white);border:1px solid var(--border);border-radius:10px;padding:.85rem 1.1rem;margin-bottom:.6rem}
+.usecase-id{font-weight:700;color:var(--violet-dark);font-size:.85rem}
+.usecase h3{font-size:.92rem;color:var(--text-bright);margin-bottom:.15rem}
+.usecase p{font-size:.8rem;color:var(--text-dim)}
+.usecase-meta{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.45rem}
+.usecase-tag{font-size:.68rem;background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:.18rem .5rem;color:var(--text-dim)}
+.usecase-gain{text-align:right}
+.usecase-gain .before{font-size:.72rem;color:var(--text-dim)}
+.usecase-gain .after{font-size:.95rem;font-weight:700;color:var(--green)}
+.org-level{display:grid;grid-template-columns:90px 1fr;gap:1rem;align-items:start;background:var(--white);border:1px solid var(--border);border-radius:10px;padding:1.1rem 1.2rem;margin-bottom:.8rem}
+.org-badge{font-size:.74rem;font-weight:700;padding:.4rem .5rem;border-radius:6px;text-align:center}
+.org-level h3{font-size:.95rem;color:var(--text-bright);margin-bottom:.25rem}
+.org-level p{font-size:.83rem;color:var(--text-dim)}
+.roadmap{display:flex;gap:1.5rem}
+.rm-rail{display:flex;flex-direction:column;align-items:center;flex-shrink:0}
+.rm-dot{width:16px;height:16px;border-radius:50%;flex-shrink:0}
+.rm-line{width:2px;flex:1;background:var(--border)}
+.rm-body{padding-bottom:2.4rem}
+.rm-phase{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.rm-count{font-family:'DM Serif Display',serif;font-size:1.6rem;line-height:1.2}
+.rm-body p{font-size:.84rem;line-height:1.6;color:var(--text-dim);margin-top:.2rem}
+.cta-final{background:linear-gradient(135deg,#4C1D95,#6D28D9);border-radius:14px;padding:2.4rem 2.2rem;color:#fff;margin-top:2rem}
+.cta-final h2{color:#fff;margin-bottom:.7rem}
+.cta-final .lead{color:#E9E3F7}
+.cta-grid{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin:1.4rem 0}
+.cta-card{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);border-radius:9px;padding:1rem 1.1rem}
+.cta-card b{display:block;color:#fff;margin-bottom:.25rem;font-size:.92rem}
+.cta-card span{font-size:.83rem;color:#E0D7F4}
+.quote{border-left:3px solid #C4B5FD;padding-left:1.1rem;font-style:italic;color:#EDE9FE;font-size:.94rem;line-height:1.65;margin-top:1.3rem}
+.quote span{display:block;font-style:normal;font-size:.78rem;color:#C4B5FD;margin-top:.45rem}
+.footer{padding:2.5rem 0 1rem;display:flex;justify-content:space-between;align-items:center;font-size:.78rem;color:var(--text-dim)}
+.footer-brand{font-family:'DM Serif Display',serif;color:var(--violet-dark);font-size:1.05rem}
+@media(max-width:720px){.container{padding:2rem 1.3rem}.stats,.fam-stats{grid-template-columns:repeat(2,1fr)}.cols-2,.cols-3,.cta-grid{grid-template-columns:1fr}.irritant{grid-template-columns:34px 1fr}.irritant-badge{display:none}.usecase{grid-template-columns:50px 1fr}.usecase-gain{display:none}h1{font-size:2rem}}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- 01 Ouverture -->
+  <section>
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2.2rem">
+      <div><div class="brand">IAvenir</div><div class="tagline">Formation &amp; Conseil en IA</div></div>
+      <div style="text-align:right;font-size:.78rem;color:var(--text-dim)">Cadrage du 10 juin 2026<br>Confidentiel</div>
+    </div>
+    <div class="section-num">01 Ouverture</div>
+    <h1>Cadrage stratégique Intelligence Artificielle</h1>
+    <div class="subtitle">A2SI PROCESS · Intégration EIA industrielle · Dunkerquois</div>
+    <p class="lead">Un premier regard sur le potentiel d'intégration de l'IA dans vos métiers, construit à partir du process Études et élargi en séance aux achats, à l'administration et au pilotage de projet.</p>
+
+    <div class="sample-banner">
+      <span>◆</span>
+      <div><b>Une ébauche, pas un audit complet.</b> Cette restitution s'appuie sur un seul entretien de cadrage, sur l'un de vos dix métiers. Elle vous donne déjà 26 cas d'usage actionnables et la trajectoire, pour décider en connaissance de cause d'aller vers un audit 360°.</div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="num" style="color:var(--violet)">1</div><div class="label">Entretien de cadrage</div></div>
+      <div class="stat"><div class="num" style="color:var(--violet)">3</div><div class="label">Participants</div></div>
+      <div class="stat"><div class="num" style="color:var(--violet)">2h</div><div class="label">Durée</div></div>
+      <div class="stat"><div class="num" style="color:var(--violet)">26</div><div class="label">Cas d'usage identifiés</div></div>
+    </div>
+
+    <div class="cards cols-2">
+      <div class="card card-accent" style="border-color:var(--green)"><h3>1. Comprendre le métier</h3><p>Dérouler un process de bout en bout, sans parler d'IA d'abord, pour ancrer l'analyse dans le réel.</p></div>
+      <div class="card card-accent" style="border-color:var(--blue)"><h3>2. Identifier les cas d'usage</h3><p>Repérer les tâches chronophages, répétitives et à faible valeur, là où l'IA fait gagner du temps.</p></div>
+      <div class="card card-accent" style="border-color:var(--amber)"><h3>3. Cartographier le potentiel</h3><p>Classer chaque besoin par type de solution, criticité et horizon de déploiement.</p></div>
+      <div class="card card-accent" style="border-color:var(--violet)"><h3>4. Donner la trajectoire</h3><p>Montrer ce qui se fait tout de suite et ce que débloque une démarche plus large.</p></div>
+    </div>
+  </section>
+
+  <!-- 02 Constats -->
+  <section>
+    <div class="section-num">02 Constats terrain</div>
+    <h2>Quatre irritants remontés en séance</h2>
+    <p class="lead">Tous tournent autour d'une même réalité, le cœur de métier (l'appréciation de la complexité du procédé) est précieux et irremplaçable, mais il est noyé sous des tâches répétitives et administratives.</p>
+
+    <div class="irritant"><div class="irritant-num">1</div><div><h3>Documentation répétitive ré-écrite à chaque projet</h3><p>AF, MOS, feuilles de déclinaison, feuilles de test FAT, plans qualité, beaucoup de copier-coller à faible valeur ajoutée.</p></div><div class="irritant-badge badge-high">Impact fort</div></div>
+    <div class="irritant"><div class="irritant-num">2</div><div><h3>Savoir-faire non capitalisé</h3><p>Une base d'affaires depuis 2008 sur le Drive, mais non exploitée. L'analyse de risques repose sur la seule mémoire des chefs de projet.</p></div><div class="irritant-badge badge-high">Impact fort</div></div>
+    <div class="irritant"><div class="irritant-num">3</div><div><h3>Achats sous-consultés</h3><p>1 à 2 M€ d'achats par an, peu de mise en concurrence et pas d'historique de prix mobilisable pour négocier.</p></div><div class="irritant-badge badge-med">Impact moyen</div></div>
+    <div class="irritant"><div class="irritant-num">4</div><div><h3>Usage IA individuel et non gouverné</h3><p>Gemini déjà utilisé chacun dans son coin (correction, traduction, aide AF), sans cadre commun ni réponse claire sur la confidentialité des données.</p></div><div class="irritant-badge badge-med">Impact moyen</div></div>
+
+    <div class="takeaway">Le sujet n'est pas un déficit d'outils, vous avez déjà un environnement riche. C'est un sujet d'orchestration et de capitalisation.</div>
+  </section>
+
+  <!-- 03 Maturité -->
+  <section>
+    <div class="section-num">03 Maturité et environnement</div>
+    <h2>Un socle Google déjà en place</h2>
+    <p class="lead">L'environnement existant est un atout, la stratégie consiste à en tirer le plein potentiel avant d'ajouter des outils.</p>
+
+    <table class="env-table">
+      <tr><th>Socle</th><th>Existant chez A2SI</th><th>Pertinence IA</th></tr>
+      <tr><td><b>Bureautique et IA</b></td><td>Google Workspace, Gemini Pro pour tous, Drive partagé</td><td>Socle cible, Gemini, Gems, Workspace Studio, Deep Research</td></tr>
+      <tr><td><b>Gestion</b></td><td>ERP Everwin GX (devis, affaires, achats, facturation, paie)</td><td>Source des relances, de la paie et de l'historique de prix</td></tr>
+      <tr><td><b>Études et conception</b></td><td>SCHEM'ELEC, Caneco BT, AutoCAD</td><td>IA éditeur à venir, assistance d'usage par capture d'écran</td></tr>
+      <tr><td><b>Automatisme et supervision</b></td><td>TIA Portal, Unity, STEP7, Panorama, PCVue</td><td>Génération de code répétitif, agent IA natif annoncé en TIA V21</td></tr>
+      <tr><td><b>Mémoire</b></td><td>Historique d'affaires depuis 2008 sur le Drive</td><td>Base de connaissances pour RAG, capitalisation</td></tr>
+    </table>
+
+    <div class="cards cols-2">
+      <div class="card"><h3>Usage IA déjà amorcé</h3><p>Gemini utilisé individuellement (correction de mails, traduction de programmes, aide rédactionnelle sur les AF). Des essais sur Claude et ChatGPT à titre personnel. Maturité, expérimentations individuelles à structurer.</p></div>
+      <div class="card"><h3>Profils moteurs et posture</h3><p>Un automaticien curieux, déjà testeur, une direction consciente de l'enjeu et prête à investir dans la durée. Posture prudente sur la confidentialité, légitime et à cadrer.</p></div>
+    </div>
+  </section>
+
+  <!-- 04 Cas d'usage -->
+  <section>
+    <div class="section-num">04 Cas d'usage identifiés</div>
+    <h2>26 cas, répartis en quatre familles</h2>
+
+    <div class="fam-stats">
+      <div class="fam fam-g"><div class="fnum">12</div><div class="flab">Assistants</div></div>
+      <div class="fam fam-b"><div class="fnum">5</div><div class="flab">RAG</div></div>
+      <div class="fam fam-a"><div class="fnum">8</div><div class="flab">Agents et workflows</div></div>
+      <div class="fam fam-x"><div class="fnum">1</div><div class="flab">Hors périmètre IA</div></div>
+    </div>
+
+    <p class="lead">Sélection des cas les plus structurants. Le détail complet et cliquable est dans le plan de déploiement.</p>
+
+    <div class="family-header"><span class="family-dot" style="background:var(--green)"></span>Assistants · court terme</div>
+    <div class="usecase"><div class="usecase-id">ADM-01</div><div><h3>Génération de devis et offres</h3><p>Au format A2SI, à partir d'informations minimales saisies à l'oral ou à l'écrit. Démontré en séance.</p><div class="usecase-meta"><span class="usecase-tag">Phase 1</span><span class="usecase-tag">Fort</span><span class="usecase-tag">Chargés d'affaires</span></div></div><div class="usecase-gain"><div class="after">Au format A2SI</div></div></div>
+    <div class="usecase"><div class="usecase-id">ACH-01</div><div><h3>Recherche d'équivalences fournisseurs</h3><p>Équivalences de matériel entre fournisseurs via recherche web approfondie ou extension navigateur.</p><div class="usecase-meta"><span class="usecase-tag">Phase 1</span><span class="usecase-tag">Moyen</span><span class="usecase-tag">Achats</span></div></div><div class="usecase-gain"><div class="after">Tableau comparatif</div></div></div>
+    <div class="usecase"><div class="usecase-id">ADM-02</div><div><h3>Génération de contrats de sous-traitance</h3><p>Contrat au format A2SI accompagné du mail d'envoi ou de relance.</p><div class="usecase-meta"><span class="usecase-tag">Phase 1</span><span class="usecase-tag">Moyen</span><span class="usecase-tag">Chefs de projet</span></div></div><div class="usecase-gain"><div class="after">Contrat et mail</div></div></div>
+    <div class="usecase"><div class="usecase-id">CAP-03</div><div><h3>Veille normative et réglementaire</h3><p>Veille sur les normes et le sourcing via la recherche approfondie, restitution sourcée multi-sites.</p><div class="usecase-meta"><span class="usecase-tag">Phase 1</span><span class="usecase-tag">Faible</span><span class="usecase-tag">BE, achats</span></div></div><div class="usecase-gain"><div class="after">Synthèse sourcée</div></div></div>
+    <div class="usecase"><div class="usecase-id">ET-03</div><div><h3>Feuilles de test FAT depuis l'AF</h3><p>Tableur des points à vérifier généré automatiquement depuis l'analyse fonctionnelle.</p><div class="usecase-meta"><span class="usecase-tag">Phase 1 → 2</span><span class="usecase-tag">Fort</span><span class="usecase-tag">Automaticiens</span></div></div><div class="usecase-gain"><div class="after">Tableur généré</div></div></div>
+    <div class="usecase"><div class="usecase-id">GP-06</div><div><h3>Comptes-rendus de réunion automatisés</h3><p>Compte-rendu et brouillon de mail générés en fin de réunion, brique Gemini Meet déjà disponible.</p><div class="usecase-meta"><span class="usecase-tag">Phase 1 → 2</span><span class="usecase-tag">Moyen</span><span class="usecase-tag">Pilotage</span></div></div><div class="usecase-gain"><div class="after">Brouillon prêt</div></div></div>
+
+    <div class="family-header"><span class="family-dot" style="background:var(--blue)"></span>RAG · moyen terme</div>
+    <div class="usecase"><div class="usecase-id">CAP-01</div><div><h3>RAG sur l'historique d'affaires depuis 2008</h3><p>Interroger en langage naturel toute la mémoire de l'entreprise. Brique structurante.</p><div class="usecase-meta"><span class="usecase-tag">Phase 2</span><span class="usecase-tag">Fort</span><span class="usecase-tag">Tous métiers</span></div></div><div class="usecase-gain"><div class="after">Mémoire interrogeable</div></div></div>
+    <div class="usecase"><div class="usecase-id">ACH-03</div><div><h3>Historique de prix et argumentaire d'achat</h3><p>Prix moyen issu de l'historique pour négocier face aux fournisseurs.</p><div class="usecase-meta"><span class="usecase-tag">Phase 2</span><span class="usecase-tag">Fort</span><span class="usecase-tag">Achats</span></div></div><div class="usecase-gain"><div class="after">Argumentaire chiffré</div></div></div>
+
+    <div class="family-header"><span class="family-dot" style="background:var(--amber)"></span>Agents et workflows · moyen à long terme</div>
+    <div class="usecase"><div class="usecase-id">ADM-03</div><div><h3>Relance des factures impayées</h3><p>Liste des retards par client et mails de relance au ton adaptatif. Enjeu 40 à 60 j de CA dehors.</p><div class="usecase-meta"><span class="usecase-tag">Phase 1 → 2</span><span class="usecase-tag">Fort</span><span class="usecase-tag">Direction, ADV</span></div></div><div class="usecase-gain"><div class="after">Relances par client</div></div></div>
+    <div class="usecase"><div class="usecase-id">ET-04</div><div><h3>Instanciation de la programmation automate</h3><p>Génération en série des objets programme, là où environ 1000 vannes se déclarent à la main.</p><div class="usecase-meta"><span class="usecase-tag">Phase 2</span><span class="usecase-tag">Fort</span><span class="usecase-tag">Automaticiens</span></div></div><div class="usecase-gain"><div class="after">Objets en série</div></div></div>
+
+    <div class="takeaway">Le cœur d'expertise reste à vos équipes. L'IA prend le répétitif autour, pour leur rendre du temps sur ce qui compte.</div>
+  </section>
+
+  <!-- 05 Solutions -->
+  <section>
+    <div class="section-num">05 Trois familles de solutions</div>
+    <h2>Des assistants aux agents connectés</h2>
+    <div class="cards cols-3">
+      <div class="card card-accent" style="border-color:var(--green)"><h3>Assistants</h3><p>Génèrent de la documentation à partir de vos modèles, sans connexion au SI. Devis, contrats, AF, mails. Déployables en formation, dès le court terme.</p></div>
+      <div class="card card-accent" style="border-color:var(--blue)"><h3>RAG</h3><p>Interrogent vos propres bases (Drive, historique, prix) en langage naturel, avec les sources. Prérequis, structurer la donnée.</p></div>
+      <div class="card card-accent" style="border-color:var(--amber)"><h3>Agents et workflows</h3><p>Enchaînent des actions (lire, générer, envoyer) et se connectent aux logiciels. Relances, consultations, comptes-rendus de FAT.</p></div>
+    </div>
+    <div class="takeaway">Stratégie A2SI, capitaliser au maximum sur Gemini dans l'environnement Google, puis ajouter un outil complémentaire comme Claude là où c'est pertinent (extension navigateur, génération de documents).</div>
+  </section>
+
+  <!-- 06 Organisation -->
+  <section>
+    <div class="section-num">06 Organisation des équipes</div>
+    <h2>La licence suit le rôle, pas le grade</h2>
+    <p class="lead">Pour une structure de votre taille, deux options possibles, à trancher en audit complet. Les Gems et compétences se partagent, ce qui évite de tout outiller au même niveau.</p>
+    <div class="org-level"><div class="org-badge" style="background:var(--violet-light);color:var(--violet-dark)">Référents</div><div><h3>Un ou deux référents métier</h3><p>Montés en compétence sur l'outil, ils construisent les assistants et workflows et font le lien avec les équipes. Le scénario le plus efficace pour une TPE industrielle.</p></div></div>
+    <div class="org-level"><div class="org-badge" style="background:var(--green-bg);color:var(--green-text)">Usage</div><div><h3>Tous les utilisateurs métier</h3><p>Formés à l'usage quotidien, ils alimentent les cas d'usage. Gemini est inclus dans Workspace, un outil complémentaire (payant) peut être ajouté selon les besoins.</p></div></div>
+    <div class="org-level"><div class="org-badge" style="background:var(--amber-bg);color:var(--amber-text)">Gouvernance</div><div><h3>Un pilote licences et données</h3><p>Côté système d'information, pour gouverner la bibliothèque de compétences, les accès et la confidentialité. La question soulevée en séance.</p></div></div>
+  </section>
+
+  <!-- 07 Roadmap -->
+  <section>
+    <div class="section-num">07 Trajectoire de déploiement</div>
+    <h2>Trois horizons</h2>
+    <div class="roadmap">
+      <div class="rm-rail"><div class="rm-dot" style="background:var(--green)"></div><div class="rm-line"></div></div>
+      <div class="rm-body"><div class="rm-phase" style="color:var(--green-text)">Court terme · 0 à 3 mois</div><div class="rm-count" style="color:var(--green)">13 cas</div><p>Formation et assistants Gemini dans l'environnement existant. Devis, contrats, feuilles de test FAT, comptes-rendus, aide rédactionnelle. Gains immédiats et visibles.</p></div>
+    </div>
+    <div class="roadmap">
+      <div class="rm-rail"><div class="rm-dot" style="background:var(--blue)"></div><div class="rm-line"></div></div>
+      <div class="rm-body"><div class="rm-phase" style="color:var(--blue-text)">Moyen terme · 3 à 6 mois</div><div class="rm-count" style="color:var(--blue)">7 cas</div><p>RAG gouvernés une fois le Drive structuré. Historique d'affaires, matrice de risques, historique de prix, recherche de projet similaire. La capitalisation commence.</p></div>
+    </div>
+    <div class="roadmap">
+      <div class="rm-rail"><div class="rm-dot" style="background:var(--amber)"></div></div>
+      <div class="rm-body"><div class="rm-phase" style="color:var(--amber-text)">Long terme · 6 à 12 mois</div><div class="rm-count" style="color:var(--amber)">5 cas</div><p>Agents et workflows connectés aux logiciels. Instanciation automate, consultations fournisseurs, compte-rendu de FAT, consolidation paie. Le potentiel le plus profond.</p></div>
+    </div>
+  </section>
+
+  <!-- 08 CTA / Audit complet -->
+  <section style="border-bottom:none">
+    <div class="cta-final">
+      <div class="section-num" style="color:#C4B5FD">08 Vers l'audit complet</div>
+      <h2>Une vision 360° pour passer du potentiel à la stratégie</h2>
+      <p class="lead">Ce cadrage a creusé un process sur dix. Il prouve la méthode et donne des gains immédiats. L'audit complet réinterroge chaque métier, 10 à 15 cas par poste, puis consolide ce qu'un échantillon ne peut pas voir.</p>
+      <div class="cta-grid">
+        <div class="cta-card"><b>Couverture 360° des métiers</b><span>Prise d'affaires, BE auto et élec, chantier, mise en service, achats, administration, RH, direction. Le potentiel passe de 26 à plus de 100 cas.</span></div>
+        <div class="cta-card"><b>Mutualisation inter-métiers</b><span>Des assistants et une base de connaissances partagés, plutôt que des usages isolés site par site.</span></div>
+        <div class="cta-card"><b>Stratégie de licences et référents</b><span>Qui construit, qui partage, quel niveau de licence par rôle. Impossible à arbitrer depuis un seul entretien.</span></div>
+        <div class="cta-card"><b>Gouvernance des données et roadmap</b><span>Cadre confidentialité et souveraineté, séquencement budgété et plan de formation par population.</span></div>
+      </div>
+      <p class="lead" style="margin-bottom:.3rem">Concrètement, trois à quatre jours sur site, des entretiens par métier, puis une restitution complète un mois après, rapport d'audit, cartographie consolidée, préconisations, suivie de la formation des équipes.</p>
+      <div class="quote">« On est au début de quelque chose. C'est perdre du temps pour en gagner. C'est un apprentissage permanent, ça remet en question plein de choses dans la boîte. C'est un vrai investissement qu'il faut faire de manière collective. »<span>Olivier Vrammout, Directeur général A2SI, en séance</span></div>
+    </div>
+  </section>
+
+  <div class="footer">
+    <div class="footer-brand">IAvenir</div>
+    <div>Restitution de cadrage · A2SI PROCESS · Confidentiel · Juin 2026</div>
+  </div>
+</div>
+</body>
+</html>
