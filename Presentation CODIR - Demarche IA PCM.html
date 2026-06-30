@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Démarche IA — PCM Ingénierie · Présentation CODIR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Charte PCM Ingénierie */
+    --purple:#F39200; --purple-d:#B86E00; --purple-l:#FDF0DC;   /* orange accent (chantier Audit) */
+    --navy:#343A55; --ink:#343A55; --gray:#5A6178; --lgray:#9298AC;
+    --teal:#343A55; --teal-l:#EEF0F4;                            /* ardoise (chantier Conseil) */
+    --line:#E4E5EA; --bg:#FBFBFC; --white:#fff; --pcm-gray:#E9EAEB; --iav:#8B5CF6;
+    --shadow:0 10px 30px rgba(52,58,85,.08); --shadow-s:0 4px 14px rgba(52,58,85,.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Manrope',-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,.hero h1,h2.sec,.chhead .ttl h2,.ov h3,.synth h3,nav .brand,.label{font-family:'Space Grotesk','Manrope',sans-serif}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+
+  /* Sticky nav */
+  nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+  nav .brand{font-weight:800;color:var(--navy);letter-spacing:-.02em}
+  nav .brand .iav{color:var(--iav)}
+  nav .links{display:flex;gap:26px}
+  nav a{color:var(--gray);text-decoration:none;font-size:13.5px;font-weight:600}
+  nav a:hover{color:var(--purple)}
+  @media(max-width:720px){nav .links{display:none}}
+
+  /* Hero */
+  header.hero{background:#fff;color:var(--ink);padding:58px 0 52px;border-bottom:1px solid var(--line);position:relative}
+  .hero .eyebrow{font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--purple)}
+  .hero h1{font-size:44px;line-height:1.1;font-weight:800;letter-spacing:-.03em;color:var(--navy);margin:14px 0 18px;max-width:780px;padding-bottom:18px;border-bottom:3px solid var(--purple)}
+  .hero p.sub{font-size:18px;color:var(--gray);max-width:720px;font-weight:500}
+  .hero .meta{margin-top:30px;display:flex;gap:34px;flex-wrap:wrap;font-size:14px;color:var(--gray)}
+  .hero .meta b{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--lgray);font-weight:700;margin-bottom:3px}
+
+  section{padding:64px 0}
+  .label{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);margin-bottom:14px}
+  h2.sec{font-size:30px;font-weight:800;letter-spacing:-.02em;color:var(--navy);margin-bottom:10px}
+  .lead{font-size:17px;color:var(--gray);max-width:760px}
+
+  /* Overview cards */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:34px}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+  .ov{background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px;box-shadow:var(--shadow-s);position:relative;overflow:hidden}
+  .ov::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px}
+  .ov.c1::before{background:var(--purple)}
+  .ov.c2::before{background:var(--teal)}
+  .ov .tag{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+  .ov.c1 .tag{color:var(--purple)}
+  .ov.c2 .tag{color:var(--teal)}
+  .ov h3{font-size:21px;color:var(--navy);font-weight:800;margin:8px 0 10px;letter-spacing:-.01em}
+  .ov p{color:var(--gray);font-size:15px}
+  .pill{display:inline-flex;align-items:center;gap:7px;margin-top:18px;font-size:12.5px;font-weight:700;padding:6px 13px;border-radius:999px}
+  .pill .dot{width:8px;height:8px;border-radius:50%}
+  .pill.ok{background:var(--purple-l);color:var(--purple-d)} .pill.ok .dot{background:var(--purple)}
+  .pill.wip{background:var(--teal-l);color:#343A55} .pill.wip .dot{background:var(--teal)}
+
+  .articul{margin-top:30px;background:linear-gradient(135deg,var(--purple-l),#fff);border:1px solid var(--line);border-radius:16px;padding:24px 28px;font-size:15.5px;color:var(--navy)}
+  .articul b{color:var(--purple-d)}
+
+  /* Chantier section header band */
+  .chsec{border-radius:0}
+  .chhead{display:flex;align-items:center;gap:18px;margin-bottom:8px}
+  .chnum{flex:none;width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:22px;color:#fff}
+  .c1 .chnum{background:var(--purple)} .c2 .chnum{background:var(--teal)}
+  .chhead .ttl small{display:block;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--lgray)}
+  .chhead .ttl h2{font-size:27px;color:var(--navy);font-weight:800;letter-spacing:-.02em;line-height:1.15}
+
+  .sub-bg-1{background:linear-gradient(180deg,#fff,#FBFAFF)}
+  .sub-bg-2{background:linear-gradient(180deg,#F6F7F9,#FBFBFC)}
+
+  .why{border-left:4px solid var(--purple);background:#fff;border-radius:0 14px 14px 0;padding:16px 22px;color:var(--gray);font-size:15.5px;font-style:italic;margin:22px 0 6px;box-shadow:var(--shadow-s)}
+  .c2 .why{border-left-color:var(--teal)}
+
+  h4.block{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--navy);margin:34px 0 16px;display:flex;align-items:center;gap:10px}
+  h4.block::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  ul.feat{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px 26px}
+  @media(max-width:760px){ul.feat{grid-template-columns:1fr}}
+  ul.feat li{position:relative;padding-left:26px;font-size:15px;color:var(--gray)}
+  ul.feat li::before{content:"";position:absolute;left:0;top:9px;width:9px;height:9px;border-radius:3px;background:var(--purple)}
+  .c2 ul.feat li::before{background:var(--teal)}
+  ul.feat li b{color:var(--ink);font-weight:600}
+
+  /* Steps */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media(max-width:760px){.steps{grid-template-columns:1fr}}
+  .step{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:var(--shadow-s)}
+  .step .n{font-size:12px;font-weight:800;color:var(--purple);letter-spacing:.1em}
+  .c2 .step .n{color:var(--teal)}
+  .step h5{font-size:16.5px;color:var(--navy);font-weight:700;margin:6px 0 8px}
+  .step p{font-size:13.5px;color:var(--gray)}
+
+  /* 4 phases */
+  .phases{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  @media(max-width:860px){.phases{grid-template-columns:1fr 1fr}}
+  @media(max-width:520px){.phases{grid-template-columns:1fr}}
+  .phase{background:#fff;border:1px solid var(--line);border-top:4px solid var(--teal);border-radius:14px;padding:18px;box-shadow:var(--shadow-s)}
+  .phase .ph{font-size:11.5px;font-weight:800;color:var(--teal);letter-spacing:.08em;text-transform:uppercase}
+  .phase h5{font-size:15px;color:var(--navy);font-weight:700;margin:6px 0 8px}
+  .phase p{font-size:13px;color:var(--gray)}
+
+  /* deliverables grid */
+  .liv{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media(max-width:760px){.liv{grid-template-columns:1fr 1fr}}
+  @media(max-width:480px){.liv{grid-template-columns:1fr}}
+  .livc{background:#fff;border:1px solid var(--line);border-left:4px solid var(--purple);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow-s)}
+  .c2 .livc{border-left-color:var(--teal)}
+  .livc span{font-size:14.5px;color:var(--ink);font-weight:600;line-height:1.4}
+
+  /* timeline */
+  .tl{position:relative;margin-top:8px;padding-left:6px}
+  .tl .row{display:flex;gap:18px;padding:14px 0;border-bottom:1px dashed var(--line)}
+  .tl .row:last-child{border-bottom:none}
+  .tl .when{flex:none;width:160px;font-weight:700;color:var(--navy);font-size:14px}
+  .tl .what{color:var(--gray);font-size:14.5px}
+  .tl .what b{color:var(--ink)}
+  @media(max-width:600px){.tl .row{flex-direction:column;gap:4px}.tl .when{width:auto}}
+
+  .note{margin-top:18px;font-size:13.5px;color:var(--lgray);font-style:italic}
+
+  /* synthese */
+  .synth{background:var(--navy);color:#fff;border-radius:22px;padding:42px;margin-top:8px;position:relative;overflow:hidden}
+  .synth::after{content:"";position:absolute;right:-80px;bottom:-80px;width:300px;height:300px;background:radial-gradient(circle,rgba(243,146,0,.32),transparent 60%);border-radius:50%}
+  .synth h3{font-size:24px;font-weight:800;margin-bottom:14px;letter-spacing:-.01em}
+  .synth p{opacity:.9;font-size:15.5px;max-width:760px}
+  .nextgrid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:26px;position:relative;z-index:2}
+  @media(max-width:680px){.nextgrid{grid-template-columns:1fr}}
+  .next{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:20px}
+  .next h6{font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;margin-bottom:12px}
+  .next.a h6{color:#F7B86B} .next.b h6{color:#AEB4C6}
+  .next ul{list-style:none}
+  .next li{font-size:14px;opacity:.92;padding:6px 0 6px 20px;position:relative}
+  .next li::before{content:"";position:absolute;left:0;top:9px;width:7px;height:7px;border-radius:2px;background:rgba(255,255,255,.55)}
+
+  footer{padding:40px 0 60px;text-align:center;color:var(--lgray);font-size:13px}
+  footer b{color:var(--iav)}
+  footer .fl{color:var(--iav);font-weight:600}
+
+  @media print{
+    nav{display:none} header.hero{padding:40px 0} section{padding:34px 0;break-inside:avoid}
+    body{background:#fff} .synth{background:var(--navy)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    header.hero,.ov::before,.chnum,.pill,.phase,.step,.livc .ic{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand"><span class="iav">IAvenir</span> · PCM Ingénierie</div>
+    <div class="links">
+      <a href="#overview">Vue d'ensemble</a>
+      <a href="#audit">Chantier Audit</a>
+      <a href="#conseil">Chantier Conseil</a>
+      <a href="#synthese">Synthèse</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Présentation CODIR — Juillet 2026</div>
+    <h1>La démarche IA de PCM Ingénierie</h1>
+    <p class="sub">Deux grands chantiers complémentaires en cours, menés avec IAvenir : structurer la stratégie IA du groupe et concrétiser un cas d'usage produit à forte valeur.</p>
+    <div class="meta">
+      <div><b>Partenaire</b>IAvenir — Conseil &amp; Formation IA</div>
+      <div><b>Interlocuteur</b>Antoine OGER</div>
+      <div><b>Périmètre</b>PCM Ingénierie &amp; plateforme STRYMO</div>
+    </div>
+  </div>
+</header>
+
+<!-- VUE D'ENSEMBLE -->
+<section id="overview">
+  <div class="wrap">
+    <span class="label">Vue d'ensemble</span>
+    <h2 class="sec">Deux chantiers, une même ambition</h2>
+    <p class="lead">PCM Ingénierie engage sa transformation par l'IA sur deux fronts complémentaires : une démarche transverse de montée en compétences et de gouvernance, et un chantier technique de R&amp;D appliqué à la plateforme STRYMO.</p>
+
+    <div class="grid2">
+      <div class="ov c1">
+        <div class="tag">Chantier 1 — Transverse</div>
+        <h3>Audit Stratégique IA — PCM Ingénierie</h3>
+        <p>Diagnostiquer les usages réels, arbitrer le choix des outils, définir la gouvernance et bâtir une feuille de route IA partagée sur 12 mois (focus inspection &amp; maîtrise d'œuvre).</p>
+        <span class="pill ok"><span class="dot"></span>Validé · démarrage 29 juin 2026</span>
+      </div>
+      <div class="ov c2">
+        <div class="tag">Chantier 2 — Produit / R&amp;D</div>
+        <h3>Conseil &amp; R&amp;D — Modèle hydrologique STRYMO</h3>
+        <p>Doter la plateforme STRYMO d'une capacité de prévision de débits et de crues par IA, pour anticiper les risques et alerter les collectivités en amont.</p>
+        <span class="pill wip"><span class="dot"></span>En cadrage · démarrage cible sept./oct. 2026</span>
+      </div>
+    </div>
+
+    <div class="articul">
+      <b>Comment les deux s'articulent :</b> l'audit pose le socle stratégique et humain (cas d'usage, outils, gouvernance, compétences) qui guidera l'ensemble du groupe ; le conseil STRYMO en est la première concrétisation produit — un projet R&amp;D ambitieux, inscrit dans le cadre du financement BPI.
+    </div>
+  </div>
+</section>
+
+<!-- CHANTIER 1 — AUDIT -->
+<section id="audit" class="sub-bg-1 c1">
+  <div class="wrap">
+    <div class="chhead">
+      <div class="chnum">1</div>
+      <div class="ttl"><small>Chantier transverse — PCM Ingénierie</small><h2>Audit Stratégique IA</h2></div>
+    </div>
+
+    <div class="why">Déployer l'IA sans diagnostic, c'est investir sans boussole. L'audit part de vos processus réels — pas de cas d'usage génériques — pour faire de l'IA un vrai levier de productivité.</div>
+
+    <h4 class="block">Objectifs</h4>
+    <ul class="feat">
+      <li><b>Identifier les cas d'usage</b> IA pertinents par métier (inspection, maîtrise d'œuvre)</li>
+      <li><b>Évaluer la maturité IA</b> des équipes et les pratiques actuelles</li>
+      <li><b>Arbitrer le choix des outils</b> IA adaptés aux besoins</li>
+      <li><b>Définir la gouvernance</b> et l'organisation des équipes autour de l'IA</li>
+      <li><b>Cadrer les usages</b> pour éviter la dispersion</li>
+      <li><b>Bâtir une feuille de route</b> 12 mois et un plan de montée en compétences</li>
+    </ul>
+
+    <h4 class="block">La démarche en 3 temps</h4>
+    <div class="steps">
+      <div class="step"><div class="n">ÉTAPE 1</div><h5>Immersion terrain</h5><p>Entretiens individuels et observation des processus réels auprès des collaborateurs, métier par métier. Anonyme et sans jugement.</p></div>
+      <div class="step"><div class="n">ÉTAPE 2</div><h5>Consolidation</h5><p>Analyse des remontées, cartographie des cas d'usage, arbitrages outils et structuration des préconisations.</p></div>
+      <div class="step"><div class="n">ÉTAPE 3</div><h5>Restitution</h5><p>Présentation à la direction du rapport complet et du plan d'action priorisé, activable dès la restitution.</p></div>
+    </div>
+
+    <h4 class="block">Livrables</h4>
+        <div class="liv">
+      <div class="livc"><span>Rapport d'audit complet</span></div>
+      <div class="livc"><span>Cartographie des cas d'usage</span></div>
+      <div class="livc"><span>Présentation de restitution</span></div>
+      <div class="livc"><span>Plan de déploiement</span></div>
+    </div>
+    <p class="note">Le rapport intègre notamment l'arbitrage du choix des outils, la gouvernance et l'organisation des équipes, la roadmap d'intégration sur 12 mois et le plan de montée en compétences.</p>
+
+    <h4 class="block">Calendrier &amp; périmètre</h4>
+    <div class="tl">
+      <div class="row"><div class="when">29 juin → 2 juillet</div><div class="what"><b>Immersion terrain</b> — 4 jours d'audit groupe · 24 collaborateurs (inspection &amp; maîtrise d'œuvre)</div></div>
+      <div class="row"><div class="when">Juillet (3 semaines)</div><div class="what"><b>Consolidation</b> — analyse, cartographie et préparation des livrables</div></div>
+      <div class="row"><div class="when">Fin juillet</div><div class="what"><b>Restitution</b> — présentation du rapport et du plan d'action à la direction</div></div>
+    </div>
+    <p class="note">Statut : devis validé — démarche en cours.</p>
+  </div>
+</section>
+
+<!-- CHANTIER 2 — CONSEIL -->
+<section id="conseil" class="sub-bg-2 c2">
+  <div class="wrap">
+    <div class="chhead">
+      <div class="chnum">2</div>
+      <div class="ttl"><small>Chantier produit / R&amp;D — Plateforme STRYMO</small><h2>Conseil &amp; R&amp;D — Modèle hydrologique prédictif</h2></div>
+    </div>
+
+    <div class="why">STRYMO supervise en temps réel les bassins versants (hauteurs, débits, pluviométrie) pour des collectivités, avec un système d'alertes à seuils. L'ambition : passer de la surveillance au prédictif.</div>
+
+    <h4 class="block">Objectif</h4>
+    <ul class="feat">
+      <li><b>Prévoir les débits</b> à 24, 48 et 72 heures à partir des prévisions de pluie</li>
+      <li><b>Anticiper les crues</b> et prévenir en amont les clients publics à risque</li>
+      <li><b>Intégrer la prévision</b> nativement dans la plateforme STRYMO</li>
+    </ul>
+
+    <h4 class="block">L'approche retenue</h4>
+    <div class="why" style="font-style:normal">L'IA ne prédit pas directement le débit. Elle construit et cale automatiquement un modèle hydrologique physique (HEC-HMS), avec un modèle d'apprentissage profond en benchmark. Résultat : une approche explicable, robuste et qui fonctionne avec peu d'historique — un atout décisif pour la responsabilité liée aux alertes publiques.</div>
+
+    <h4 class="block">La démarche en 4 phases</h4>
+    <div class="phases">
+      <div class="phase"><div class="ph">Phase 0</div><h5>Cadrage &amp; audit des données</h5></div>
+      <div class="phase"><div class="ph">Phase 1</div><h5>Modèle pilote</h5></div>
+      <div class="phase"><div class="ph">Phase 2</div><h5>Prévision opérationnelle</h5></div>
+      <div class="phase"><div class="ph">Phase 3</div><h5>Transfert &amp; industrialisation</h5></div>
+    </div>
+
+    <h4 class="block">Cadre &amp; statut</h4>
+    <div class="tl">
+      <div class="row"><div class="when">Cadre</div><div class="what"><b>Projet R&amp;D</b> inscrit dans le financement BPI · durée cible <b>~8 mois</b> (options jusqu'à 12)</div></div>
+      <div class="row"><div class="when">En cours</div><div class="what"><b>Cadrage technique</b> finalisé · recherche du consultant expert (profil ML / calcul scientifique)</div></div>
+      <div class="row"><div class="when">Démarrage cible</div><div class="what"><b>Septembre / octobre 2026</b>, en cohérence avec la disponibilité des équipes et le calendrier BPI</div></div>
+    </div>
+    <p class="note">Statut : démarche en cadrage — chiffrage et sélection du consultant en cours de finalisation.</p>
+  </div>
+</section>
+
+<!-- SYNTHESE -->
+<section id="synthese">
+  <div class="wrap">
+    <span class="label">Synthèse &amp; prochaines étapes</span>
+    <h2 class="sec">Une trajectoire IA cohérente pour le groupe</h2>
+    <div class="synth">
+      <h3>Le bon ordre : structurer, puis concrétiser</h3>
+      <p>L'audit donne au groupe sa boussole IA — cas d'usage prioritaires, outils arbitrés, gouvernance et compétences. Le chantier STRYMO transforme cette ambition en un produit différenciant, à fort impact pour les collectivités, soutenu par la R&amp;D et le financement BPI.</p>
+      <div class="nextgrid">
+        <div class="next a">
+          <h6>Chantier Audit — prochaines étapes</h6>
+          <ul>
+            <li>Immersion terrain du 29 juin au 2 juillet</li>
+            <li>Consolidation sur 3 semaines</li>
+            <li>Restitution du rapport &amp; plan d'action à la direction</li>
+          </ul>
+        </div>
+        <div class="next b">
+          <h6>Chantier STRYMO — prochaines étapes</h6>
+          <ul>
+            <li>Finalisation du cadrage &amp; du chiffrage</li>
+            <li>Sélection du consultant expert (cible mi-septembre)</li>
+            <li>Alignement BPI &amp; démarrage sept./oct. 2026</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><b>IAvenir</b> — Formation &amp; Conseil en Intelligence Artificielle</p>
+    <p>Antoine OGER · <span class="fl">antoine.oger@iavenir-formation.fr</span></p>
+  </div>
+</footer>
+
+</body>
+</html>
