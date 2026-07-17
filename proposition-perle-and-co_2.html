@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposition d'accompagnement — Perle And Co × IAvenir</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F6F5F1; --surface:#EFEEE9; --surface2:#F0ECF6; --border:#DDD9D1;
+    --text:#3D3929; --text-dim:#7A7568; --text-bright:#1C1A14; --white:#FDFCFA;
+    --violet:#8B5CF6; --violet-dark:#6D28D9; --violet-deep:#4C1D95; --violet-light:#F0ECF6;
+    --green:#059669; --green-bg:#EDF8F0; --green-text:#065F46;
+    --blue:#2563EB; --blue-bg:#EDF0F8; --blue-text:#1E40AF;
+    --amber:#D97706; --amber-bg:#FBF6E8; --amber-text:#92400E;
+    --red:#DC2626; --red-bg:#FEF2F2; --red-text:#991B1B;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    background:var(--bg); color:var(--text); line-height:1.62;
+    font-size:16px; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1060px; margin:0 auto; padding:0 1.5rem}
+  h1,h2,h3{font-family:'DM Serif Display',Georgia,serif; color:var(--text-bright); font-weight:400; line-height:1.2}
+  p{margin-bottom:1rem}
+  strong{color:var(--text-bright); font-weight:600}
+  a{color:var(--violet-dark); text-decoration:none}
+
+  /* Cover */
+  .cover{background:linear-gradient(135deg,#4C1D95 0%,#6D28D9 55%,#8B5CF6 100%); color:#fff; padding:4.5rem 0 4rem}
+  .cover .wrap{padding-top:0}
+  .brandline{display:flex;align-items:center;gap:.6rem;font-weight:700;font-size:1.5rem;letter-spacing:-.01em;margin-bottom:3rem}
+  .brandline .x{color:rgba(255,255,255,.45);font-weight:400}
+  .brandline .client{color:rgba(255,255,255,.9)}
+  .cover .kicker{font-size:.7rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.75);margin-bottom:1rem}
+  .cover h1{color:#fff;font-size:2.6rem;margin-bottom:1.1rem;max-width:20ch}
+  .cover .sub{font-size:1.08rem;color:rgba(255,255,255,.85);max-width:60ch}
+  .cover .meta{display:flex;gap:2.5rem;flex-wrap:wrap;margin-top:2.6rem;padding-top:1.6rem;border-top:1px solid rgba(255,255,255,.2)}
+  .cover .meta div{font-size:.85rem}
+  .cover .meta .lbl{color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.1em;font-size:.62rem;font-weight:600;margin-bottom:.25rem}
+  .cover .meta .val{color:#fff;font-weight:500}
+
+  /* Sections */
+  section{padding:3.4rem 0;border-bottom:1px solid var(--border)}
+  .section-num{font-size:.66rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--violet-dark);margin-bottom:1.4rem;display:flex;align-items:center;gap:.6rem}
+  .section-num::before{content:'';width:26px;height:2px;background:var(--violet);display:inline-block}
+  h2{font-size:1.85rem;margin-bottom:1.2rem}
+  .lead{font-size:1.05rem;color:var(--text);max-width:66ch}
+
+  /* Context chips */
+  .chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.6rem 0}
+  .chip{background:var(--surface2);color:var(--violet-deep);border:1px solid var(--violet-light);border-radius:999px;padding:.35rem .85rem;font-size:.82rem;font-weight:500}
+
+  /* Cards grid */
+  .cards{display:grid;gap:1rem;margin-top:1.6rem}
+  .cols-2{grid-template-columns:1fr 1fr}
+  .cols-3{grid-template-columns:1fr 1fr 1fr}
+  .card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:1.5rem 1.6rem}
+  .card h3{font-size:1.12rem;margin-bottom:.5rem}
+  .card p{font-size:.92rem;color:var(--text-dim);margin-bottom:0}
+  .card-accent{border-left:3px solid var(--violet)}
+
+  /* Option blocks */
+  .option{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:2.2rem 2.2rem 2rem;margin-top:1.8rem;position:relative}
+  .option.reco{border:1.5px solid var(--violet);box-shadow:0 12px 40px -20px rgba(109,40,217,.45)}
+  .option-tag{position:absolute;top:-13px;left:2.2rem;background:var(--violet);color:#fff;font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.4rem .95rem;border-radius:999px}
+  .option-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:.6rem;margin-bottom:.4rem}
+  .option h3{font-size:1.5rem}
+  .option .tagline{color:var(--text-dim);font-size:.95rem;margin-bottom:1.4rem}
+
+  /* Pillars */
+  .pillar{display:flex;gap:1rem;padding:1.1rem 0;border-top:1px solid var(--border)}
+  .pillar:first-of-type{border-top:none}
+  .pillar-ico{flex-shrink:0;width:34px;height:34px;border-radius:9px;background:var(--violet-light);color:var(--violet-deep);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem}
+  .pillar h4{font-family:'DM Sans';font-size:1rem;font-weight:600;color:var(--text-bright);margin-bottom:.25rem}
+  .pillar p{font-size:.9rem;color:var(--text-dim);margin-bottom:0}
+
+  /* Modalités */
+  .modes{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.4rem}
+  .mode{border:1px solid var(--border);border-radius:14px;padding:1.3rem 1.4rem;background:var(--surface)}
+  .mode .mt{font-weight:600;color:var(--text-bright);margin-bottom:.35rem;font-family:'DM Sans';display:flex;align-items:center;gap:.5rem}
+  .mode p{font-size:.88rem;color:var(--text-dim);margin-bottom:.7rem}
+  .mode .tag{font-size:.72rem;font-weight:600;padding:.2rem .6rem;border-radius:6px}
+  .tag-op{background:var(--green-bg);color:var(--green-text)}
+  .tag-eco{background:var(--blue-bg);color:var(--blue-text)}
+
+  /* Table */
+  table{width:100%;border-collapse:collapse;margin-top:1.5rem;font-size:.92rem;background:var(--white);border-radius:12px;overflow:hidden;border:1px solid var(--border)}
+  th{background:var(--violet-deep);color:#fff;text-align:left;padding:.85rem 1.1rem;font-weight:600;font-size:.82rem;letter-spacing:.02em}
+  td{padding:.85rem 1.1rem;border-top:1px solid var(--border);color:var(--text)}
+  td.price{font-weight:700;color:var(--violet-deep);white-space:nowrap;font-family:'DM Sans'}
+  tr:nth-child(even) td{background:var(--surface)}
+
+  .price-hl{display:inline-flex;align-items:baseline;gap:.35rem;background:var(--surface2);border:1px solid var(--violet-light);border-radius:12px;padding:.7rem 1.1rem;margin-top:1.3rem}
+  .price-hl .amt{font-family:'DM Serif Display';font-size:1.5rem;color:var(--violet-deep)}
+  .price-hl .u{font-size:.82rem;color:var(--text-dim)}
+
+  .note{background:var(--amber-bg);border-left:3px solid var(--amber);border-radius:8px;padding:.9rem 1.1rem;font-size:.88rem;color:var(--amber-text);margin-top:1.3rem}
+
+  /* Bloc vigilance */
+  .vigilance{background:linear-gradient(180deg,#F3EEFB 0%,#EFE9F9 100%);border:1.5px solid var(--violet);border-left:5px solid var(--violet-deep);border-radius:16px;padding:1.5rem 1.7rem;margin-top:1.8rem;box-shadow:0 10px 30px -22px rgba(76,29,149,.6)}
+  .vigilance .vlabel{display:inline-flex;align-items:center;gap:.5rem;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--violet-deep);margin-bottom:.6rem}
+  .vigilance .vlabel::before{content:'!';display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--violet-deep);color:#fff;font-size:.7rem;font-weight:700}
+  .vigilance p{font-size:.98rem;color:var(--text-bright);margin-bottom:0}
+  .vigilance strong{color:var(--violet-deep)}
+
+  /* Récap financier Option B */
+  .recap{background:var(--surface2);border:1px solid var(--violet-light);border-radius:16px;padding:1.5rem 1.7rem;margin-top:1.6rem}
+  .recap h4{font-family:'DM Sans';font-size:1rem;font-weight:700;color:var(--violet-deep);margin-bottom:.4rem}
+  .recap .rrow{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;padding:.7rem 0;border-top:1px solid var(--violet-light)}
+  .recap .rrow:first-of-type{border-top:none}
+  .recap .rlabel{font-size:.92rem;color:var(--text)}
+  .recap .rlabel b{color:var(--text-bright)}
+  .recap .rval{font-family:'DM Sans';font-weight:700;color:var(--violet-deep);white-space:nowrap;font-size:.95rem}
+
+  /* Comparatif */
+  .why{background:var(--surface2);border-radius:18px;padding:2rem 2.2rem;margin-top:1.6rem}
+  .why h3{font-size:1.25rem;margin-bottom:.7rem}
+  .why p{font-size:.96rem;color:var(--text)}
+
+  /* Steps */
+  .steps{counter-reset:s;margin-top:1.6rem}
+  .step{display:flex;gap:1.1rem;padding:1rem 0;border-top:1px solid var(--border)}
+  .step:first-child{border-top:none}
+  .step-n{counter-increment:s;flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--violet);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem}
+  .step-n::before{content:counter(s)}
+  .step h4{font-family:'DM Sans';font-size:1rem;font-weight:600;color:var(--text-bright);margin-bottom:.2rem}
+  .step p{font-size:.9rem;color:var(--text-dim);margin-bottom:0}
+
+  /* Footer */
+  footer{background:var(--text-bright);color:rgba(255,255,255,.7);padding:2.5rem 0 2.2rem;font-size:.78rem;line-height:1.7}
+  footer .wrap{padding-top:0}
+  footer .fbrand{color:#fff;font-family:'DM Serif Display';font-size:1.3rem;margin-bottom:.9rem}
+  footer strong{color:#fff}
+  footer .legal{border-top:1px solid rgba(255,255,255,.15);margin-top:1.3rem;padding-top:1.1rem;color:rgba(255,255,255,.55)}
+
+  @media(max-width:720px){
+    .wrap{padding:0 1.4rem}
+    .cover h1{font-size:2rem}
+    .cols-2,.cols-3,.modes{grid-template-columns:1fr}
+    .option{padding:1.8rem 1.4rem}
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="wrap">
+    <div class="brandline"><span>IAvenir</span><span class="x">×</span><span class="client">Perle And Co</span></div>
+    <div class="kicker">Proposition d'accompagnement · Juillet 2026</div>
+    <h1>Monter en compétences et structurer l'usage de l'IA</h1>
+    <p class="sub">Deux voies possibles : une action de formation ciblée pour répondre à la demande immédiate, ou un parcours entreprise complet — audit, gouvernance et formations sur mesure — pour ancrer l'IA sur des bases durables.</p>
+    <div class="meta">
+      <div><div class="lbl">Client</div><div class="val">Perle And Co — Albi (81)</div></div>
+      <div><div class="lbl">Secteur</div><div class="val">E-commerce · Artisanat</div></div>
+      <div><div class="lbl">Interlocuteur IAvenir</div><div class="val">Antoine Oger — Directeur Général</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 01 CONTEXTE -->
+<section>
+  <div class="wrap">
+    <div class="section-num">01 — Contexte & compréhension du besoin</div>
+    <h2>Ce que nous avons compris</h2>
+    <p class="lead">Vos équipes utilisent déjà l'IA au quotidien — Claude notamment — mais les usages restent hétérogènes et non cadrés. La demande porte sur de la formation, non pas pour découvrir l'outil, mais pour consolider un socle commun (prompt engineering, RGPD, bonnes pratiques) et exploiter des fonctionnalités aujourd'hui sous-utilisées.</p>
+    <p>Au-delà du socle commun, les besoins divergent nettement selon les métiers. Les fonctions support attendent des gains de productivité sur leurs tâches récurrentes. Les développeurs veulent savoir jusqu'où l'IA peut les assister sur le développement web (génération et revue de code). Le pôle data cherche à tirer un meilleur parti de la donnée client dont vous disposez, avec à la clé une capacité d'analyse et d'aide à la décision.</p>
+    <div class="chips">
+      <span class="chip">Fonctions support</span>
+      <span class="chip">Développeurs · IA web code</span>
+      <span class="chip">Data analytics · donnée client</span>
+      <span class="chip">Contrôle de gestion</span>
+      <span class="chip">Socle : prompt engineering</span>
+      <span class="chip">RGPD & confidentialité</span>
+    </div>
+    <div class="vigilance">
+      <div class="vlabel">Point d'attention — l'arbitrage à trancher</div>
+      <p>Aujourd'hui, l'usage repose vraisemblablement sur des <strong>licences individuelles</strong>, ce qui limite la maîtrise du traitement et de la protection de vos données. Une action de formation seule y répond partiellement : elle fait monter les équipes en compétences, mais ne traite pas la question de fond du <strong>cadre d'usage</strong> (outils retenus, licences entreprise, confidentialité, gouvernance). C'est précisément cet arbitrage qui déterminera le choix entre les deux options ci-après.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 DEUX APPROCHES -->
+<section>
+  <div class="wrap">
+    <div class="section-num">02 — Deux approches possibles</div>
+    <h2>Répondre à la demande, ou structurer la démarche</h2>
+    <div class="cards cols-2">
+      <div class="card card-accent">
+        <h3>Option A — Formation</h3>
+        <p>Une ou deux journées d'atelier pour approfondir le prompt engineering et exploiter les fonctionnalités avancées des outils. Réponse directe et rapide à la demande exprimée, avec un impact immédiat sur la productivité. Le cadre d'usage (outils, licences, gouvernance) reste en revanche inchangé.</p>
+      </div>
+      <div class="card card-accent" style="border-left-color:var(--violet-deep)">
+        <h3>Option B — Audit + Formation</h3>
+        <p>Un parcours entreprise : audit des usages par métier, préconisation d'outils et de licences entreprise, cadre de confidentialité et de gouvernance, plan de déploiement, puis des formations sur mesure calibrées sur les cas d'usage réels. On sort du cas par cas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 OPTION A -->
+<section>
+  <div class="wrap">
+    <div class="section-num">03 — Option A · Formation</div>
+    <h2>Une action de formation ciblée</h2>
+    <p class="lead">Un socle commun indispensable à tous, complété par des mises en pratique sur vos outils. Deux modalités de déploiement selon l'arbitrage entre profondeur opérationnelle et budget.</p>
+
+    <div class="option">
+      <h3>Contenu du socle commun</h3>
+      <p class="tagline">Partagé par l'ensemble des participants, quel que soit le métier.</p>
+      <div class="pillar">
+        <div class="pillar-ico">P</div>
+        <div><h4>Prompt engineering, en profondeur</h4><p>Au-delà des bases : structuration avancée des demandes, mise en contexte, chaînage, gabarits réutilisables et méthodes pour fiabiliser les résultats. Le levier de qualité le plus rentable.</p></div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-ico">F</div>
+        <div><h4>Fonctionnalités avancées des outils</h4><p>Exploitation complète de l'outil retenu (Claude notamment) : au-delà du chat, <strong>Claude Code</strong> pour les développeurs, <strong>Cowork</strong> pour l'automatisation des tâches, les <strong>connecteurs</strong> vers vos données et outils métier, et les <strong>compétences</strong> sur mesure. La plupart des utilisateurs n'exploitent qu'une fraction de ce potentiel.</p></div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-ico">R</div>
+        <div><h4>RGPD & bonnes pratiques</h4><p>Ce qui peut ou non être soumis à un outil, gestion des données sensibles et de la donnée client, réflexes de confidentialité au quotidien.</p></div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-ico">U</div>
+        <div><h4>Mise en pratique sur vos cas</h4><p>Ateliers appliqués aux tâches réelles des participants (support, développement, data), pour un transfert immédiat en poste.</p></div>
+      </div>
+
+      <h3 style="margin-top:2rem;font-size:1.2rem">Deux modalités de déploiement</h3>
+      <div class="modes">
+        <div class="mode">
+          <div class="mt">Généraliste <span class="tag tag-eco">Plus économique</span></div>
+          <p>Groupes mixtes multimétiers (jusqu'à 10 personnes). Un même groupe couvre l'ensemble des collaborateurs sur le socle commun.</p>
+          <p style="margin-bottom:0"><strong>Moins opérationnel</strong> — les mises en pratique restent transverses et ne descendent pas dans le détail des cas d'usage propres à chaque métier.</p>
+        </div>
+        <div class="mode">
+          <div class="mt">Par métier <span class="tag tag-op">Plus opérationnel</span></div>
+          <p>Groupes homogènes (support/gestion, développeurs, data). Ateliers calibrés sur les cas d'usage réels de chaque pôle.</p>
+          <p style="margin-bottom:0"><strong>Plus impactant, coût supérieur</strong> — le budget se multiplie par le nombre de groupes formés (une session par métier).</p>
+        </div>
+      </div>
+
+      <h3 style="margin-top:2rem;font-size:1.2rem">Tarifs</h3>
+      <table>
+        <thead><tr><th>Format</th><th>Contenu</th><th style="text-align:right">Tarif HT / groupe</th></tr></thead>
+        <tbody>
+          <tr><td><strong>1 journée</strong></td><td>Socle commun condensé + mise en pratique</td><td class="price" style="text-align:right">2 400 €</td></tr>
+          <tr><td><strong>2 journées</strong></td><td>Socle approfondi + ateliers appliqués par cas d'usage</td><td class="price" style="text-align:right">4 300 €</td></tr>
+        </tbody>
+      </table>
+      <div class="note">Tarif par groupe (jusqu'à ~10 participants). En modalité <strong>par métier</strong>, le budget total correspond au tarif journée multiplié par le nombre de groupes constitués. En modalité <strong>généraliste</strong>, un seul groupe couvre l'ensemble des collaborateurs.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 OPTION B -->
+<section>
+  <div class="wrap">
+    <div class="section-num">04 — Option B · Parcours entreprise</div>
+    <h2>Audit + Formation sur mesure</h2>
+    <p class="lead">L'approche recommandée. Plutôt que de former dans le flou, on cartographie d'abord les usages, on choisit et on cadre les bons outils, puis on construit des formations calibrées sur ce qui a réellement de la valeur pour vous.</p>
+
+    <div class="option reco">
+      <div class="option-tag">Recommandé</div>
+      <div class="option-head">
+        <h3>L'audit des usages IA</h3>
+      </div>
+      <p class="tagline">2 à 3 jours d'immersion selon le nombre de personnes et de services à auditer. Le cœur de la démarche entreprise.</p>
+
+      <div class="pillar">
+        <div class="pillar-ico">01</div>
+        <div><h4>Cartographie complète des cas d'usage, par métier</h4><p>Entretiens des services retenus (support, contrôle de gestion, développement, data). Chaque métier a des besoins distincts — on les fait remonter, on les qualifie et on les priorise. Vous choisissez le périmètre des services audités.</p></div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-ico">02</div>
+        <div><h4>Rapport complet & charte IA</h4><p>Un livrable structuré consolidant le diagnostic de maturité, les usages cartographiés et une charte d'usage de l'IA — le cadre de référence interne qui vous manque aujourd'hui.</p></div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-ico">03</div>
+        <div><h4>Préconisation d'outils — une vraie démarche entreprise</h4><p>Choix des outils adaptés à chaque usage, conseil sur les licences entreprise, mise en place des contrats de confidentialité, paramétrage et cadrage du traitement des données. C'est ici que l'on sécurise la protection de vos données, hors de portée d'un usage en licences individuelles.</p></div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-ico">04</div>
+        <div><h4>Plan de déploiement des cas d'usage</h4><p>Une feuille de route priorisée : quels usages activer, dans quel ordre, avec quels outils et quelle organisation. De quoi avancer sans revenir dans le flou.</p></div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-ico">05</div>
+        <div><h4>Conception des programmes de formation sur mesure</h4><p>L'audit débouche sur la <strong>conception</strong> de programmes calibrés sur les outils sélectionnés et les cas d'usage réels : 1 ou 2 journées selon la maturité IA identifiée pour chaque groupe. Des programmes bien plus adaptés qu'un contenu standard. Leur <strong>animation</strong> est ensuite réalisée dans un second temps, et chiffrée séparément.</p></div>
+      </div>
+
+      <div class="price-hl">
+        <span class="amt">≈ 7 500 € HT</span>
+        <span class="u">— audit complet (cartographie, charte IA, préconisation d'outils, plan de déploiement, conception des programmes), à ajuster selon le nombre de personnes et de services audités</span>
+      </div>
+
+      <div class="recap">
+        <h4>Approche financière globale de l'Option B</h4>
+        <div class="rrow">
+          <div class="rlabel"><b>Audit + préconisations + conception des programmes</b><br><span style="color:var(--text-dim);font-size:.85rem">Cartographie, charte IA, outils & licences, plan de déploiement. 2 à 3 jours selon périmètre.</span></div>
+          <div class="rval">≈ 7 500 € HT</div>
+        </div>
+        <div class="rrow">
+          <div class="rlabel"><b>Animation des formations sur mesure</b> — 1 journée<br><span style="color:var(--text-dim);font-size:.85rem">Par groupe, selon la maturité identifiée.</span></div>
+          <div class="rval">2 400 € HT / groupe</div>
+        </div>
+        <div class="rrow">
+          <div class="rlabel"><b>Animation des formations sur mesure</b> — 2 journées<br><span style="color:var(--text-dim);font-size:.85rem">Par groupe, pour les métiers à fort potentiel (dev, data).</span></div>
+          <div class="rval">4 300 € HT / groupe</div>
+        </div>
+      </div>
+      <div class="note"><strong>L'audit et les formations sont deux postes distincts.</strong> Les ≈ 7 500 € couvrent l'audit et la conception des programmes, mais pas leur animation : celle-ci s'ajoute selon le nombre de groupes à former et la durée retenue (1J ou 2J) pour chacun. Le budget global se précise une fois le périmètre d'audit et les programmes arrêtés.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 POURQUOI -->
+<section>
+  <div class="wrap">
+    <div class="section-num">05 — Notre lecture</div>
+    <h2>Pourquoi nous recommandons le parcours</h2>
+    <p class="lead">Une journée de formation seule répond à la demande, mais laisse les sujets structurants ouverts : quels outils retenir à l'échelle de l'entreprise, sous quelles licences, avec quel cadre de confidentialité et quelle gouvernance de la donnée client.</p>
+    <div class="why">
+      <h3>Partir sur les bons rails</h3>
+      <p>L'enjeu n'est pas seulement de mieux savoir prompter. C'est de déployer des outils entreprise paramétrés et gouvernés, avec un meilleur rapport au traitement et à la protection de vos données, des contrats de confidentialité signés — ce que le cas par cas en licences classiques ne permet pas. La formation prend alors tout son sens : elle porte sur les outils réellement retenus et sur des cas d'usage validés, au lieu d'entretenir un usage flou. L'audit n'est pas un préalable administratif, c'est ce qui rend la formation durablement utile.</p>
+    </div>
+    <p style="margin-top:1.4rem">Cela dit, les deux options restent ouvertes : si la priorité du moment est de donner un premier élan rapide aux équipes, l'Option A est une porte d'entrée légitime, qui pourra être suivie du parcours complet dans un second temps.</p>
+  </div>
+</section>
+
+<!-- 06 ETAPES -->
+<section>
+  <div class="wrap">
+    <div class="section-num">06 — Prochaines étapes</div>
+    <h2>Comment on avance</h2>
+    <div class="steps">
+      <div class="step"><div class="step-n"></div><div><h4>Échange de cadrage</h4><p>Un point pour définir le périmètre : services à auditer, nombre de personnes, arbitrage entre les deux options.</p></div></div>
+      <div class="step"><div class="step-n"></div><div><h4>Devis ajusté</h4><p>Chiffrage précis de l'audit et des formations une fois le périmètre arrêté.</p></div></div>
+      <div class="step"><div class="step-n"></div><div><h4>Audit & préconisations</h4><p>Entretiens, cartographie, rapport, charte IA, choix d'outils et plan de déploiement.</p></div></div>
+      <div class="step"><div class="step-n"></div><div><h4>Déploiement & formations sur mesure</h4><p>Mise en place des outils entreprise gouvernés, puis animation des programmes calibrés par métier.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="fbrand">IAvenir</div>
+    <p><strong>Antoine Oger</strong> — Directeur Général · <a href="mailto:antoine.oger@iavenir-formation.fr" style="color:#fff">antoine.oger@iavenir-formation.fr</a> · 07 61 60 22 77 · www.iavenir-formation.fr</p>
+    <div class="legal">
+      IAVENIR, SAS au capital de 20 000 € — SIREN 991 972 571 — RCS Nanterre — TVA intracommunautaire FR 17 991 972 571<br>
+      Siège social : 8 rue Émile Leblond, 92500 Rueil-Malmaison, France — Code APE 8559A — Organisme de formation professionnelle certifié Qualiopi<br>
+      Document commercial — Perle And Co · Juillet 2026. Tarifs exprimés en euros hors taxes. Proposition valable 60 jours.
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
