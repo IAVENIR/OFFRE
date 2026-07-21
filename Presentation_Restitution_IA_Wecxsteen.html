@@ -1,0 +1,227 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Restitution Audit IA · Groupe Wecxsteen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#F6F5F1;--surface:#EFEEE9;--surface2:#F0ECF6;--border:#DDD9D1;--text:#3D3929;--text-dim:#7A7568;--text-bright:#1C1A14;--white:#FDFCFA;--violet:#8B5CF6;--violet-dark:#6D28D9;--violet-deep:#4C1D95;--violet-light:#F0ECF6;--green:#059669;--green-bg:#EDF8F0;--green-text:#065F46;--blue:#2563EB;--blue-bg:#EDF0F8;--blue-text:#1E40AF;--amber:#D97706;--amber-bg:#FBF6E8;--amber-text:#92400E;--red:#DC2626;--red-bg:#FEF2F2;--red-text:#991B1B}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+.container{max-width:960px;margin:0 auto;padding:3rem 2.5rem}
+section{padding:4.5rem 0;border-bottom:1px solid var(--border)}
+section:last-child{border-bottom:none}
+h1{font-family:'DM Serif Display',serif;font-size:2.4rem;color:var(--text-bright);line-height:1.15;margin-bottom:.6rem}
+h1 em{font-style:italic;color:var(--violet)}
+h2{font-family:'DM Serif Display',serif;font-size:1.5rem;color:var(--text-bright);line-height:1.25;margin-bottom:1rem}
+h3{font-size:.88rem;font-weight:600;color:var(--text-bright);margin-bottom:.3rem}
+p{font-size:.88rem;color:var(--text);line-height:1.65;margin-bottom:.8rem;max-width:780px}
+.lead{font-size:1rem;color:var(--text-dim);line-height:1.7;max-width:700px;margin-bottom:2rem}
+.section-num{font-size:.65rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--violet-dark);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+.section-num::before{content:'';width:24px;height:2px;background:var(--violet)}
+.takeaway{font-size:.85rem;margin-top:1.5rem;font-weight:600;color:var(--violet-dark);padding:.6rem 1rem;background:var(--violet-light);border-radius:6px;display:inline-block;max-width:780px}
+.stats{display:flex;gap:1.2rem;margin:2rem 0}
+.stat{text-align:center;padding:.8rem 1rem;background:var(--white);border-radius:8px;border:1px solid var(--border);flex:1}
+.stat .num{font-family:'DM Serif Display',serif;font-size:2rem;line-height:1}
+.stat .label{font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);margin-top:.2rem}
+.cards{display:grid;gap:.8rem;margin-top:1.2rem}
+.cols-2{grid-template-columns:1fr 1fr}.cols-3{grid-template-columns:1fr 1fr 1fr}
+.card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:.9rem 1rem}
+.card h3{font-size:.8rem}.card p{font-size:.73rem;color:var(--text-dim);line-height:1.5;max-width:none;margin-bottom:0}
+.card-accent{border-left:3px solid}
+.irritant{display:flex;gap:.6rem;margin-bottom:.7rem;align-items:center;padding:.5rem .8rem;background:var(--white);border:1px solid var(--border);border-radius:6px}
+.irritant-num{font-family:'DM Serif Display',serif;font-size:1.2rem;color:var(--violet);width:22px;flex-shrink:0}
+.irritant h3{font-size:.76rem;margin-bottom:.1rem}.irritant p{font-size:.68rem;margin-bottom:0;max-width:none;color:var(--text-dim)}
+.irritant-badge{margin-left:auto;font-size:.6rem;font-weight:600;padding:.15rem .45rem;border-radius:100px;flex-shrink:0}
+.badge-high{background:var(--red-bg);color:var(--red-text)}.badge-med{background:var(--amber-bg);color:var(--amber-text)}
+.usecase-meta{display:flex;gap:.3rem;flex-wrap:wrap}
+.usecase-tag{font-size:.58rem;padding:.1rem .35rem;border-radius:3px;background:var(--surface);color:var(--text-dim)}
+.family-header{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:.5rem 0;margin-top:1.2rem;display:flex;align-items:center;gap:.5rem}
+.family-header::after{content:'';flex:1;height:1px;background:var(--border)}
+.uc-table{width:100%;border-collapse:collapse;margin-top:.8rem;font-size:.72rem}
+.uc-table th{text-align:left;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--violet-dark);padding:.4rem .6rem;border-bottom:1.5px solid var(--violet-light)}
+.uc-table td{padding:.45rem .6rem;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top}
+.uc-table tr:last-child td{border-bottom:none}
+.uc-table .uc-id{font-family:'DM Serif Display',serif;font-size:.82rem;color:var(--violet);white-space:nowrap}
+.uc-table .uc-met{color:var(--text-dim);font-size:.68rem;white-space:nowrap}
+.crit{font-size:.58rem;font-weight:600;padding:.1rem .4rem;border-radius:100px;white-space:nowrap}
+.crit-fort{background:var(--red-bg);color:var(--red-text)}.crit-moyen{background:var(--amber-bg);color:var(--amber-text)}
+.family-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.org-level{display:flex;align-items:center;gap:.7rem;padding:.9rem 1.2rem;background:var(--white);border:1px solid var(--border);border-radius:8px;margin-bottom:.35rem}
+.org-badge{padding:.2rem .5rem;border-radius:100px;font-size:.58rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;flex-shrink:0;min-width:150px;text-align:center}
+.org-level h3{font-size:.78rem}.org-level p{font-size:.7rem;color:var(--text-dim);max-width:none;margin-bottom:0;line-height:1.4}
+.tool-row{display:flex;align-items:center;gap:.7rem;padding:.7rem 1rem;background:var(--white);border:1px solid var(--border);border-radius:6px;margin-bottom:.6rem}
+.tool-badge{font-size:.62rem;font-weight:700;padding:.15rem .45rem;border-radius:4px;flex-shrink:0;min-width:96px;text-align:center}
+.tool-name{font-size:.78rem;font-weight:600;color:var(--text-bright)}
+.tool-desc{font-size:.68rem;color:var(--text-dim);margin-left:auto;text-align:right;max-width:340px}
+.footer{text-align:center;padding:2rem 0;color:var(--text-dim);font-size:.75rem}
+.footer-brand{font-family:'DM Serif Display',serif;font-size:1rem;color:var(--violet);margin-bottom:.2rem}
+@media(max-width:700px){.cols-2,.cols-3{grid-template-columns:1fr}.stats{flex-wrap:wrap}.tool-desc{max-width:180px}}
+</style></head><body>
+<div class="container">
+
+<!-- OUVERTURE -->
+<section style="border-bottom:1px solid var(--border)">
+<div style="text-align:center;font-size:.7rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--violet-dark);margin-bottom:1.5rem">Audit stratégique IA · IAvenir</div>
+<h1 style="text-align:center">Audit stratégique <em>Intelligence Artificielle</em></h1>
+<h1 style="text-align:center;font-size:1.6rem;color:var(--text-dim);margin-bottom:.3rem">Groupe Wecxsteen</h1>
+<div class="stats">
+  <div class="stat"><div class="num" style="color:var(--violet)">8</div><div class="label">Métiers audités</div></div>
+  <div class="stat"><div class="num" style="color:var(--violet)">3</div><div class="label">Activités du groupe</div></div>
+  <div class="stat"><div class="num" style="color:var(--violet)">131</div><div class="label">Cas d'usage IA</div></div>
+</div>
+<h3 style="margin-top:1.5rem;margin-bottom:.6rem">Objectifs de l'audit</h3>
+<div class="cards cols-2">
+  <div class="card card-accent" style="border-color:var(--green)"><h3>1. Cartographier les besoins métier</h3><p>Recenser de manière exhaustive les cas d'usage potentiels de l'IA dans les huit fonctions auditées, en partant des irritants concrets et des gisements de valeur exprimés par les équipes.</p></div>
+  <div class="card card-accent" style="border-color:var(--blue)"><h3>2. Prioriser les usages</h3><p>Hiérarchiser les cas d'usage selon leur impact opérationnel, leur faisabilité technique et la rapidité de mise en œuvre, pour structurer un portefeuille d'actions.</p></div>
+  <div class="card card-accent" style="border-color:var(--violet)"><h3>3. Diagnostic de maturité IA</h3><p>Évaluer le niveau d'acculturation des équipes, recenser les usages individuels déjà présents et les freins observés sur le terrain, en capitalisant sur l'acculturation initiale déjà réalisée.</p></div>
+  <div class="card card-accent" style="border-color:var(--amber)"><h3>4. Préconisations actionnables</h3><p>Proposer une trajectoire de déploiement réaliste, une cartographie des solutions et des recommandations en matière de gouvernance, d'organisation et de montée en compétence.</p></div>
+</div>
+
+<h3 style="margin-top:1.5rem;margin-bottom:.6rem">Livrables</h3>
+<div class="cards cols-3" style="margin-top:1rem">
+  <div class="card" style="text-align:center;border-top:3px solid var(--violet)"><h3>Rapport d'audit</h3><p>Document de référence détaillant le diagnostic de maturité, les constats terrain, la priorisation des cas d'usage et le plan d'action préconisé.</p></div>
+  <div class="card" style="text-align:center;border-top:3px solid var(--green)"><h3>Cartographie des cas d'usage</h3><p>Annexe Excel avec la classification, la criticité, les prérequis, la phase et le Niveau 1 actionnable par cas. Outil de pilotage opérationnel.</p></div>
+  <div class="card" style="text-align:center;border-top:3px solid var(--blue)"><h3>Plan de déploiement</h3><p>Support visuel interactif avec les cas priorisés par typologie de solution, les mockups des environnements cibles et la trajectoire de déploiement.</p></div>
+</div>
+</section>
+
+<!-- 01 CONSTATS TERRAIN -->
+<section>
+<div class="section-num">01 Constats terrain</div>
+<h2>Quatre irritants transverses, cités indépendamment sur plusieurs fonctions</h2>
+<p class="lead">Au fil des entretiens, ces irritants reviennent dans tous les métiers, indépendamment de l'entité. Ils dessinent un même problème de fond : un temps considérable est absorbé par des tâches administratives et répétitives, au détriment du cœur de métier.</p>
+<div class="irritant"><div class="irritant-num">1</div><div><h3>Saisie et ressaisie manuelles massives</h3><p>Concentrées sur des pics saisonniers, avec plusieurs centaines de saisies par semaine en logistique et des déclarations préparées à la main.</p></div><span class="irritant-badge badge-high">Impact fort</span></div>
+<div class="irritant"><div class="irritant-num">2</div><div><h3>Information dispersée et difficile à exploiter</h3><p>Les données sont réparties dans de multiples fichiers, difficiles à consolider et à analyser.</p></div><span class="irritant-badge badge-high">Impact fort</span></div>
+<div class="irritant"><div class="irritant-num">3</div><div><h3>Dépendance à un ERP en cours de refonte</h3><p>Système non stabilisé, sans environnement de test, ce qui contraint fortement toute connexion applicative.</p></div><span class="irritant-badge badge-med">Impact moyen</span></div>
+<div class="irritant"><div class="irritant-num">4</div><div><h3>Documents peu structurés difficiles à exploiter</h3><p>Une partie des flux passe par des documents scannés, PDF ou pièces de transport qui doivent être ressaisis ou interprétés manuellement, faute de format directement exploitable.</p></div><span class="irritant-badge badge-med">Impact moyen</span></div>
+<div class="takeaway">Ces irritants sont communs aux trois activités et à la fonction support : ils appellent des réponses mutualisables entre entités.</div>
+</section>
+
+<!-- 02 ENVIRONNEMENT & MATURITÉ -->
+<section>
+<div class="section-num">02 Environnement technique et maturité IA</div>
+<h2>Un socle Microsoft 365 en place, un ERP en refonte, une maturité déjà installée</h2>
+<p class="lead">Le groupe ne part pas de zéro. L'environnement numérique est structuré, et une acculturation initiale a déjà été menée auprès des personnes rencontrées, ce qui explique une maturité déjà perceptible.</p>
+<div class="cards cols-2">
+  <div class="card"><h3>Socle bureautique Microsoft 365</h3><p>Outlook, SharePoint, Teams : un environnement collaboratif propice à l'hébergement des bases documentaires et à la diffusion des assistants.</p></div>
+  <div class="card"><h3>ERP en cours de refonte</h3><p>Système non stabilisé, sans environnement de test. La connexion des agents attend la migration et la mise en qualité des données.</p></div>
+  <div class="card"><h3>Usages individuels déjà présents</h3><p>Plusieurs collaborateurs utilisent l'IA à titre personnel, avec le réflexe sain de masquer les données sensibles. Un cadre reste à installer.</p></div>
+  <div class="card"><h3>Profils moteurs identifiés</h3><p>Des référents volontaires par entité, moteurs de la démarche, sur lesquels s'appuiera la première vague de formation.</p></div>
+</div>
+<div class="takeaway">La priorité technique : structurer les corpus documentaires et mettre en qualité les données, sans attendre la fin de la migration de l'ERP.</div>
+</section>
+
+<!-- 03 TROIS FAMILLES -->
+<section>
+<div class="section-num">03 Trois familles de solutions</div>
+<h2>Assistants, RAG et Agents, trois niveaux de réponse</h2>
+<p class="lead">L'ensemble des besoins se couvre par trois familles de solutions, dans une progression naturelle qui est aussi un parcours de montée en compétence.</p>
+<div class="cards cols-3">
+  <div class="card card-accent" style="border-color:var(--green)"><h3><span class="family-dot" style="background:var(--green);display:inline-block;margin-right:6px"></span>Assistants</h3><p>Un modèle guidé par un prompt structuré, auquel on soumet un document exporté. Rédaction, analyse, synthèse, mise en forme. Déployable immédiatement, sans connexion au système d'information.</p></div>
+  <div class="card card-accent" style="border-color:var(--blue)"><h3><span class="family-dot" style="background:var(--blue);display:inline-block;margin-right:6px"></span>RAG</h3><p>Un moteur de recherche conversationnel sur un corpus défini, qui répond en citant ses sources : procédures qualité, référentiels, catalogue variétés. Suppose une structuration des bases.</p></div>
+  <div class="card card-accent" style="border-color:var(--amber)"><h3><span class="family-dot" style="background:var(--amber);display:inline-block;margin-right:6px"></span>Agents</h3><p>Une solution qui enchaîne plusieurs étapes ou se connecte aux logiciels métier pour lire, rapprocher et préparer des actions. L'horizon le plus créateur de valeur, conditionné par le SI.</p></div>
+</div>
+<h3 style="margin-top:1.5rem;margin-bottom:.6rem">Niveau 1 et Niveau 2, le déblocage progressif des cas Phase 2</h3>
+<p>Plutôt que d'attendre que tous les prérequis d'un cas Phase 2 soient réunis, la grille Niveau 1 / Niveau 2 permet d'activer un premier palier dès le court terme : un assistant simple sur données exportées (Niveau 1), avant l'industrialisation connectée (Niveau 2). L'essentiel de la valeur devient ainsi activable sans attendre.</p>
+<div class="takeaway">Une compétence conçue pour une entité se transpose aux autres via une bibliothèque interne partagée : la mutualisation est le moteur du déploiement.</div>
+</section>
+
+<!-- 04 CAS D'USAGE PRIORITAIRES -->
+<section>
+<div class="section-num">04 Cas d'usage prioritaires</div>
+<h2>Assistants, RAG et Agents en action</h2>
+<p class="lead">Une sélection représentative des cas à plus forte valeur, par famille de solution et couvrant l'ensemble des métiers. La cartographie complète recense tous les cas, priorisés par horizon et par métier.</p>
+
+<div class="family-header"><span class="family-dot" style="background:var(--green)"></span>Assistants · déployables immédiatement, tous métiers</div>
+<table class="uc-table"><thead><tr><th>ID</th><th>Cas d'usage</th><th>Métier</th><th>Criticité</th></tr></thead><tbody>
+<tr><td class="uc-id">LOG-08</td><td>Analyse tarifaire et benchmark transport</td><td class="uc-met">Logistique (WIP)</td><td><span class="crit crit-fort">Fort</span></td></tr>
+<tr><td class="uc-id">QUA-07</td><td>Auditeur virtuel et génération de documentation qualité</td><td class="uc-met">Qualité (WIP)</td><td><span class="crit crit-fort">Fort</span></td></tr>
+<tr><td class="uc-id">DIR-06</td><td>Comparaison annuelle des cahiers des charges</td><td class="uc-met">Direction &amp; Commerce (WIP)</td><td><span class="crit crit-moyen">Moyen</span></td></tr>
+<tr><td class="uc-id">RC-09</td><td>Mise en forme des synthèses d'essai</td><td class="uc-met">Relation Culture (CDP)</td><td><span class="crit crit-fort">Fort</span></td></tr>
+<tr><td class="uc-id">DCP-08</td><td>Génération des fiches techniques variétés</td><td class="uc-met">Direction &amp; Commerce (CDP)</td><td><span class="crit crit-moyen">Moyen</span></td></tr>
+<tr><td class="uc-id">COM-08</td><td>Contenu réseaux sociaux et communication</td><td class="uc-met">Commerce &amp; Export (Frais)</td><td><span class="crit crit-moyen">Moyen</span></td></tr>
+</tbody></table>
+
+<div class="family-header"><span class="family-dot" style="background:var(--blue)"></span>RAG · bases de connaissance interrogeables</div>
+<table class="uc-table"><thead><tr><th>ID</th><th>Cas d'usage</th><th>Métier</th><th>Criticité</th></tr></thead><tbody>
+<tr><td class="uc-id">QUA-06</td><td>Accès partagé à l'information qualité d'un lot</td><td class="uc-met">Qualité (WIP)</td><td><span class="crit crit-fort">Fort</span></td></tr>
+<tr><td class="uc-id">COM-24</td><td>Base de connaissances variétés et lien clients</td><td class="uc-met">Commerce &amp; Export (Frais)</td><td><span class="crit crit-fort">Fort</span></td></tr>
+<tr><td class="uc-id">QUA-18</td><td>Base documentaire des procédures qualité</td><td class="uc-met">Qualité (WIP)</td><td><span class="crit crit-moyen">Moyen</span></td></tr>
+<tr><td class="uc-id">DCP-03</td><td>Assistant conversationnel connecté au catalogue variétés</td><td class="uc-met">Direction &amp; Commerce (CDP)</td><td><span class="crit crit-moyen">Moyen</span></td></tr>
+<tr><td class="uc-id">COM-12</td><td>Assistant auditeur « référentiel »</td><td class="uc-met">Commerce &amp; Export (Frais)</td><td><span class="crit crit-moyen">Moyen</span></td></tr>
+</tbody></table>
+
+<div class="family-header"><span class="family-dot" style="background:var(--amber)"></span>Agents · connectés aux logiciels métier, un cas par métier</div>
+<table class="uc-table"><thead><tr><th>ID</th><th>Cas d'usage</th><th>Métier</th><th>Criticité</th></tr></thead><tbody>
+<tr><td class="uc-id">LOG-01</td><td>Pré-saisie automatique des lignes de vente</td><td class="uc-met">Logistique (WIP)</td><td><span class="crit crit-fort">Fort</span></td></tr>
+<tr><td class="uc-id">QUA-01</td><td>Analyse qualité des lots par variété et période</td><td class="uc-met">Qualité (WIP)</td><td><span class="crit crit-fort">Fort</span></td></tr>
+<tr><td class="uc-id">DIR-01</td><td>Calcul de marge par client et par camion</td><td class="uc-met">Direction &amp; Commerce (WIP)</td><td><span class="crit crit-fort">Fort</span></td></tr>
+<tr><td class="uc-id">ADM-01</td><td>Récupération des résultats sur les portails industriels</td><td class="uc-met">Administratif (WIP)</td><td><span class="crit crit-moyen">Moyen</span></td></tr>
+<tr><td class="uc-id">RC-01</td><td>Report vocal et photo de visite en compte rendu et actions</td><td class="uc-met">Relation Culture (CDP)</td><td><span class="crit crit-fort">Fort</span></td></tr>
+<tr><td class="uc-id">DCP-01</td><td>Comptabilité analytique, croisement ventes et tonnages</td><td class="uc-met">Direction &amp; Commerce (CDP)</td><td><span class="crit crit-fort">Fort</span></td></tr>
+<tr><td class="uc-id">COM-03</td><td>Messages de prise de contact et relance personnalisés</td><td class="uc-met">Commerce &amp; Export (Frais)</td><td><span class="crit crit-fort">Fort</span></td></tr>
+<tr><td class="uc-id">FIN-06</td><td>Contrôle de la facturation agriculteurs</td><td class="uc-met">Compta &amp; Finance (Holding)</td><td><span class="crit crit-fort">Fort</span></td></tr>
+</tbody></table>
+<div class="takeaway">Chaque cas Phase 2 dispose d'un Niveau 1 en mode assistant, déployable dès le court terme avant sa connexion au système d'information.</div>
+</section>
+
+<!-- 05 ORGANISATION ET GOUVERNANCE -->
+<section>
+<div class="section-num">05 Organisation et gouvernance</div>
+<h2>Un modèle léger à trois niveaux, adapté à un groupe multi-entités</h2>
+<p class="lead">Le groupe ne dispose pas d'une direction des systèmes d'information étoffée. Le modèle doit être soutenable : les métiers créent les assistants simples, un référent pilote, un prestataire externe développe les cas structurants.</p>
+<div class="org-level"><span class="org-badge" style="background:var(--green-bg);color:var(--green-text)">Référents métier</span><div><h3>Créer et faire vivre les assistants simples</h3><p>Par entité, les référents volontaires produisent les assistants de leur périmètre et forment en proximité.</p></div></div>
+<div class="org-level"><span class="org-badge" style="background:var(--blue-bg);color:var(--blue-text)">Référent IA</span><div><h3>Piloter, gouverner, animer</h3><p>Rôle pivot : portefeuille de cas, cadre de sécurité, bibliothèque partagée, lien avec le système d'information.</p></div></div>
+<div class="org-level"><span class="org-badge" style="background:var(--amber-bg);color:var(--amber-text)">Prestataire externe</span><div><h3>Développer les cas structurants</h3><p>RAG, agents connectés, orchestration : les compétences que le groupe n'a pas en interne, avec transfert progressif.</p></div></div>
+<h3 style="margin-top:1.4rem;margin-bottom:.5rem">Un cadre de confidentialité et de validation humaine</h3>
+<p>Données sensibles sur licences professionnelles avec accord de traitement ; exclusion des données RH et comptables les plus sensibles ; lecture seule ; validation humaine systématique avant usage. La gouvernance reste légère et pilotée par la valeur.</p>
+<div class="takeaway">Un référent IA identifié est la première brique concrète : il porte la démarche sans tout construire seul.</div>
+</section>
+
+<!-- 06 ROADMAP -->
+<section>
+<div class="section-num">06 Roadmap</div>
+<h2>Trois horizons, des résultats dès les premières semaines</h2>
+<p class="lead">La trajectoire progresse par vagues conditionnées par les résultats observés, du quick win sans infrastructure à l'industrialisation des cas connectés.</p>
+<div class="cards cols-3">
+  <div class="card card-accent" style="border-color:var(--green)"><h3>Court terme · 0 à 6 mois</h3><p>Formation Vague 1 et acculturation de la direction. Déploiement des assistants Phase 1 et des Niveaux 1. Cadrage de la gouvernance et structuration documentaire. Sans dépendance au SI.</p></div>
+  <div class="card card-accent" style="border-color:var(--blue)"><h3>Moyen terme · 6 à 12 mois</h3><p>Élargissement Vague 2. Mise en production des premiers RAG gouvernés et des premiers agents d'orchestration, en parallèle de la migration de l'ERP.</p></div>
+  <div class="card card-accent" style="border-color:var(--amber)"><h3>Long terme · 12 à 24 mois</h3><p>Agents connectés aux logiciels métier via base répliquée en lecture seule. Industrialisation des Niveaux 2. Bilan et perspectives.</p></div>
+</div>
+<h3 style="margin-top:1.4rem;margin-bottom:.5rem">Un chantier transverse permanent</h3>
+<p>En parallèle des trois horizons : maintien de la cartographie, suivi de l'adoption, gouvernance des bases RAG, animation de la communauté de référents et veille sur l'avancement du système d'information.</p>
+<div class="takeaway">La progression est conditionnée par la preuve par l'usage : chaque horizon valide les acquis du précédent avant élargissement.</div>
+</section>
+
+<!-- 07 CONDITIONS DE RÉUSSITE -->
+<section>
+<div class="section-num">07 Conditions de réussite</div>
+<h2>Ce qui fera la différence entre un déploiement réussi et un projet qui s'essouffle</h2>
+<div class="cards cols-2">
+  <div class="card"><h3>Former avant de déployer</h3><p>L'outil peut être mis à disposition vite, mais sans montée en compétence des référents, les assistants restent inaboutis.</p></div>
+  <div class="card"><h3>Structurer les bases documentaires</h3><p>Les RAG ne fonctionnent que si les corpus sont organisés, à jour et gouvernés. Ce chantier démarre dès le court terme.</p></div>
+  <div class="card"><h3>Assigner clairement les rôles</h3><p>Référents, référent IA pivot, prestataire externe : la clarté des rôles évite la fragmentation comme la dépendance.</p></div>
+  <div class="card"><h3>Piloter par la valeur métier</h3><p>Gouvernance légère, orientée résultats : arbitrages fondés sur les gains réels, pas sur le nombre d'outils déployés.</p></div>
+  <div class="card"><h3>Engager la direction dans la durée</h3><p>Le portage par la direction donne la légitimité et libère du temps pour les référents.</p></div>
+  <div class="card"><h3>Des outils compétitifs et maintenus</h3><p>Des licences professionnelles accessibles et des assistants maintenus, sans quoi les usages non maîtrisés reprennent.</p></div>
+</div>
+<div class="takeaway">L'enjeu de fond est l'autonomie : doter le groupe d'une capacité interne durable, pas d'une dépendance à un outil ou à un prestataire.</div>
+</section>
+
+<!-- 08 SYNTHÈSE -->
+<section>
+<div class="section-num">08 Synthèse</div>
+<h2>Un gisement de valeur large, en grande partie immédiatement actionnable</h2>
+<p class="lead">Le groupe Wecxsteen dispose des conditions pour engager sa trajectoire IA : une maturité déjà installée, un portefeuille de cas cohérent d'une entité à l'autre, et un cadre technique clair.</p>
+<div class="cards cols-3">
+  <div class="card card-accent" style="border-color:var(--green)"><h3>Valeur immédiate</h3><p>Les assistants Phase 1 et les Niveaux 1 produisent des résultats visibles dès les premières semaines, sans dépendance au SI.</p></div>
+  <div class="card card-accent" style="border-color:var(--blue)"><h3>Valeur structurante</h3><p>Les RAG transforment durablement l'accès à la connaissance métier, une fois les corpus structurés.</p></div>
+  <div class="card card-accent" style="border-color:var(--amber)"><h3>Valeur industrialisée</h3><p>Les agents connectés, les plus créateurs de valeur à terme, après migration de l'ERP et mise en qualité des données.</p></div>
+</div>
+<h3 style="margin-top:1.4rem;margin-bottom:.5rem">Prochaine étape</h3>
+<p>Une phase de mise en œuvre pilote adossée à la formation : Vague 1 des profils moteurs, acculturation de la direction, premiers assistants prioritaires, cadre de gouvernance et lancement de la structuration documentaire.</p>
+<div class="takeaway">La réussite tient à quelques arbitrages de direction et au lancement d'une Vague 1 adossée à la formation, dans un modèle qui vise l'autonomie du groupe.</div>
+</section>
+
+<div class="footer"><div class="footer-brand">IAvenir</div>Restitution d'audit stratégique IA · Groupe Wecxsteen · Document confidentiel</div>
+
+</div></body></html>
