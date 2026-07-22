@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IAvenir — Agent IA de maintenance · Brief projet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --violet:#6D28D9; --violet-mid:#8B5CF6; --violet-deep:#4C1D95; --ink:#1B1430;
+    --paper:#FBFAFF; --card:#FFFFFF; --line:#E7E2F5; --line-soft:#EFEBFB;
+    --slate:#4A4560; --slate-soft:#6E6890; --wash:#F4F1FE; --wash-2:#EDE7FD;
+    --teal:#0D9488; --teal-soft:#CCFBF1; --amber:#B45309; --amber-soft:#FEF3C7;
+    --shadow:0 1px 2px rgba(27,20,48,.04),0 10px 30px rgba(76,29,149,.06);
+    --shadow-lg:0 24px 60px rgba(76,29,149,.13);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:'DM Sans',system-ui,sans-serif;font-size:16px;line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1060px;margin:0 auto;padding:0 28px}
+  h1,h2,h3{font-family:'Space Grotesk','DM Sans',sans-serif;letter-spacing:-.015em;line-height:1.12;margin:0}
+  a{color:var(--violet)}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--violet-mid)}
+
+  /* ---------- HERO ---------- */
+  .hero{position:relative;overflow:hidden;background:
+      radial-gradient(1200px 500px at 78% -10%,rgba(139,92,246,.20),transparent 60%),
+      radial-gradient(900px 500px at 8% 110%,rgba(13,148,136,.10),transparent 55%),
+      linear-gradient(180deg,#241A3E 0%,#1B1430 100%);
+    color:#fff;padding:74px 0 66px}
+  .hero .wrap{position:relative;z-index:2}
+  .brand{display:flex;align-items:center;gap:11px;font-family:'Space Grotesk';font-weight:700;font-size:20px;letter-spacing:-.02em}
+  .brand .dot{width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 32% 30%,#A78BFA,#6D28D9 70%);box-shadow:0 0 0 5px rgba(139,92,246,.16)}
+  .brand small{font-family:'JetBrains Mono';font-weight:400;font-size:11px;letter-spacing:.14em;color:#C9BEEC;text-transform:uppercase;margin-left:2px}
+  .hero h1{font-size:clamp(34px,5.4vw,58px);font-weight:700;margin:30px 0 0;max-width:16ch}
+  .hero h1 em{font-style:normal;color:#C4B2FA}
+  .hero .lede{margin-top:20px;max-width:60ch;font-size:19px;color:#DCD5F1}
+  .hero .meta{margin-top:34px;display:flex;flex-wrap:wrap;gap:10px}
+  .chip{font-family:'JetBrains Mono';font-size:12.5px;letter-spacing:.02em;padding:8px 13px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(196,178,250,.28);color:#EDE7FD}
+  .hero .ref{margin-top:30px;font-family:'JetBrains Mono';font-size:12px;color:#9E93C4;letter-spacing:.03em}
+
+  /* section rhythm */
+  section.blk{padding:66px 0;border-bottom:1px solid var(--line-soft)}
+  section.blk.alt{background:linear-gradient(180deg,#fff, #FBFAFF)}
+  .hd{display:flex;align-items:baseline;gap:16px;margin-bottom:8px}
+  .hd .num{font-family:'JetBrains Mono';font-size:13px;color:var(--violet-mid);font-weight:500;padding-top:6px}
+  h2.title{font-size:clamp(25px,3.4vw,34px);font-weight:700}
+  .sub{color:var(--slate);max-width:66ch;margin:14px 0 0;font-size:17px}
+
+  .lead-p{font-size:17.5px;color:var(--slate);max-width:70ch}
+  .lead-p strong{color:var(--ink);font-weight:600}
+
+  /* ---------- ARCHITECTURE ---------- */
+  .diagram{margin-top:34px;background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:14px}
+  .diagram svg{display:block;width:100%;height:auto}
+  .legend{display:flex;flex-wrap:wrap;gap:22px;margin-top:20px;font-size:14.5px;color:var(--slate)}
+  .legend b{color:var(--ink);font-weight:600}
+  .legend .k{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:7px;vertical-align:middle}
+
+  /* ---------- HOW IT WORKS ---------- */
+  .steps{margin-top:30px;display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .step{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px 24px 22px;box-shadow:var(--shadow);position:relative}
+  .step .s-n{font-family:'JetBrains Mono';font-size:12px;color:var(--violet-mid);letter-spacing:.1em}
+  .step h3{font-size:18.5px;margin:9px 0 8px;font-weight:600;font-family:'Space Grotesk'}
+  .step p{margin:0;color:var(--slate);font-size:15.5px}
+  .step .tag{display:inline-block;margin-top:12px;font-family:'JetBrains Mono';font-size:11.5px;color:var(--violet-deep);background:var(--wash-2);padding:4px 9px;border-radius:6px}
+
+  /* ---------- PHASES ---------- */
+  .phases{margin-top:36px;display:flex;flex-direction:column;gap:0}
+  .phase{display:grid;grid-template-columns:120px 1fr;gap:26px;padding:24px 0;border-top:1px solid var(--line)}
+  .phase:last-child{border-bottom:1px solid var(--line)}
+  .phase .lot{font-family:'Space Grotesk';font-weight:700}
+  .phase .lot .l-k{font-family:'JetBrains Mono';font-size:11px;letter-spacing:.14em;color:var(--violet-mid);display:block;margin-bottom:4px}
+  .phase .lot .l-n{font-size:22px;color:var(--ink);line-height:1}
+  .phase h3{font-size:18px;font-weight:600;font-family:'Space Grotesk';margin-bottom:7px}
+  .phase p{margin:0;color:var(--slate);font-size:15.5px;max-width:70ch}
+  .phase .deliv{margin-top:11px;display:flex;flex-wrap:wrap;gap:7px}
+  .phase .deliv span{font-size:12.5px;color:var(--slate);background:var(--wash);border:1px solid var(--line-soft);padding:4px 10px;border-radius:999px}
+  .gate{margin-top:12px;display:inline-flex;align-items:center;gap:9px;font-size:13.5px;font-weight:600;color:var(--teal);background:var(--teal-soft);padding:7px 13px;border-radius:9px}
+  .gate::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--teal)}
+
+  /* ---------- PRICING ---------- */
+  .price-card{margin-top:34px;background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow-lg);overflow:hidden}
+  .price-head{padding:22px 30px;background:linear-gradient(100deg,#2E1065,#5B21B6);color:#fff;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+  .price-head .ph-l{font-family:'Space Grotesk';font-weight:600;font-size:17px}
+  .price-head .ph-r{font-family:'JetBrains Mono';font-size:12.5px;color:#D6C9F7;letter-spacing:.04em}
+  .plines{padding:8px 30px 4px}
+  .pline{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:baseline;padding:16px 0;border-bottom:1px solid var(--line-soft)}
+  .pline .p-l{font-weight:600;color:var(--ink);font-family:'Space Grotesk';font-size:16px}
+  .pline .p-l small{display:block;font-family:'DM Sans';font-weight:400;color:var(--slate-soft);font-size:14px;margin-top:3px;max-width:62ch}
+  .pline .p-v{font-family:'Space Grotesk';font-weight:600;font-size:17px;color:var(--violet-deep);white-space:nowrap}
+  .ptotal{display:grid;grid-template-columns:1fr auto;align-items:center;padding:22px 30px;background:var(--wash);border-top:2px solid var(--violet-mid)}
+  .ptotal .t-l{font-family:'Space Grotesk';font-weight:600;font-size:16px;color:var(--ink)}
+  .ptotal .t-l small{display:block;font-family:'DM Sans';font-weight:400;color:var(--slate-soft);font-size:13.5px;margin-top:3px}
+  .ptotal .t-v{font-family:'Space Grotesk';font-weight:700;font-size:30px;color:var(--violet-deep)}
+  .price-note{font-size:13.5px;color:var(--slate-soft);margin-top:16px;max-width:74ch}
+
+  /* recurring / prereqs two-col cards */
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:30px}
+  .info{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:var(--shadow)}
+  .info.warn{background:linear-gradient(180deg,#FFFDF7,#FFFBF0);border-color:#F3E4C0}
+  .info h3{font-size:16.5px;font-family:'Space Grotesk';font-weight:600;margin-bottom:6px;display:flex;align-items:center;gap:9px}
+  .info h3 .badge{font-family:'JetBrains Mono';font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:3px 7px;border-radius:5px;background:var(--wash-2);color:var(--violet-deep)}
+  .info.warn h3 .badge{background:var(--amber-soft);color:var(--amber)}
+  .info ul{margin:12px 0 0;padding:0;list-style:none}
+  .info li{position:relative;padding:7px 0 7px 22px;font-size:15px;color:var(--slate);border-top:1px solid var(--line-soft)}
+  .info li:first-child{border-top:none}
+  .info li::before{content:"";position:absolute;left:2px;top:15px;width:7px;height:7px;border-radius:2px;background:var(--violet-mid)}
+  .info.warn li::before{background:var(--amber)}
+
+  /* ---------- CLOSE ---------- */
+  .close{background:linear-gradient(180deg,#1B1430,#241A3E);color:#fff;padding:60px 0}
+  .close h2{font-size:28px;font-weight:700;color:#fff}
+  .close p{color:#CFC7E6;max-width:60ch;margin-top:12px}
+  .contact{margin-top:32px;display:inline-block;background:rgba(255,255,255,.05);border:1px solid rgba(196,178,250,.25);border-radius:16px;padding:24px 28px}
+  .contact .cn{font-family:'Space Grotesk';font-weight:600;font-size:19px}
+  .contact .cr{color:#B7ABDD;font-size:14px;margin-top:2px}
+  .contact .cc{margin-top:12px;font-size:14.5px;color:#EDE7FD}
+  .contact .cc a{color:#C4B2FA}
+  .foot{margin-top:34px;font-family:'JetBrains Mono';font-size:11.5px;color:#8D82B3;letter-spacing:.03em;line-height:1.9}
+
+  @media (max-width:720px){
+    .steps{grid-template-columns:1fr}
+    .cols{grid-template-columns:1fr}
+    .phase{grid-template-columns:1fr;gap:10px}
+    .hero{padding:52px 0 46px}
+    section.blk{padding:48px 0}
+  }
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span>IAvenir<small>Conseil&nbsp;·&nbsp;Formation IA</small></div>
+    <div class="eyebrow" style="margin-top:34px;color:#C4B2FA">Brief projet · consultation</div>
+    <h1>Un agent IA de maintenance qui répond aux <em>techniciens</em>, sur le terrain.</h1>
+    <p class="lede">Un assistant conversationnel sur la tablette du technicien, connecté à la GMAO du client et à un espace documentaire technique externe (EasySAV), pour diagnostiquer plus vite et réussir l'intervention dès la première visite.</p>
+    <div class="meta">
+      <span class="chip">200 techniciens</span>
+      <span class="chip">Agent sur tablette</span>
+      <span class="chip">GMAO + EasySAV</span>
+      <span class="chip">Mission ~3 mois</span>
+    </div>
+    <div class="ref">Document confidentiel — IAvenir · www.iavenir-formation.fr</div>
+  </div>
+</header>
+
+<!-- CONTEXTE -->
+<section class="blk">
+  <div class="wrap">
+    <div class="hd"><span class="num">01</span><h2 class="title">Le besoin</h2></div>
+    <p class="lead-p">Les techniciens perdent du temps à chercher l'information au moment de l'intervention : une panne déjà rencontrée, un code défaut, la bonne procédure. L'information existe — elle est éclatée entre l'<strong>historique des interventions</strong> de la GMAO du client et un <strong>espace documentaire technique externe (EasySAV)</strong>. L'objectif de la mission est de la rendre accessible d'une seule question, en langage naturel, depuis la tablette, avec une réponse précise et sourcée.</p>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section class="blk alt">
+  <div class="wrap">
+    <div class="hd"><span class="num">02</span><h2 class="title">L'architecture</h2></div>
+    <p class="sub">Un agent orchestrateur unique dans Copilot Studio, au centre. Il comprend la question, interroge les bonnes sources par API et, en dernier recours sur validation, une recherche web ciblée, puis restitue une réponse synthétique et citée sur la tablette du technicien.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 1000 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Schéma d'architecture de l'agent de maintenance">
+        <defs>
+          <linearGradient id="gAgent" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#7C3AED"/><stop offset="1" stop-color="#4C1D95"/>
+          </linearGradient>
+          <linearGradient id="gGmao" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#8B5CF6"/><stop offset="1" stop-color="#6D28D9"/>
+          </linearGradient>
+          <linearGradient id="gDoc" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#14B8A6"/><stop offset="1" stop-color="#0D9488"/>
+          </linearGradient>
+          <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#B7A9E0"/>
+          </marker>
+          <marker id="arrowV" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#8B5CF6"/>
+          </marker>
+          <marker id="arrowW" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#D9A441"/>
+          </marker>
+        </defs>
+
+        <!-- flow lines -->
+        <path d="M188,215 L360,215" stroke="#8B5CF6" stroke-width="2.5" fill="none" marker-end="url(#arrowV)"/>
+        <path d="M360,238 L188,238" stroke="#CBBEEC" stroke-width="2" fill="none" stroke-dasharray="5 4" marker-end="url(#arrow)"/>
+        <path d="M620,190 C710,150 720,120 780,110" stroke="#B7A9E0" stroke-width="2.2" fill="none" marker-end="url(#arrow)"/>
+        <path d="M620,222 L774,222" stroke="#E0C07E" stroke-width="2" fill="none" stroke-dasharray="5 4" marker-end="url(#arrowW)"/>
+        <path d="M620,250 C710,290 720,320 780,332" stroke="#9BD8CF" stroke-width="2.2" fill="none" marker-end="url(#arrow)"/>
+
+        <!-- technicien -->
+        <g>
+          <rect x="40" y="176" width="150" height="86" rx="14" fill="#fff" stroke="#E7E2F5"/>
+          <circle cx="76" cy="212" r="15" fill="#EDE7FD"/><circle cx="76" cy="206" r="5.5" fill="#8B5CF6"/>
+          <path d="M65,222 a11,9 0 0 1 22,0" fill="#8B5CF6"/>
+          <text x="100" y="209" font-family="DM Sans" font-size="14" font-weight="600" fill="#1B1430">Technicien</text>
+          <text x="100" y="227" font-family="DM Sans" font-size="11.5" fill="#6E6890">sur sa tablette</text>
+        </g>
+        <text x="207" y="204" font-family="JetBrains Mono" font-size="10.5" fill="#8B5CF6">1 · question</text>
+        <text x="207" y="252" font-family="JetBrains Mono" font-size="10.5" fill="#9B90BC">4 · réponse</text>
+
+        <!-- agent center -->
+        <g>
+          <rect x="360" y="150" width="260" height="140" rx="18" fill="url(#gAgent)"/>
+          <text x="490" y="188" text-anchor="middle" font-family="Space Grotesk" font-size="17" font-weight="700" fill="#fff">Agent orchestrateur</text>
+          <text x="490" y="210" text-anchor="middle" font-family="DM Sans" font-size="12.5" fill="#E4DBFB">Microsoft Copilot Studio</text>
+          <line x1="392" y1="228" x2="588" y2="228" stroke="rgba(255,255,255,.22)"/>
+          <text x="490" y="250" text-anchor="middle" font-family="DM Sans" font-size="12" fill="#D8CCF7">Comprend · clarifie · route</text>
+          <text x="490" y="268" text-anchor="middle" font-family="DM Sans" font-size="12" fill="#D8CCF7">Synthétise · cite ses sources</text>
+        </g>
+        <text x="626" y="140" font-family="JetBrains Mono" font-size="10.5" fill="#8B5CF6">2 · interroge</text>
+
+        <!-- GMAO -->
+        <g>
+          <rect x="780" y="66" width="188" height="92" rx="14" fill="#fff" stroke="#E7E2F5"/>
+          <rect x="780" y="66" width="6" height="92" rx="3" fill="url(#gGmao)"/>
+          <text x="802" y="94" font-family="Space Grotesk" font-size="14.5" font-weight="700" fill="#4C1D95">API GMAO</text>
+          <text x="802" y="112" font-family="DM Sans" font-size="11.5" fill="#6E6890">Kimoce — historique</text>
+          <text x="802" y="128" font-family="DM Sans" font-size="11.5" fill="#6E6890">interventions · équipements</text>
+          <text x="802" y="144" font-family="DM Sans" font-size="11.5" fill="#6E6890">pièces · commentaires</text>
+        </g>
+        <text x="712" y="132" font-family="JetBrains Mono" font-size="10.5" fill="#8B5CF6">3a</text>
+
+        <!-- EasySAV -->
+        <g>
+          <rect x="780" y="286" width="188" height="92" rx="14" fill="#fff" stroke="#E7E2F5"/>
+          <rect x="780" y="286" width="6" height="92" rx="3" fill="url(#gDoc)"/>
+          <text x="802" y="314" font-family="Space Grotesk" font-size="14.5" font-weight="700" fill="#0F766E">API documentaire</text>
+          <text x="802" y="332" font-family="DM Sans" font-size="11.5" fill="#6E6890">EasySAV — notices</text>
+          <text x="802" y="348" font-family="DM Sans" font-size="11.5" fill="#6E6890">codes défauts · vues éclatées</text>
+          <text x="802" y="364" font-family="DM Sans" font-size="11.5" fill="#6E6890">valeurs de sondes · réglages</text>
+        </g>
+        <text x="712" y="312" font-family="JetBrains Mono" font-size="10.5" fill="#0D9488">3b</text>
+
+        <!-- Recherche web (complément) -->
+        <g>
+          <rect x="780" y="188" width="188" height="72" rx="14" fill="#FFFDF7" stroke="#E9D9AC" stroke-dasharray="5 4"/>
+          <rect x="780" y="188" width="6" height="72" rx="3" fill="#D9A441"/>
+          <text x="802" y="214" font-family="Space Grotesk" font-size="14.5" font-weight="700" fill="#B45309">Recherche web</text>
+          <text x="802" y="232" font-family="DM Sans" font-size="11.5" fill="#8A7A55">en complément · sur validation</text>
+          <text x="802" y="248" font-family="DM Sans" font-size="11.5" fill="#8A7A55">sources publiques ciblées</text>
+        </g>
+        <text x="712" y="212" font-family="JetBrains Mono" font-size="10.5" fill="#B45309">3c</text>
+      </svg>
+    </div>
+
+    <div class="legend">
+      <span><span class="k" style="background:#6D28D9"></span><b>Interne</b> — la GMAO du client, données vivantes interrogées en temps réel</span>
+      <span><span class="k" style="background:#0D9488"></span><b>Externe</b> — espace documentaire technique EasySAV, interrogé par API</span>
+      <span><span class="k" style="background:#D9A441"></span><b>Complément</b> — recherche web ciblée, proposée sur validation</span>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="blk">
+  <div class="wrap">
+    <div class="hd"><span class="num">03</span><h2 class="title">Comment ça fonctionne</h2></div>
+    <p class="sub">L'intelligence est concentrée dans l'agent. Les deux sources ne « comprennent » rien : elles exécutent des requêtes précises que l'agent formule à leur place.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="s-n">01</div>
+        <h3>Il comprend, puis clarifie a minima</h3>
+        <p>Le technicien pose sa question librement. L'agent extrait ce qu'il peut — équipement, marque, symptôme — et ne redemande que ce qui manque réellement. Pas de formulaire imposé.</p>
+        <span class="tag">« groupe froid Bitzer, défaut haute pression » → recherche directe</span>
+      </div>
+      <div class="step">
+        <div class="s-n">02</div>
+        <h3>Il choisit la bonne source</h3>
+        <p>Historique GMAO pour « est-ce déjà arrivé, qu'a-t-on fait ? ». Base documentaire EasySAV pour « que dit la notice, ce code défaut ? ». Souvent les deux, combinées. Et, si elles ne suffisent pas, il propose une recherche web ciblée sur validation.</p>
+        <span class="tag">routage piloté par l'agent</span>
+      </div>
+      <div class="step">
+        <div class="s-n">03</div>
+        <h3>Il restitue avec ses sources</h3>
+        <p>Une réponse synthétique et actionnable, avec le renvoi au ticket GMAO et au document technique d'origine. Le technicien garde la main et peut vérifier.</p>
+        <span class="tag">réponse citée, vérifiable</span>
+      </div>
+      <div class="step">
+        <div class="s-n">04</div>
+        <h3>Sur la tablette, en intervention</h3>
+        <p>L'agent est accessible directement depuis la tablette du technicien, sur site comme à l'atelier. Aucun nouvel outil à apprendre, aucune double saisie.</p>
+        <span class="tag">tablette · terrain</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHASES -->
+<section class="blk alt">
+  <div class="wrap">
+    <div class="hd"><span class="num">04</span><h2 class="title">La démarche projet</h2></div>
+    <p class="sub">Cinq lots sur environ trois mois. Un jalon de décision en fin de cadrage sécurise la faisabilité avant tout engagement de construction.</p>
+
+    <div class="phases">
+      <div class="phase">
+        <div class="lot"><span class="l-k">Lot 0</span><span class="l-n">Cadrage</span></div>
+        <div>
+          <h3>Cadrage & étude de faisabilité</h3>
+          <p>Preuve d'accès aux deux API, vérification des deux prérequis de données déterminants — restitution du contenu des commentaires d'intervention et qualité du typage des équipements — et arbitrage du format de la base documentaire.</p>
+          <div class="gate">Jalon Go / No-Go avant de lancer la construction</div>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="lot"><span class="l-k">Lot 1</span><span class="l-n">Socle</span></div>
+        <div>
+          <h3>Socle technique & connectivité</h3>
+          <p>Connecteurs vers la GMAO et la base documentaire, compte de service en lecture, authentification sécurisée, cartographie des données utiles et tests d'échange.</p>
+          <div class="deliv"><span>Connecteur GMAO</span><span>Connecteur base documentaire</span><span>Accès en lecture</span></div>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="lot"><span class="l-k">Lot 2</span><span class="l-n">Agent</span></div>
+        <div>
+          <h3>Agent orchestrateur & restitution</h3>
+          <p>Construction de l'agent dans Copilot Studio : logique de clarification, routage des sources, restitution citée, mise à disposition sur la tablette des techniciens.</p>
+          <div class="deliv"><span>Orchestration</span><span>Prompts & routage</span><span>Accès tablette</span></div>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="lot"><span class="l-k">Lot 3</span><span class="l-n">Pilote</span></div>
+        <div>
+          <h3>Pilote terrain instrumenté</h3>
+          <p>Déploiement auprès de 15 à 20 techniciens, mesure de la qualité de restitution sur de vraies interventions et de la consommation réelle, ajustements.</p>
+          <div class="deliv"><span>15–20 techniciens</span><span>Mesure d'usage</span><span>Ajustements</span></div>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="lot"><span class="l-k">Lot 4</span><span class="l-n">Échelle</span></div>
+        <div>
+          <h3>Industrialisation, conduite du changement & transfert</h3>
+          <p>Déploiement aux 200 techniciens, accompagnement à l'adoption et formation des utilisateurs, documentation et transfert au référent interne.</p>
+          <div class="deliv"><span>200 techniciens</span><span>Formation & adoption</span><span>Transfert référent</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PERIMETRE & PREREQUIS -->
+<section class="blk">
+  <div class="wrap">
+    <div class="hd"><span class="num">05</span><h2 class="title">Périmètre & prérequis</h2></div>
+    <p class="sub">Le périmètre à chiffrer est défini par les cinq lots ci-dessus. Mission conduite à distance, sur environ trois mois, pour un démarrage visé début septembre 2026.</p>
+
+    <div class="cols">
+      <div class="info">
+        <h3>Prérequis <span class="badge">fournis par le client</span></h3>
+        <ul>
+          <li>Accès aux API GMAO (Kimoce) et à l'espace documentaire EasySAV, avec un contact technique disponible pendant la mission.</li>
+          <li>Environnement Microsoft 365 actif.</li>
+          <li>Validation sécurité et conformité RGPD interne.</li>
+        </ul>
+      </div>
+      <div class="info">
+        <h3>Attendu <span class="badge">de votre proposition</span></h3>
+        <ul>
+          <li>Chiffrage et modalités par lot, sur la base du découpage présenté.</li>
+          <li>Planning détaillé compatible avec un démarrage début septembre 2026.</li>
+          <li>Profils mobilisés et séniorité, hypothèses et prérequis complémentaires éventuels.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIGILANCE -->
+<section class="blk alt">
+  <div class="wrap">
+    <div class="hd"><span class="num">06</span><h2 class="title">Points de vigilance</h2></div>
+    <p class="sub">Nous préférons les nommer dès maintenant : ils déterminent la précision des réponses de l'agent, et le jalon du Lot 0 est là pour les lever avant tout engagement de construction.</p>
+    <div class="cols">
+      <div class="info warn">
+        <h3>Qualité des données <span class="badge">déterminant</span></h3>
+        <ul>
+          <li>La pertinence de l'agent reflète la qualité de l'historique saisi par les techniciens. Un historique hétérogène limite la précision — mesuré et objectivé au cadrage.</li>
+          <li>La recherche « équipements similaires » suppose un typage structuré du parc dans la GMAO. À confirmer sur données réelles.</li>
+        </ul>
+      </div>
+      <div class="info warn">
+        <h3>Dépendances externes <span class="badge">à confirmer</span></h3>
+        <ul>
+          <li>La base documentaire doit renvoyer du contenu exploitable, et non un simple lien vers un fichier.</li>
+          <li>La consommation Copilot dépend de l'architecture : elle est mesurée au pilote avant tout engagement de volume.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSE -->
+<footer class="close">
+  <div class="wrap">
+    <h2>Prochaine étape.</h2>
+    <p>Nous attendons votre proposition commerciale sur la base de ce périmètre, pour un démarrage de la mission visé début septembre 2026.</p>
+
+    <div class="contact">
+      <div class="cn">Antoine Oger</div>
+      <div class="cr">Directeur Général — IAvenir</div>
+      <div class="cc"><a href="mailto:antoine.oger@iavenir-formation.fr">antoine.oger@iavenir-formation.fr</a> · 06 16 47 88 02</div>
+    </div>
+
+    <div class="foot">
+      IAvenir · Formation &amp; Conseil en IA · Qualiopi · www.iavenir-formation.fr<br>
+      Prestation à distance · Document confidentiel
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
