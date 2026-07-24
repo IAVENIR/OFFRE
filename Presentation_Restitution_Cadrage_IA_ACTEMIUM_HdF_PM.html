@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Restitution de cadrage IA · ACTEMIUM Hauts-de-France Project Management</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F5F1;--surface:#EFEEE9;--surface2:#F0ECF6;--border:#DDD9D1;--text:#3D3929;
+  --text-dim:#7A7568;--text-bright:#1C1A14;--white:#FDFCFA;--violet:#8B5CF6;--violet-dark:#6D28D9;
+  --violet-deep:#4C1D95;--violet-light:#F0ECF6;--green:#059669;--green-bg:#EDF8F0;--green-text:#065F46;
+  --blue:#2563EB;--blue-bg:#EDF0F8;--blue-text:#1E40AF;--amber:#D97706;--amber-bg:#FBF6E8;
+  --amber-text:#92400E;--red:#DC2626;--red-bg:#FEF2F2;--red-text:#991B1B;--gray:#6B7280;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+.container{max-width:960px;margin:0 auto;padding:3rem 2.5rem}
+section{padding:4.2rem 0;border-bottom:1px solid var(--border)}
+section:first-of-type{padding-top:1.5rem}
+.section-num{font-size:.66rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--violet-dark);margin-bottom:1.6rem;display:flex;align-items:center;gap:.7rem}
+.section-num::before{content:"";width:24px;height:2px;background:var(--violet)}
+h1{font-family:'DM Serif Display',serif;font-size:2.5rem;line-height:1.08;color:var(--text-bright);margin-bottom:.6rem}
+h2{font-family:'DM Serif Display',serif;font-size:1.9rem;line-height:1.15;color:var(--text-bright);margin-bottom:1.1rem}
+.lead{font-size:1.05rem;color:var(--text-dim);max-width:720px;margin-bottom:1.4rem}
+p{font-size:.92rem}
+.brand{font-family:'DM Serif Display',serif;font-size:1.2rem;color:var(--violet-dark)}
+.tagline{font-size:.72rem;color:var(--text-dim);letter-spacing:.04em;margin-top:.1rem}
+.subtitle{font-size:1.05rem;color:var(--text-dim);margin-bottom:.4rem}
+.sample-banner{display:flex;gap:.8rem;align-items:flex-start;background:var(--surface2);border:1px solid var(--border);border-left:3px solid var(--violet);border-radius:8px;padding:1rem 1.2rem;margin:1.8rem 0 0;font-size:.88rem}
+.sample-banner b{color:var(--violet-dark)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin:2.4rem 0}
+.stat{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:1.3rem 1rem;text-align:center}
+.stat .num{font-family:'DM Serif Display',serif;font-size:2.4rem;line-height:1}
+.stat .label{font-size:.72rem;color:var(--text-dim);margin-top:.45rem;text-transform:uppercase;letter-spacing:.04em}
+.cards{display:grid;gap:1rem}
+.cols-2{grid-template-columns:1fr 1fr}
+.cols-3{grid-template-columns:repeat(3,1fr)}
+.card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:1.2rem 1.3rem}
+.card-accent{border-left:3px solid var(--violet)}
+.card h3{font-size:.98rem;color:var(--text-bright);margin-bottom:.4rem}
+.card p{font-size:.85rem;color:var(--text-dim)}
+.irritant{display:grid;grid-template-columns:42px 1fr 120px;gap:1rem;align-items:center;background:var(--white);border:1px solid var(--border);border-radius:10px;padding:1rem 1.2rem;margin-bottom:.8rem}
+.irritant-num{font-family:'DM Serif Display',serif;font-size:1.7rem;color:var(--violet);text-align:center}
+.irritant h3{font-size:.98rem;color:var(--text-bright);margin-bottom:.2rem}
+.irritant p{font-size:.83rem;color:var(--text-dim)}
+.irritant-badge{font-size:.68rem;font-weight:700;padding:.35rem .6rem;border-radius:6px;text-align:center}
+.badge-high{background:var(--red-bg);color:var(--red-text)}
+.badge-med{background:var(--amber-bg);color:var(--amber-text)}
+.takeaway{background:var(--violet-light);color:var(--violet-deep);border-radius:8px;padding:1.1rem 1.3rem;font-size:.95rem;font-weight:500;margin-top:1.6rem;line-height:1.55}
+.env-table{width:100%;border-collapse:collapse;background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden;font-size:.85rem;margin-bottom:1.4rem}
+.env-table th{background:var(--surface);text-align:left;padding:.7rem .9rem;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text-dim)}
+.env-table td{padding:.7rem .9rem;border-top:1px solid var(--border);vertical-align:top}
+.env-table td b{color:var(--text-bright)}
+.fam-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin:1.6rem 0}
+.fam{border-radius:10px;padding:1rem;text-align:center;border:1px solid var(--border)}
+.fam .fnum{font-family:'DM Serif Display',serif;font-size:1.9rem;line-height:1}
+.fam .flab{font-size:.74rem;margin-top:.3rem;font-weight:600}
+.fam-g{background:var(--green-bg)}.fam-g .fnum,.fam-g .flab{color:var(--green-text)}
+.fam-b{background:var(--blue-bg)}.fam-b .fnum,.fam-b .flab{color:var(--blue-text)}
+.fam-a{background:var(--amber-bg)}.fam-a .fnum,.fam-a .flab{color:var(--amber-text)}
+.fam-x{background:var(--surface)}.fam-x .fnum,.fam-x .flab{color:var(--gray)}
+.family-header{display:flex;align-items:center;gap:.6rem;font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-dim);margin:1.6rem 0 .7rem}
+.family-dot{width:11px;height:11px;border-radius:3px}
+.usecase{display:grid;grid-template-columns:60px 1fr 150px;gap:1rem;align-items:center;background:var(--white);border:1px solid var(--border);border-radius:10px;padding:.85rem 1.1rem;margin-bottom:.6rem}
+.usecase-id{font-weight:700;color:var(--violet-dark);font-size:.85rem}
+.usecase h3{font-size:.92rem;color:var(--text-bright);margin-bottom:.15rem}
+.usecase p{font-size:.8rem;color:var(--text-dim)}
+.usecase-meta{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.45rem}
+.usecase-tag{font-size:.68rem;background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:.18rem .5rem;color:var(--text-dim)}
+.usecase-gain{text-align:right}
+.usecase-gain .after{font-size:.9rem;font-weight:700;color:var(--green)}
+.org-level{display:grid;grid-template-columns:90px 1fr;gap:1rem;align-items:start;background:var(--white);border:1px solid var(--border);border-radius:10px;padding:1.1rem 1.2rem;margin-bottom:.8rem}
+.org-badge{font-size:.74rem;font-weight:700;padding:.4rem .5rem;border-radius:6px;text-align:center}
+.org-level h3{font-size:.95rem;color:var(--text-bright);margin-bottom:.25rem}
+.org-level p{font-size:.83rem;color:var(--text-dim)}
+.roadmap{display:flex;gap:1.5rem}
+.rm-rail{display:flex;flex-direction:column;align-items:center;flex-shrink:0}
+.rm-dot{width:16px;height:16px;border-radius:50%;flex-shrink:0}
+.rm-line{width:2px;flex:1;background:var(--border)}
+.rm-body{padding-bottom:2.4rem}
+.rm-phase{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.rm-count{font-family:'DM Serif Display',serif;font-size:1.6rem;line-height:1.2}
+.rm-body p{font-size:.84rem;line-height:1.6;color:var(--text-dim);margin-top:.2rem}
+.cta-final{background:linear-gradient(135deg,#4C1D95,#6D28D9);border-radius:14px;padding:2.4rem 2.2rem;color:#fff;margin-top:2rem}
+.cta-final h2{color:#fff;margin-bottom:.7rem}
+.cta-final .lead{color:#E9E3F7}
+.cta-grid{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin:1.4rem 0}
+.cta-card{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);border-radius:9px;padding:1rem 1.1rem}
+.cta-card b{display:block;color:#fff;margin-bottom:.25rem;font-size:.92rem}
+.cta-card span{font-size:.83rem;color:#E0D7F4}
+.quote{border-left:3px solid #C4B5FD;padding-left:1.1rem;font-style:italic;color:#EDE9FE;font-size:.94rem;line-height:1.65;margin-top:1.3rem}
+.quote span{display:block;font-style:normal;font-size:.78rem;color:#C4B5FD;margin-top:.45rem}
+.footer{padding:2.5rem 0 1rem;display:flex;justify-content:space-between;align-items:center;font-size:.78rem;color:var(--text-dim)}
+.footer-brand{font-family:'DM Serif Display',serif;color:var(--violet-dark);font-size:1.05rem}
+@media(max-width:720px){.container{padding:2rem 1.3rem}.stats,.fam-stats{grid-template-columns:repeat(2,1fr)}.cols-2,.cols-3,.cta-grid{grid-template-columns:1fr}.irritant{grid-template-columns:34px 1fr}.irritant-badge{display:none}.usecase{grid-template-columns:50px 1fr}.usecase-gain{display:none}h1{font-size:1.9rem}}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- 01 Ouverture -->
+  <section>
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2.2rem">
+      <div><div class="brand">IAvenir</div><div class="tagline">Formation &amp; Conseil en IA</div></div>
+      <div style="text-align:right;font-size:.78rem;color:var(--text-dim)">Cadrage du 13 juillet 2026<br>Confidentiel</div>
+    </div>
+    <div class="section-num">01 Ouverture</div>
+    <h1>Cadrage stratégique Intelligence Artificielle</h1>
+    <div class="subtitle">ACTEMIUM Hauts-de-France Project Management · Bureau d'études électricité industrielle · Vinci Energies</div>
+    <p class="lead">Un premier regard sur le potentiel d'intégration de l'IA dans vos métiers, construit à partir du bureau d'études, de la réponse aux appels d'offres aux études d'exécution, dans le respect du cadre de confidentialité du groupe.</p>
+
+    <div class="sample-banner">
+      <span>◆</span>
+      <div><b>Une ébauche, pas un audit complet.</b> Cette restitution s'appuie sur un seul entretien de cadrage, centré sur le bureau d'études. Elle vous donne déjà 32 cas d'usage actionnables et la trajectoire, pour décider en connaissance de cause d'aller vers un audit 360° de l'agence.</div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="num" style="color:var(--violet)">1</div><div class="label">Entretien de cadrage</div></div>
+      <div class="stat"><div class="num" style="color:var(--violet)">2</div><div class="label">Participants</div></div>
+      <div class="stat"><div class="num" style="color:var(--violet)">1h39</div><div class="label">Durée</div></div>
+      <div class="stat"><div class="num" style="color:var(--violet)">32</div><div class="label">Cas d'usage identifiés</div></div>
+    </div>
+
+    <div class="cards cols-2">
+      <div class="card card-accent" style="border-color:var(--green)"><h3>1. Comprendre le métier</h3><p>Dérouler le process du bureau d'études de bout en bout, du bordereau à la remise, pour ancrer l'analyse dans le réel.</p></div>
+      <div class="card card-accent" style="border-color:var(--blue)"><h3>2. Identifier les cas d'usage</h3><p>Repérer les tâches chronophages, répétitives et à faible valeur ajoutée, là où l'IA produit une sortie concrète.</p></div>
+      <div class="card card-accent" style="border-color:var(--amber)"><h3>3. Cartographier le potentiel</h3><p>Classer chaque besoin par type de solution, criticité et horizon de déploiement, dans le cadre Copilot du groupe.</p></div>
+      <div class="card card-accent" style="border-color:var(--violet)"><h3>4. Donner la trajectoire</h3><p>Montrer ce qui se fait tout de suite et ce que débloque une démarche élargie à toute l'agence.</p></div>
+    </div>
+  </section>
+
+  <!-- 02 Constats -->
+  <section>
+    <div class="section-num">02 Constats terrain</div>
+    <h2>Cinq irritants remontés en séance</h2>
+    <p class="lead">Une même réalité les traverse, l'expertise technique du BE (calculs, dimensionnement, stratégie de chiffrage) est précieuse, mais elle est entourée de recopies, de relectures et de recommencements à faible valeur ajoutée.</p>
+
+    <div class="irritant"><div class="irritant-num">1</div><div><h3>La recopie du chiffrage vers la trame DPGF client</h3><p>En toute fin de réponse, dans l'urgence, jusqu'à douze onglets de 500 à 2 000 lignes recopiés depuis l'export Optima. Zéro valeur ajoutée, source d'erreurs.</p></div><div class="irritant-badge badge-high">Impact fort</div></div>
+    <div class="irritant"><div class="irritant-num">2</div><div><h3>Des mémoires techniques recommencés à chaque dossier</h3><p>Le savoir-faire existe dans les mémoires passés, mais rien n'est capitalisé. Une des deux grosses pistes identifiées par le BE lui-même.</p></div><div class="irritant-badge badge-high">Impact fort</div></div>
+    <div class="irritant"><div class="irritant-num">3</div><div><h3>Une lecture de dossiers longue, à six, avec des discordances</h3><p>Des dossiers de plus en plus volumineux, lus par toute l'équipe, et des discordances entre pièces (CCTP généraux, sous-lots, fiches techniques) coûteuses à vérifier.</p></div><div class="irritant-badge badge-high">Impact fort</div></div>
+    <div class="irritant"><div class="irritant-num">4</div><div><h3>Un contrôle final sous contrainte de temps</h3><p>Le contrôle du contenu de ce qui part (mémoire, devis) n'a pas le temps d'être bien fait, de l'aveu même du BE.</p></div><div class="irritant-badge badge-med">Impact moyen</div></div>
+    <div class="irritant"><div class="irritant-num">5</div><div><h3>Des prix non capitalisés</h3><p>Pas de base interne des DPGF et BPU réalisés ni de bibliothèque de prix fournisseurs mobilisable pour les estimatifs d'avant-projet et la négociation.</p></div><div class="irritant-badge badge-med">Impact moyen</div></div>
+
+    <div class="takeaway">La contrainte de confidentialité (NDA sur la quasi-totalité des dossiers) n'est pas un frein au démarrage. L'essentiel du potentiel tient dans l'environnement Copilot du groupe, déjà disponible sur simple demande de licence.</div>
+  </section>
+
+  <!-- 03 Maturité -->
+  <section>
+    <div class="section-num">03 Maturité et environnement</div>
+    <h2>Un socle Microsoft et des usages déjà amorcés</h2>
+    <p class="lead">L'environnement existant est un atout, la stratégie consiste à en tirer le plein potentiel avant d'ajouter des briques.</p>
+
+    <table class="env-table">
+      <tr><th>Socle</th><th>Existant chez Actemium HdF PM</th><th>Pertinence IA</th></tr>
+      <tr><td><b>Bureautique et IA</b></td><td>Microsoft 365, Copilot maîtrisé par le groupe, trois niveaux de licence sur demande</td><td>Socle cible, agents Copilot, connecteurs SharePoint, Teams, Outlook</td></tr>
+      <tr><td><b>IA groupe</b></td><td>Diane, plateforme Vinci de comptage et métré sur plans PDF</td><td>Déjà en place, fiabilité constatée 70 à 80 %, canal de remontée des besoins</td></tr>
+      <tr><td><b>Études et chiffrage</b></td><td>Optima (devis), AutoCAD, Revit, Caneco, DIALux, Excel + VBA (routing)</td><td>Pas d'IA connectable en direct, exploiter les exports (Excel, DXF, nomenclatures)</td></tr>
+      <tr><td><b>Bases internes Vinci</b></td><td>Base prix et commandes (web), portail normes d'un bureau de contrôle</td><td>Connexions à qualifier (SSO, API), forte valeur si accessibles</td></tr>
+      <tr><td><b>Mémoire d'agence</b></td><td>Mémoires techniques Word et charte graphique sur SharePoint</td><td>Base de connaissances pour RAG, capitalisation différenciante</td></tr>
+    </table>
+
+    <div class="cards cols-2">
+      <div class="card"><h3>Usage IA déjà amorcé</h3><p>Comptes rendus Teams systématiques, correction et dictée de mails en mobilité, Diane sur les comptages, essais de génération Excel via Copilot, IA externes utilisées dans les règles (jamais de donnée client). Des expérimentations réelles, à structurer.</p></div>
+      <div class="card"><h3>Profils moteurs et posture</h3><p>Un responsable BE testeur, qui avait déjà identifié seul les deux grosses pistes (mémoire et bordereau). Une direction impliquée, au cadre de confidentialité clair et assumé. Terrain favorable à des ambassadeurs métiers.</p></div>
+    </div>
+  </section>
+
+  <!-- 04 Cas d'usage -->
+  <section>
+    <div class="section-num">04 Cas d'usage identifiés</div>
+    <h2>32 cas, répartis en quatre familles</h2>
+
+    <div class="fam-stats">
+      <div class="fam fam-g"><div class="fnum">14</div><div class="flab">Assistants</div></div>
+      <div class="fam fam-b"><div class="fnum">6</div><div class="flab">RAG</div></div>
+      <div class="fam fam-a"><div class="fnum">8</div><div class="flab">Agents</div></div>
+      <div class="fam fam-x"><div class="fnum">4</div><div class="flab">Déjà en place</div></div>
+    </div>
+
+    <p class="lead">Sélection des cas les plus structurants. Le détail complet et cliquable des 32 cas est dans le plan de déploiement interactif.</p>
+
+    <div class="family-header"><span class="family-dot" style="background:var(--green)"></span>Assistants · court terme</div>
+    <div class="usecase"><div class="usecase-id">AO-02</div><div><h3>Remise au format DPGF client depuis l'export Optima</h3><p>La trame client reconstituée avec alerte sur les écarts de contenu. L'irritant n°1 exprimé en séance.</p><div class="usecase-meta"><span class="usecase-tag">Phase 1 → 2</span><span class="usecase-tag">Fort</span><span class="usecase-tag">6 personnes du BE</span></div></div><div class="usecase-gain"><div class="after">Trame client reconstituée</div></div></div>
+    <div class="usecase"><div class="usecase-id">AO-03</div><div><h3>Assistant d'analyse CCTP</h3><p>Fiche de synthèse sourcée (pièce, page, article) reprenant la grille de lecture du BE, même base pour les six lecteurs.</p><div class="usecase-meta"><span class="usecase-tag">Phase 1</span><span class="usecase-tag">Fort</span><span class="usecase-tag">6 personnes du BE</span></div></div><div class="usecase-gain"><div class="after">Synthèse sourcée</div></div></div>
+    <div class="usecase"><div class="usecase-id">AO-16</div><div><h3>Pré-remplissage Caneco depuis le bilan de puissance</h3><p>Fichier d'import aux colonnes normées Caneco généré depuis l'Excel client. Jugé facilement réalisable en séance.</p><div class="usecase-meta"><span class="usecase-tag">Phase 1</span><span class="usecase-tag">Fort</span><span class="usecase-tag">6 personnes du BE</span></div></div><div class="usecase-gain"><div class="after">Tableur généré</div></div></div>
+    <div class="usecase"><div class="usecase-id">AO-14</div><div><h3>Assistant d'audit du mémoire technique</h3><p>Contrôle de cohérence avant envoi, noms de clients résiduels, en-têtes, modes opératoires inadaptés.</p><div class="usecase-meta"><span class="usecase-tag">Phase 1</span><span class="usecase-tag">Moyen</span><span class="usecase-tag">6 personnes du BE</span></div></div><div class="usecase-gain"><div class="after">Rapport d'audit</div></div></div>
+
+    <div class="family-header"><span class="family-dot" style="background:var(--blue)"></span>RAG · moyen terme</div>
+    <div class="usecase"><div class="usecase-id">AO-06</div><div><h3>Dossier de consultation interrogeable</h3><p>Toutes les pièces chargées, réponses sourcées, et contrôle des discordances entre documents (AO-07).</p><div class="usecase-meta"><span class="usecase-tag">Phase 1 → 2</span><span class="usecase-tag">Fort</span><span class="usecase-tag">6 personnes du BE</span></div></div><div class="usecase-gain"><div class="after">Dossier interrogeable</div></div></div>
+    <div class="usecase"><div class="usecase-id">AO-12</div><div><h3>Base de mémoires techniques connectée</h3><p>50 mémoires représentatifs dans SharePoint, les plus proches du projet identifiés, puis rédaction section par section (AO-13).</p><div class="usecase-meta"><span class="usecase-tag">Phase 2</span><span class="usecase-tag">Fort</span><span class="usecase-tag">6 personnes du BE</span></div></div><div class="usecase-gain"><div class="after">Mémoire interrogeable</div></div></div>
+    <div class="usecase"><div class="usecase-id">CAP-01</div><div><h3>Base de prix interne (DPGF et BPU historiques)</h3><p>Le prix moyen par prestation sur les dernières opérations, au service des estimatifs d'avant-projet.</p><div class="usecase-meta"><span class="usecase-tag">Phase 2</span><span class="usecase-tag">Fort</span><span class="usecase-tag">BE + direction</span></div></div><div class="usecase-gain"><div class="after">Argumentaire chiffré</div></div></div>
+
+    <div class="family-header"><span class="family-dot" style="background:var(--amber)"></span>Agents · long terme</div>
+    <div class="usecase"><div class="usecase-id">AO-09</div><div><h3>Agent d'orchestration de l'analyse de dossier</h3><p>Dépôt du dossier, analyses CCTP et CCAP enchaînées, sommaire du mémoire, mémoires proches identifiés.</p><div class="usecase-meta"><span class="usecase-tag">Phase 2</span><span class="usecase-tag">Moyen</span><span class="usecase-tag">6 personnes du BE</span></div></div><div class="usecase-gain"><div class="after">Chaîne d'analyse</div></div></div>
+    <div class="usecase"><div class="usecase-id">AO-18</div><div><h3>Routing de câbles et positionnement des équipements</h3><p>Au-delà du VBA en limite de capacité, cheminements, longueurs et largeurs de tronçons depuis le plan.</p><div class="usecase-meta"><span class="usecase-tag">Phase 2</span><span class="usecase-tag">Fort</span><span class="usecase-tag">6 personnes du BE</span></div></div><div class="usecase-gain"><div class="after">Tronçons calculés</div></div></div>
+
+    <div class="takeaway">Le cœur d'expertise reste à vos équipes, le chiffrage demeure 100 % à la main sur votre vision. L'IA prend le répétitif autour, recopies, relectures, recommencements.</div>
+  </section>
+
+  <!-- 05 Solutions -->
+  <section>
+    <div class="section-num">05 Trois familles de solutions</div>
+    <h2>Des assistants aux agents connectés</h2>
+    <div class="cards cols-3">
+      <div class="card card-accent" style="border-color:var(--green)"><h3>Assistants</h3><p>Préconfigurés dans Copilot, sans connexion au SI. Analyse de pièces, contrôles avant envoi, import Caneco, rapports dictés. Déployables en formation, dès le court terme.</p></div>
+      <div class="card card-accent" style="border-color:var(--blue)"><h3>RAG</h3><p>Interrogent vos bases SharePoint (dossier de consultation, mémoires, prix internes) en langage naturel, avec les sources. Prérequis, structurer la donnée.</p></div>
+      <div class="card card-accent" style="border-color:var(--amber)"><h3>Agents</h3><p>Enchaînent des actions et se connectent aux logiciels. Orchestration de l'analyse de dossier, consultations fournisseurs, base Vinci, routing. Copilot Studio en option (payant).</p></div>
+    </div>
+    <div class="takeaway">Stratégie Actemium HdF PM, tirer le plein potentiel du Copilot du groupe, seul autorisé pour les données client, puis qualifier Copilot Studio pour l'orchestration. Les IA externes restent réservées aux usages sans aucune donnée, pratique déjà en place et conforme au cadre.</div>
+  </section>
+
+  <!-- 06 Organisation -->
+  <section>
+    <div class="section-num">06 Organisation des équipes</div>
+    <h2>La licence suit le rôle, pas le grade</h2>
+    <p class="lead">Six personnes au BE, trois niveaux de licence Copilot disponibles sur simple demande. Tout le monde n'a pas besoin d'être expert de l'environnement de création, les agents construits se partagent.</p>
+    <div class="org-level"><div class="org-badge" style="background:var(--violet-light);color:var(--violet-dark)">Référents</div><div><h3>Des ambassadeurs métiers</h3><p>Le responsable BE, déjà moteur, et un ingénieur d'études volontaire. Ils construisent les assistants dans l'environnement de création vu en séance, les font vivre et les partagent aux autres.</p></div></div>
+    <div class="org-level"><div class="org-badge" style="background:var(--green-bg);color:var(--green-text)">Usage</div><div><h3>L'équipe du BE, puis l'agence</h3><p>Formés à leur nouvel environnement de travail, les assistants préconfigurés, pas à la création. Licences Copilot selon le rôle, de la version de base (inclus) aux versions évoluées (payant).</p></div></div>
+    <div class="org-level"><div class="org-badge" style="background:var(--amber-bg);color:var(--amber-text)">Gouvernance</div><div><h3>Un cadre données et groupe</h3><p>Le cadre NDA existant, formalisé en charte d'usage, la structuration des bases SharePoint, et le lien avec la DSI Vinci, Diane et le pôle Leonard pour mutualiser ce qui doit l'être.</p></div></div>
+  </section>
+
+  <!-- 07 Roadmap -->
+  <section>
+    <div class="section-num">07 Trajectoire de déploiement</div>
+    <h2>Trois horizons</h2>
+    <div class="roadmap">
+      <div class="rm-rail"><div class="rm-dot" style="background:var(--green)"></div><div class="rm-line"></div></div>
+      <div class="rm-body"><div class="rm-phase" style="color:var(--green-text)">Court terme · 0 à 3 mois</div><div class="rm-count" style="color:var(--green)">14 cas</div><p>Formation et pôle d'assistants Copilot. Analyse du bordereau, CCTP, CCAP, remise au format DPGF, import Caneco, contrôles avant envoi, dictée en mobilité. Gains immédiats et visibles, sans toucher au SI.</p></div>
+    </div>
+    <div class="roadmap">
+      <div class="rm-rail"><div class="rm-dot" style="background:var(--blue)"></div><div class="rm-line"></div></div>
+      <div class="rm-body"><div class="rm-phase" style="color:var(--blue-text)">Moyen terme · 3 à 6 mois</div><div class="rm-count" style="color:var(--blue)">7 cas</div><p>Bases SharePoint gouvernées. Dossier de consultation interrogeable et concordance des pièces, base de mémoires techniques et rédaction, prix internes, procédures. La capitalisation commence.</p></div>
+    </div>
+    <div class="roadmap">
+      <div class="rm-rail"><div class="rm-dot" style="background:var(--amber)"></div></div>
+      <div class="rm-body"><div class="rm-phase" style="color:var(--amber-text)">Long terme · 6 à 12 mois</div><div class="rm-count" style="color:var(--amber)">7 cas</div><p>Agents connectés, sous réserve des qualifications techniques (Copilot Studio, API Optima, SSO Vinci). Orchestration de l'analyse, consultations fournisseurs, base prix Vinci, routing de câbles, passation. S'y ajoutent 4 usages déjà en place à entretenir (Diane, comptes rendus Teams, mails, support logiciel).</p></div>
+    </div>
+  </section>
+
+  <!-- 08 CTA / Audit complet -->
+  <section style="border-bottom:none">
+    <div class="cta-final">
+      <div class="section-num" style="color:#C4B5FD">08 Vers l'audit complet</div>
+      <h2>Une vision 360° pour passer du potentiel à la stratégie</h2>
+      <p class="lead">Ce cadrage a creusé un seul process, le bureau d'études, sur les cinq grands périmètres de l'agence. Il prouve la méthode et livre des gains immédiats. L'audit complet réinterroge chaque métier, puis consolide ce qu'un échantillon ne peut pas voir.</p>
+      <div class="cta-grid">
+        <div class="cta-card"><b>Couverture 360° des métiers</b><span>Responsables d'affaires et directeurs de projet, service appels d'offres, fonctions support, commerce. Le potentiel passe de 32 à plus de 100 cas.</span></div>
+        <div class="cta-card"><b>Mutualisation inter-métiers</b><span>Des bases et des assistants partagés entre BE, projets et support, et une remontée structurée vers le groupe (Diane, pôle Leonard).</span></div>
+        <div class="cta-card"><b>Stratégie de licences et référents</b><span>Trois niveaux de licence Copilot, des ambassadeurs à désigner, qui construit, qui partage, quel niveau par rôle. Impossible à arbitrer depuis un seul entretien.</span></div>
+        <div class="cta-card"><b>Gouvernance des données et roadmap</b><span>Charte d'usage NDA, doctrine d'anonymisation pour les rares cas hors Copilot, séquencement budgété et plan de formation par population.</span></div>
+      </div>
+      <p style="font-size:.85rem;color:#E0D7F4;margin-top:.4rem">Modalités types, des entretiens par métier sur site, la cartographie consolidée de l'agence et une restitution complète avec roadmap priorisée.</p>
+      <div class="quote">« Là, on a fait le focus que sur la partie BE. Chaque activité a ses particularités et aura ses demandes particulières. »<span>Lorenzo Bonanni, Directeur d'agence, en séance</span></div>
+    </div>
+  </section>
+
+  <div class="footer">
+    <div class="footer-brand">IAvenir</div>
+    <div>Confidentiel · Cadrage ACTEMIUM Hauts-de-France Project Management · Juillet 2026</div>
+  </div>
+</div>
+</body>
+</html>
