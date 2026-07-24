@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan de déploiement IA · ACTEMIUM Hauts-de-France Project Management</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F5F1;--surface:#EFEEE9;--white:#FDFCFA;--violet:#8B5CF6;--violet-dark:#6D28D9;
+  --violet-light:#F0ECF6;--violet-lighter:#F5F2F9;--text:#3D3929;--text-dim:#7A7568;
+  --text-bright:#1C1A14;--green:#059669;--green-bg:#ECFDF5;--green-bd:#A7F3D0;
+  --blue:#2563EB;--blue-bg:#EDF0F8;--blue-bd:#BFDBFE;--amber:#D97706;--amber-bg:#FBF6E8;
+  --gray:#6B7280;--gray-bg:#F1F0EC;--border:#DDD9D1;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:2.5rem 2rem 4rem}
+.brand{font-family:'DM Serif Display',serif;font-size:1.15rem;color:var(--violet-dark);letter-spacing:.01em}
+.eyebrow{font-size:.66rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--violet-dark);margin-bottom:.7rem}
+h1{font-family:'DM Serif Display',serif;font-size:2.1rem;color:var(--text-bright);line-height:1.1;margin-bottom:.5rem}
+.sub{font-size:1rem;color:var(--text-dim);max-width:720px}
+.note-sample{display:flex;gap:.8rem;align-items:flex-start;background:var(--violet-lighter);border:1px solid var(--border);border-left:3px solid var(--violet);border-radius:8px;padding:.9rem 1.1rem;margin:1.6rem 0 0;font-size:.85rem;color:var(--text)}
+.note-sample b{color:var(--violet-dark)}
+.stats{display:grid;grid-template-columns:repeat(6,1fr);gap:.8rem;margin:2rem 0 1.4rem}
+.stat{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:1rem .9rem;text-align:center}
+.stat-num{font-family:'DM Serif Display',serif;font-size:2rem;line-height:1}
+.stat-label{font-size:.7rem;color:var(--text-dim);margin-top:.35rem;text-transform:uppercase;letter-spacing:.05em}
+.violet{color:var(--violet)}.green{color:var(--green)}.blue{color:var(--blue)}.amber{color:var(--amber)}.gray{color:var(--gray)}
+.tabs{display:flex;flex-wrap:wrap;gap:.4rem;margin:1.6rem 0 1.8rem;border-bottom:1px solid var(--border);padding-bottom:.9rem}
+.tab{font-family:inherit;font-size:.82rem;font-weight:600;color:var(--text-dim);background:var(--white);border:1px solid var(--border);border-radius:20px;padding:.5rem 1rem;cursor:pointer;transition:.15s}
+.tab:hover{color:var(--violet-dark);border-color:var(--violet)}
+.tab.active{background:var(--violet);color:#fff;border-color:var(--violet)}
+.horizon{margin-bottom:1.7rem;border-radius:10px;overflow:hidden;border:1px solid var(--border);background:var(--white)}
+.horizon-head{padding:.8rem 1.1rem;font-weight:700;font-size:.9rem;color:#fff;display:flex;justify-content:space-between;align-items:center}
+.hz-ct{background:linear-gradient(90deg,#059669,#0a8f63)}
+.hz-mt{background:linear-gradient(90deg,#2563EB,#3b6fe0)}
+.hz-lt{background:linear-gradient(90deg,#D97706,#e08a2b)}
+.hz-dp{background:linear-gradient(90deg,#6B7280,#828a96)}
+.horizon-head .cnt{font-size:.78rem;font-weight:600;opacity:.92}
+.perim{font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);padding:.9rem 1.1rem .3rem}
+.case{display:grid;grid-template-columns:54px 1fr 150px 118px;gap:.7rem;align-items:center;padding:.7rem 1.1rem;border-top:1px solid var(--border);cursor:pointer;transition:background .12s}
+.case:hover{background:var(--violet-light)}
+.case-id{font-weight:700;color:var(--violet-dark);font-size:.82rem}
+.case-name{font-weight:600;color:var(--text-bright);font-size:.9rem}
+.case-name span{display:block;font-weight:400;color:var(--text-dim);font-size:.76rem;margin-top:.1rem}
+.case-gain{font-size:.74rem;color:var(--text-dim)}
+.badge{font-size:.66rem;font-weight:700;padding:.3rem .55rem;border-radius:5px;text-align:center;letter-spacing:.02em}
+.b-assist{background:var(--green-bg);color:#065F46;border:1px solid var(--green-bd)}
+.b-rag{background:var(--blue-bg);color:#1E40AF;border:1px solid var(--blue-bd)}
+.b-agent{background:var(--amber-bg);color:#92400E;border:1px solid #F3D9A4}
+.b-hors{background:var(--gray-bg);color:#4B5563;border:1px solid var(--border)}
+.detail{display:none;padding:1.1rem 1.1rem 1.3rem;background:var(--surface);border-top:1px solid var(--border);font-size:.86rem}
+.detail.open{display:block}
+.detail .d-desc{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:.85rem 1rem;margin-bottom:.9rem;line-height:1.6}
+.d-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:.9rem}
+.d-box{border-radius:8px;padding:.8rem .9rem;font-size:.8rem}
+.d-box h4{font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.4rem}
+.d-n1{background:var(--green-bg);border:1px solid var(--green-bd)}.d-n1 h4{color:#065F46}
+.d-n2{background:var(--blue-bg);border:1px solid var(--blue-bd)}.d-n2 h4{color:#1E40AF}
+.d-tags{display:flex;flex-wrap:wrap;gap:.4rem}
+.d-tag{font-size:.7rem;background:var(--white);border:1px solid var(--border);border-radius:5px;padding:.25rem .55rem;color:var(--text-dim)}
+.d-tag b{color:var(--text-bright);font-weight:600}
+.d-verb{margin-top:.8rem;font-size:.8rem;font-style:italic;color:var(--text-dim);border-left:2px solid var(--violet);padding-left:.8rem;line-height:1.5}
+.vision-intro{font-size:.92rem;color:var(--text-dim);margin-bottom:1.3rem;max-width:720px}
+.mock{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:grid;grid-template-columns:240px 1fr;min-height:430px}
+.mock-side{background:#1E2127;padding:1rem .8rem;color:#cfd2d8}
+.mock-side .ms-title{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:#8a8f99;margin:.3rem .3rem .8rem}
+.ms-item{display:flex;gap:.6rem;align-items:flex-start;padding:.55rem .6rem;border-radius:7px;margin-bottom:.3rem;font-size:.78rem;cursor:default}
+.ms-item:hover{background:#2a2d35}
+.ms-dot{width:9px;height:9px;border-radius:3px;margin-top:.35rem;flex-shrink:0}
+.ms-item b{display:block;color:#f2f3f5;font-weight:600;font-size:.8rem}
+.ms-item span{color:#9aa0ab;font-size:.72rem}
+.mock-chat{background:#F8F8F6;padding:1.4rem 1.5rem;display:flex;flex-direction:column;gap:1rem}
+.bub{max-width:88%;padding:.8rem 1rem;border-radius:12px;font-size:.84rem;line-height:1.55}
+.bub-u{align-self:flex-end;background:var(--violet);color:#fff;border-bottom-right-radius:3px}
+.bub-a{align-self:flex-start;background:#fff;border:1px solid var(--border);border-bottom-left-radius:3px}
+.bub-a b{color:var(--violet-dark)}
+.src{margin-top:.6rem;font-size:.74rem}
+.src-row{display:flex;align-items:center;gap:.5rem;margin-top:.35rem}
+.src-name{flex-shrink:0;width:200px;color:var(--text-dim)}
+.src-bar{flex:1;height:6px;background:var(--surface);border-radius:3px;overflow:hidden}
+.src-bar i{display:block;height:100%;background:var(--blue)}
+.src-pct{width:34px;text-align:right;color:var(--blue);font-weight:600}
+.tag-pill{display:inline-block;font-size:.7rem;background:var(--green-bg);color:#065F46;border:1px solid var(--green-bd);border-radius:5px;padding:.2rem .5rem;margin:.15rem .15rem 0 0}
+.cta{margin-top:2.4rem;background:linear-gradient(135deg,#4C1D95,#6D28D9);border-radius:14px;padding:2rem 2.1rem;color:#fff}
+.cta h2{font-family:'DM Serif Display',serif;font-size:1.55rem;margin-bottom:.6rem}
+.cta p{color:#E9E3F7;font-size:.92rem;max-width:760px;margin-bottom:1.3rem}
+.cta-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem;margin-bottom:1.3rem}
+.cta-item{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);border-radius:9px;padding:.85rem 1rem;font-size:.84rem}
+.cta-item b{display:block;color:#fff;margin-bottom:.2rem;font-size:.9rem}
+.cta-quote{border-left:3px solid #C4B5FD;padding-left:1rem;font-style:italic;color:#EDE9FE;font-size:.88rem;line-height:1.6;margin-top:.4rem}
+.cta-quote span{display:block;font-style:normal;font-size:.76rem;color:#C4B5FD;margin-top:.35rem}
+.footer{margin-top:2.6rem;padding-top:1.4rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:.78rem;color:var(--text-dim)}
+.footer .footer-brand{font-family:'DM Serif Display',serif;color:var(--violet-dark);font-size:1rem}
+.hidden{display:none}
+@media(max-width:760px){.stats{grid-template-columns:repeat(3,1fr)}.case{grid-template-columns:48px 1fr;gap:.4rem}.case-gain,.case .badge{display:none}.d-grid,.cta-grid{grid-template-columns:1fr}.mock{grid-template-columns:1fr}.mock-side{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="brand">IAvenir</div>
+  <div class="eyebrow" style="margin-top:1rem">Audit de cadrage IA · Plan de déploiement</div>
+  <h1>ACTEMIUM Hauts-de-France Project Management</h1>
+  <p class="sub">Bureau d'études électricité industrielle (Vinci Energies). Cartographie des cas d'usage IA priorisés par horizon de déploiement, sur l'environnement Microsoft 365 Copilot du groupe.</p>
+
+  <div class="note-sample">
+    <span>◆</span>
+    <div><b>Ébauche issue d'un cadrage.</b> Cette cartographie est construite à partir d'un seul entretien (bureau d'études, 2 participants, 1h39) sur les métiers de l'agence. Les 32 cas ci-dessous sont déjà actionnables ; ils donnent un aperçu d'un potentiel estimé à plus de 100 cas en audit complet.</div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num violet">32</div><div class="stat-label">Cas d'usage</div></div>
+    <div class="stat"><div class="stat-num green">14</div><div class="stat-label">Court terme</div></div>
+    <div class="stat"><div class="stat-num blue">7</div><div class="stat-label">Moyen terme</div></div>
+    <div class="stat"><div class="stat-num amber">7</div><div class="stat-label">Long terme</div></div>
+    <div class="stat"><div class="stat-num gray">4</div><div class="stat-label">Déjà en place</div></div>
+    <div class="stat"><div class="stat-num gray">1/5</div><div class="stat-label">Process audité</div></div>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-view="all">Vue d'ensemble</button>
+    <button class="tab" data-view="BE — Appels d'offres">BE — Appels d'offres</button>
+    <button class="tab" data-view="Capitalisation &amp; Data">Capitalisation &amp; Data</button>
+    <button class="tab" data-view="Transverse &amp; Mobilité">Transverse &amp; Mobilité</button>
+    <button class="tab" data-view="visionC">Vision Copilot</button>
+    <button class="tab" data-view="visionR">Vision RAG</button>
+  </div>
+
+  <div id="board"></div>
+
+  <div id="visionC" class="hidden">
+    <p class="vision-intro">Premier socle, immédiat. Un pôle d'assistants Copilot préconfigurés pour le bureau d'études, dans l'environnement Microsoft du groupe, donc compatible avec les NDA clients. L'utilisateur dépose sa pièce ou dicte sa demande, la sortie arrive au bon format.</p>
+    <div class="mock">
+      <div class="mock-side">
+        <div class="ms-title">Assistants du BE</div>
+        <div class="ms-item"><span class="ms-dot" style="background:#8B5CF6"></span><div><b>Analyse CCTP</b><span>Fiche de synthèse sourcée</span></div></div>
+        <div class="ms-item"><span class="ms-dot" style="background:#6D28D9"></span><div><b>Analyse CCAP</b><span>Clauses et pénalités</span></div></div>
+        <div class="ms-item"><span class="ms-dot" style="background:#2563EB"></span><div><b>Bordereau DPGF</b><span>Découpage et méthode de comptage</span></div></div>
+        <div class="ms-item"><span class="ms-dot" style="background:#059669"></span><div><b>Import Caneco</b><span>Fichier normé depuis le bilan de puissance</span></div></div>
+        <div class="ms-item"><span class="ms-dot" style="background:#D97706"></span><div><b>Audit mémoire</b><span>Cohérence avant envoi</span></div></div>
+        <div class="ms-item"><span class="ms-dot" style="background:#0891B2"></span><div><b>Rapport de visite</b><span>Dicté à l'oral, charte agence</span></div></div>
+      </div>
+      <div class="mock-chat">
+        <div class="bub bub-u">Voici le bilan de puissance du client (Excel). Génère le fichier d'import Caneco au format documenté par l'éditeur.</div>
+        <div class="bub bub-a"><b>Fichier d'import prêt.</b> J'ai repris les colonnes normées Caneco (repère, consommateur, puissance, longueur, mode de pose). 214 départs traités, 3 lignes incomplètes signalées en orange pour vérification.
+          <div style="margin-top:.6rem"><span class="tag-pill">Tableur généré</span><span class="tag-pill">Format Caneco</span><span class="tag-pill">Anomalies signalées</span></div>
+        </div>
+        <div class="bub bub-u">Parfait. Analyse maintenant le CCTP du lot élec et sors-moi la fiche de synthèse avec les particularités, pièce et page.</div>
+        <div class="bub bub-a">Fiche de synthèse produite. 17 particularités relevées et sourcées, dont deux exigences de supportage spécifiques (CCTP §4.2, p. 38) et une contrainte de vidéosurveillance à chiffrer (CCTP §7.1, p. 102). Prête à alimenter votre document de remarques.</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="visionR" class="hidden">
+    <p class="vision-intro">Deuxième socle, structurant. Les bases SharePoint du BE (mémoires techniques, DPGF et BPU réalisés, dossier de consultation en cours, devis fournisseurs) deviennent interrogeables en langage naturel. On capitalise au lieu de recommencer à chaque dossier.</p>
+    <div class="mock">
+      <div class="mock-side">
+        <div class="ms-title">Bases connectées</div>
+        <div class="ms-item"><span class="ms-dot" style="background:#2563EB"></span><div><b>Mémoires techniques</b><span>50 mémoires représentatifs</span></div></div>
+        <div class="ms-item"><span class="ms-dot" style="background:#8B5CF6"></span><div><b>Dossier de consultation</b><span>Pièces du projet en cours</span></div></div>
+        <div class="ms-item"><span class="ms-dot" style="background:#059669"></span><div><b>DPGF &amp; BPU historiques</b><span>Prix internes par prestation</span></div></div>
+        <div class="ms-item"><span class="ms-dot" style="background:#D97706"></span><div><b>Devis fournisseurs</b><span>Bibliothèque de prix matériel</span></div></div>
+      </div>
+      <div class="mock-chat">
+        <div class="bub bub-u">On répond à un entrepôt logistique neuf avec une exigence RSE marquée. Quels mémoires passés correspondent le mieux ?</div>
+        <div class="bub bub-a"><b>Trois mémoires proches identifiés.</b> Le plus pertinent contient déjà une section environnement réutilisable et un groupement comparable.
+          <div class="src">
+            <div class="src-row"><span class="src-name">Mémoire entrepôt logistique (2025)</span><span class="src-bar"><i style="width:93%"></i></span><span class="src-pct">93%</span></div>
+            <div class="src-row"><span class="src-name">Mémoire usine agroalimentaire (2024)</span><span class="src-bar"><i style="width:82%"></i></span><span class="src-pct">82%</span></div>
+            <div class="src-row"><span class="src-name">Mémoire bâtiment tertiaire (2023)</span><span class="src-bar"><i style="width:71%"></i></span><span class="src-pct">71%</span></div>
+          </div>
+        </div>
+        <div class="bub bub-u">Sur le dossier en cours, y a-t-il des discordances entre le CCTP général et le CCTP du sous-lot élec sur les chemins de câbles ?</div>
+        <div class="bub bub-a">Oui, une discordance relevée. Le CCTP général impose du chemin de câbles tôle perforée (§5.3), le sous-lot élec mentionne du fil (§2.8). À clarifier avec le client en avance de phase ou à traiter en exclusion.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta">
+    <div class="eyebrow" style="color:#C4B5FD">Vers l'audit complet</div>
+    <h2>Ce que le 360° débloque</h2>
+    <p>Ce cadrage a creusé un seul process, le bureau d'études. L'audit complet réinterroge chaque métier de l'agence (responsables d'affaires et directeurs de projet, service appels d'offres, fonctions support, commerce), puis consolide ce qu'un échantillon ne peut pas voir.</p>
+    <div class="cta-grid">
+      <div class="cta-item"><b>Couverture 360° des métiers</b>Le BE représente 6 personnes ; les responsables d'affaires, le service appels d'offres et les fonctions support ont leurs propres gisements, évoqués mais non audités.</div>
+      <div class="cta-item"><b>Mutualisation inter-métiers</b>Des bases SharePoint et des assistants partagés entre BE, chefs de projet et support, et une remontée structurée des besoins vers le groupe (Diane, pôle Leonard).</div>
+      <div class="cta-item"><b>Stratégie de licences et référents</b>Trois niveaux de licence Copilot disponibles sur demande, des ambassadeurs métiers à désigner, la licence qui suit le rôle.</div>
+      <div class="cta-item"><b>Gouvernance et roadmap</b>Cadre de confidentialité NDA formalisé, doctrine d'anonymisation pour les rares cas hors Copilot, séquencement budgété des chantiers.</div>
+    </div>
+    <div class="cta-quote">« Là, on a fait le focus que sur la partie BE. Chaque activité a ses particularités et aura ses demandes particulières. »<span>Lorenzo Bonanni, Directeur d'agence, en séance</span></div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-brand">IAvenir</div>
+    <div>Confidentiel · Cadrage ACTEMIUM Hauts-de-France Project Management · Juillet 2026</div>
+  </div>
+</div>
+
+<script>
+const CASES=[
+{id:"AO-01",p:"BE — Appels d'offres",h:"ct",fl:"Assistant",n:"Assistant d'analyse du bordereau (DPGF)",d:"Lecture structurée du bordereau dès réception",desc:"Première tâche du process : analyser le bordereau pour qualifier son niveau de détail et son découpage (par bâtiment, par pièce) et en déduire l'ordre et la méthode de comptage. L'assistant produit cette lecture structurée en quelques minutes, dès l'ouverture du dossier.",outil:"Copilot M365 (Excel)",crit:"Moyen",freq:"Hebdomadaire",prof:"6 personnes du BE",pre:"Grille de qualification des bordereaux",ph:"Phase 1",verb:"« En fonction du DPGF, on va compter, on va tout faire un peu différemment. En suivant le niveau de détail du bordereau, c'est important qu'on le sache rapidement. »"},
+{id:"AO-02",p:"BE — Appels d'offres",h:"ct",fl:"Assistant",n:"Remise au format DPGF client depuis l'export Optima",d:"Trame client reconstituée, écarts signalés",desc:"Reconstituer la trame DPGF du client (mise en page d'origine) à partir de l'export Excel d'Optima, avec alerte lorsque le contenu d'une ligne a changé (lignes ajoutées, commentaires, même ligne répétée jusqu'à 30 fois avec des prix différents). Tâche de fin de réponse, dans l'urgence, sans valeur ajoutée et source d'erreurs. Les essais Copilot directs ont échoué : approche à reprendre onglet par onglet.",outil:"Copilot M365 (Excel)",crit:"Fort",freq:"Hebdomadaire",prof:"6 personnes du BE",pre:"Copilot payant ; règles de correspondance export ↔ trame client",ph:"Phase 1 → Phase 2",verb:"« C'est une tâche qui m'est énergivore, toujours dans l'urgence [...] Il y a zéro valeur ajoutée [...] et en plus, c'est source d'erreur. » | « On avait douze onglets sur l'Excel, et par onglet, entre 500 et 2 000 lignes. »",n1:"Niveau 1. Assistant Excel travaillant onglet par onglet avec des règles de correspondance formalisées et une alerte sur les écarts de contenu.",n2:"Niveau 2. Workflow s'appuyant sur l'interface API annoncée d'Optima pour générer la trame client sans manipulation."},
+{id:"AO-03",p:"BE — Appels d'offres",h:"ct",fl:"Assistant",n:"Assistant d'analyse CCTP",d:"Fiche de synthèse sourcée (pièce, page)",desc:"Assistant préconfiguré dédié au CCTP : lecture complète, extraction des éléments clés techniques que le BE pointe aujourd'hui manuellement, restitution en fiche de synthèse sourcée (pièce, page, article). Donne à toute l'équipe la même base de lecture dès réception du dossier.",outil:"Copilot M365 (agents)",crit:"Fort",freq:"Hebdomadaire",prof:"6 personnes du BE",pre:"Grille des éléments clés CCTP à formaliser avec le BE",ph:"Phase 1",verb:"« On rédige un petit document où, dès qu'on voit une particularité, on la note : la pièce et la page, pour pouvoir y revenir. »"},
+{id:"AO-04",p:"BE — Appels d'offres",h:"ct",fl:"Assistant",n:"Assistant d'analyse CCAP et pièces contractuelles",d:"Clauses de pénalité et particularités extraites",desc:"Assistant préconfiguré dédié aux pièces administratives et contractuelles (CCAP lorsqu'il existe, conditions particulières des dossiers privés) : extraction des clauses de pénalité et clauses particulières, restitution sourcée. Complète l'assistant CCTP avec sa propre grille de lecture.",outil:"Copilot M365 (agents)",crit:"Moyen",freq:"Hebdomadaire",prof:"6 personnes du BE",pre:"Grille des clauses à risque",ph:"Phase 1",verb:"« Pareil pour les CCAP : on peut faire un assistant analyse de CCAP, nous sortir toutes les clauses de pénalité ou les clauses particulières. »"},
+{id:"AO-05",p:"BE — Appels d'offres",h:"ct",fl:"Assistant",n:"Assistant de première lecture go / no-go",d:"Première lecture chiffrée des critères",desc:"Lecture en diagonale du dossier entrant : durée de réponse, prix et planning prévisionnels, part de sous-traitance, besoin de groupement, correspondance aux critères de l'agence. À articuler avec le service dédié qui fait aujourd'hui la première analyse des appels d'offres.",outil:"Copilot M365 (agents)",crit:"Moyen",freq:"Hebdomadaire",prof:"BE + service appels d'offres",pre:"Critères go / no-go formalisés",ph:"Phase 1",verb:"« Lecture en diagonale avec tous les éléments clés [...] et là, go / no-go. Ça correspond à 70 % à nos critères, 80 %, 90 % ? »"},
+{id:"AO-08",p:"BE — Appels d'offres",h:"ct",fl:"Assistant",n:"Consolidation du fichier de remarques qualité",d:"Fichier qualité consolidé en fin de lecture",desc:"Pendant la lecture interrogative du dossier, chaque remarque est notée dans le fil de conversation ; en fin de process, l'assistant consolide le fichier qualité du BE (Word ou Excel) : remarques, questions au client, inclusions et exclusions, justification des choix. Sert aussi de pense-bête de relecture en fin de dossier.",outil:"Copilot M365",crit:"Moyen",freq:"Hebdomadaire",prof:"6 personnes du BE",pre:"Trame du fichier qualité du BE",ph:"Phase 1",verb:"« C'est dans notre processus qualité, il faut que ce soit fait. [...] Est-ce qu'on l'inclut dans le mémoire ? Est-ce qu'on pose la question au client ? Est-ce qu'on le met dans la liste des exclusions ? »"},
+{id:"AO-10",p:"BE — Appels d'offres",h:"ct",fl:"Assistant",n:"Assistant d'extraits ciblés de cahiers des charges",d:"Extraits par métier consulté",desc:"Générer les extraits de CCTP adaptés à chaque consulté : extrait complet du périmètre pour les partenaires sachants (sans les noyer sous la documentation qui ne les concerne pas), consultation concrète avec tailles, types et modèles pour les fabricants (chemin de câbles, SSI). Reproduit la géométrie variable pratiquée par le BE.",outil:"Copilot M365",crit:"Moyen",freq:"Hebdomadaire",prof:"6 personnes du BE",pre:"Règles d'extraits par type de consulté",ph:"Phase 1",verb:"« Si j'envoie un CCTP pour du chemin de câbles, ils ne me répondent pas. Il faut que je donne les tailles, les types, les modèles. »"},
+{id:"AO-14",p:"BE — Appels d'offres",h:"ct",fl:"Assistant",n:"Assistant d'audit du mémoire technique",d:"Rapport d'audit du mémoire avant envoi",desc:"Contrôle final du mémoire avant remise : orthographe, syntaxe et surtout cohérence du contenu (noms de clients résiduels d'anciens copier-collés, références de projet dans les en-têtes et pieds de page, modes opératoires inadaptés). Répond au manque de temps exprimé sur le contrôle de ce qui part.",outil:"Copilot M365 (Word)",crit:"Moyen",freq:"Hebdomadaire",prof:"6 personnes du BE",pre:"Checklist de contrôle contenu et forme",ph:"Phase 1",verb:"« La partie contrôle de ce qu'on envoie, on n'a pas assez de temps pour bien le faire. »"},
+{id:"AO-15",p:"BE — Appels d'offres",h:"ct",fl:"Assistant",n:"Assistant de contrôle du devis avant remise",d:"Contrôle du fichier prix",desc:"Passage du chiffrage final à un assistant de vérification juste avant la réponse : incohérences sur des lignes de prix, virgule en trop ou manquante, écarts anormaux. Contrôle distinct de l'audit du mémoire, sur le fichier prix.",outil:"Copilot M365 (Excel)",crit:"Moyen",freq:"Hebdomadaire",prof:"6 personnes du BE",pre:"Règles de contrôle du fichier prix",ph:"Phase 1",verb:"« Un assistant qui va vérifier s'il n'y a pas des énormes incohérences sur des lignes de prix, ou une virgule en trop ou pas assez. »"},
+{id:"AO-16",p:"BE — Appels d'offres",h:"ct",fl:"Assistant",n:"Pré-remplissage Caneco depuis le bilan de puissance",d:"Fichier d'import Caneco généré",desc:"Générer, à partir du bilan de puissance (Excel client dans 99,9 % des cas), le fichier Excel d'import au format attendu par Caneco (colonnes normées documentées par l'éditeur), pour éviter la ressaisie disjoncteur par disjoncteur. Cas jugé facilement réalisable par le BE en séance.",outil:"Copilot M365 (Excel) + Caneco",crit:"Fort",freq:"Hebdomadaire",prof:"6 personnes du BE",pre:"Documentation d'import Caneco ; gabarit normé",ph:"Phase 1",verb:"« Si on donne le formatage du fichier Caneco à l'IA et qu'on lui donne le bilan de puissance, je suis quasiment sûr qu'elle est capable de faire la maille entre les deux. »"},
+{id:"AO-17",p:"BE — Appels d'offres",h:"ct",fl:"Assistant",n:"Extraction des listes de liaisons depuis les plans PDF",d:"Listes de liaisons en Excel",desc:"Récupérer sous forme exploitable les listes de liaisons figurant en cartouche de fin de plans. Essai déjà réalisé par le BE sur un fichier de douze pages PDF : échec de Copilot (OCR), temps perdu. À retester avec un meilleur outillage (découpage page par page, autre moteur, ou évolution Diane).",outil:"Copilot M365 / Diane (à retester)",crit:"Moyen",freq:"Hebdomadaire",prof:"6 personnes du BE",pre:"Test comparatif d'outils OCR",ph:"Phase 1",verb:"« À la fin de chaque plan, j'ai une liste de toutes les liaisons. [...] Ça n'allait pas, parce qu'il ne pouvait pas faire un OCR. J'ai passé du temps. »"},
+{id:"AO-06",p:"BE — Appels d'offres",h:"mt",fl:"RAG",n:"Dossier de consultation interrogeable (environnement projet)",d:"Réponses sourcées sans ouvrir les pièces",desc:"Environnement de projet où toutes les pièces du dossier sont chargées et interrogeables en langage naturel avec réponses sourcées. Complète les assistants préconfigurés : la lecture suit la chaîne de pensée de chacun, tout en gardant la possibilité de se plonger dans les pièces. Répond au fonctionnement actuel de lecture collective à six.",outil:"Copilot M365 + SharePoint",crit:"Fort",freq:"Hebdomadaire",prof:"6 personnes du BE",pre:"SharePoint projet structuré ; niveau de licence à vérifier",ph:"Phase 1 → Phase 2",verb:"« On est six au BE, on fait tous la lecture des pièces principales [...] on n'a pas la même lecture. » | « J'aime bien la notion d'avoir stocké et de poser des questions. »",n1:"Niveau 1. Les pièces sont déposées dans le chat Copilot et interrogées à la demande, réponses sourcées.",n2:"Niveau 2. SharePoint projet systématique connecté, environnement partagé aux six lecteurs."},
+{id:"AO-07",p:"BE — Appels d'offres",h:"mt",fl:"RAG",n:"Contrôle de concordance entre pièces du dossier",d:"Discordances pointées document par document",desc:"Sur la base de l'environnement projet, vérification des discordances entre pièces : CCTP généraux, CCTP par sous-lot des gros dossiers, fiches techniques d'équipements principaux. Restitution du type « dans tel document il est écrit ceci, dans tel autre cela », pour poser les questions au client en avance de phase ou cadrer les exclusions.",outil:"Copilot M365 + SharePoint",crit:"Fort",freq:"Hebdomadaire",prof:"6 personnes du BE",pre:"Environnement projet en place (AO-06)",ph:"Phase 1 → Phase 2",verb:"« On a des discordances entre différentes pièces. [...] Vérifier la concordance des documents, ça prend beaucoup de temps. »",n1:"Niveau 1. Questions de concordance ciblées posées dans l'environnement projet.",n2:"Niveau 2. Contrôle systématique avec rapport de discordances généré à la demande."},
+{id:"AO-12",p:"BE — Appels d'offres",h:"mt",fl:"RAG",n:"Base de mémoires techniques connectée",d:"Les 3 mémoires les plus proches identifiés",desc:"Sélectionner et connecter dans SharePoint une cinquantaine de mémoires techniques représentatifs (typologies de projets, tailles, sections environnement et RSE) ; pour chaque nouveau dossier, l'agent identifie les mémoires passés les plus proches. Capitalisation différenciante sur le savoir-faire de l'agence. Une des deux grosses pistes identifiées par le BE avant le cadrage.",outil:"Copilot M365 + SharePoint",crit:"Fort",freq:"Hebdomadaire",prof:"6 personnes du BE",pre:"Sélection et structuration de ~50 mémoires",ph:"Phase 2",verb:"« On a de plus en plus de choses qui existent, mais on recommence à chaque fois. » | « Pour moi, c'est le mémoire et le bordereau : les deux grosses pistes qu'on avait identifiées. »"},
+{id:"AO-13",p:"BE — Appels d'offres",h:"mt",fl:"RAG",n:"Assistant de rédaction du mémoire technique",d:"Sections rédigées dans l'ordre du CCTP",desc:"Rédaction section par section du mémoire en suivant l'ordre du CCTP (pratique actuelle du BE) : copier-coller modifié depuis les mémoires les plus proches, adaptation au projet en cours, charte graphique de l'agence, génération des organigrammes. Les images, plans et phasages restent intégrés manuellement.",outil:"Copilot M365 + SharePoint (Word)",crit:"Fort",freq:"Hebdomadaire",prof:"6 personnes du BE",pre:"Base mémoires en place (AO-12) ; charte graphique",ph:"Phase 2",verb:"« On essaie de reprendre dans l'ordre du CCTP, pour que celui qui a conçu le CCTP s'y retrouve dans notre mémoire. » | « Un copier-coller modifié par rapport au CCTP actuel. »"},
+{id:"AO-09",p:"BE — Appels d'offres",h:"lt",fl:"Agent",n:"Agent d'orchestration de l'analyse de dossier",d:"Chaîne d'analyse enclenchée au dépôt du dossier",desc:"Enchaînement automatique des assistants d'analyse : dépôt du dossier de consultation, analyse CCTP puis CCAP, production des synthèses, génération du sommaire du mémoire, puis recherche des mémoires passés les plus proches avant d'aider à construire le mémoire. Orchestration de tâches avec déclencheurs, au-delà du Copilot natif seul.",outil:"Copilot Studio (à qualifier)",crit:"Moyen",freq:"Hebdomadaire",prof:"6 personnes du BE",pre:"Assistants Phase 1 éprouvés ; base mémoires ; Copilot Studio (payant)",ph:"Phase 2",verb:"« Il va d'abord analyser le CCTP, puis le CCAP, puis nous sortir des éléments synthétiques [...] puis aller regarder dans la base de données des mémoires techniques ce qui correspond le plus à ce projet-là. »"},
+{id:"AO-11",p:"BE — Appels d'offres",h:"lt",fl:"Agent",n:"Agent de consultation fournisseurs (mails automatisés)",d:"Brouillons de consultation prêts à partir",desc:"L'agent identifie dans le CCTP les éléments réalisés en interne et ceux à sous-traiter, produit le listing des consultations, croise avec la bibliothèque de contacts (Excel) et génère les brouillons de mails de consultation prêts à partir, avec la demande de devis adaptée.",outil:"Copilot M365 + Outlook",crit:"Moyen",freq:"Hebdomadaire",prof:"6 personnes du BE",pre:"Bibliothèque de contacts fournisseurs ; connecteur Outlook",ph:"Phase 1 → Phase 2",verb:"« Il peut faire le lien entre le CCTP, les éléments à consulter, votre bibliothèque, et vous générer des brouillons de mails prêts à partir. »",n1:"Niveau 1. Brouillons générés depuis l'extrait de CCTP et la bibliothèque de contacts, copiés dans Outlook.",n2:"Niveau 2. Agent connecté à Outlook qui dépose les brouillons automatiquement, prêts à valider."},
+{id:"AO-18",p:"BE — Appels d'offres",h:"lt",fl:"Agent / API",n:"Routing de câbles et positionnement des équipements",d:"Cheminements et largeurs de tronçons calculés",desc:"Aller au-delà du fichier Excel + VBA actuel (en limite de capacité) : positionner les équipements, calculer le cheminement au plus court entre départ et arrivée, les longueurs et la largeur de chaque tronçon (supportage). Cible : interfaçage avec le plan AutoCAD (coordonnées X Y Z). Approche intermédiaire testable par screenshots avec entraînement par exemples. Faisabilité à valider, gains importants attendus.",outil:"À qualifier (AutoCAD, DXF, vision)",crit:"Fort",freq:"Hebdomadaire",prof:"6 personnes du BE",pre:"Export DXF ou coordonnées ; POC sur un plan type",ph:"Phase 2",verb:"« On connaît le point de départ du câble, son point d'arrivée. Par où il passe pour aller au plus court ? [...] Là, nous, on a aussi beaucoup de temps à gagner. »"},
+{id:"AO-19",p:"BE — Appels d'offres",h:"dp",fl:"En place",n:"Comptage et métré sur plans PDF avec Diane",d:"70 à 80 % du comptage automatisé",desc:"La plateforme IA Vinci Diane est déjà utilisée pour le dénombrement et le métré sur plans PDF (fiabilité constatée de 70 à 80 %, reprise manuelle du reste), ainsi que des comparaisons de plans et d'indices. En complément, le BE extrait les listes de blocs d'AutoCAD et les nomenclatures de Revit quand les maquettes sont exploitables.",outil:"Diane (Vinci) ; AutoCAD, Revit",crit:"Moyen",freq:"Hebdomadaire",prof:"6 personnes du BE",pre:"Suivi des évolutions Diane ; remontée des besoins au groupe",ph:"Phase 1",verb:"« C'est fiable à 70-80 % [...] il reste une partie manuelle, mais ça fait 70-80 % du job assez rapidement. »"},
+{id:"CAP-04",p:"Capitalisation & Data",h:"ct",fl:"Assistant",n:"Assistant normatif (NF C 15-100 et normes récurrentes)",d:"Réponses normatives sourcées",desc:"Assistant avec la norme en base de connaissances : questions ponctuelles, vérification de conformité de l'installation en cours d'étude, comparatif entre versions (la NF C 15-100 vient d'évoluer). Les normes sont disponibles via le portail d'un bureau de contrôle (identifiants Vinci) : vérifier la possibilité d'extraction ou de connexion.",outil:"Copilot M365 (agents)",crit:"Moyen",freq:"Ponctuelle",prof:"6 personnes du BE",pre:"Droits d'extraction depuis le portail normes",ph:"Phase 1",verb:"« La 15-100 vient d'évoluer, forcément on va la regarder un peu plus souvent en ce moment. » | « Notre installation, il faut qu'elle réponde à la norme. »"},
+{id:"CAP-01",p:"Capitalisation & Data",h:"mt",fl:"RAG",n:"Base de prix interne (DPGF et BPU historiques)",d:"Prix moyen par prestation, sur demande",desc:"Pointer dans un SharePoint l'ensemble des DPGF et BPU réalisés, interrogeables en langage naturel : sur tel type de prestation, quel est le prix moyen sur les X dernières opérations ? Usage validé pour les estimatifs budgétaires d'avant-projet, nombreux côté agence, et pour fiabiliser les chiffrages.",outil:"Copilot M365 + SharePoint",crit:"Fort",freq:"Hebdomadaire",prof:"BE + direction (avant-projets)",pre:"SharePoint dédié ; nomenclature des prestations",ph:"Phase 2",verb:"« On fait beaucoup de choses en avant-projet, des premiers estimatifs clients pour définir des budgets. D'avoir une base de données de nos prix sur les dernières opérations, c'est intéressant. »"},
+{id:"CAP-02",p:"Capitalisation & Data",h:"mt",fl:"Agent",n:"Bibliothèque de prix fournisseurs consolidée",d:"Bibliothèque de prix matériel consolidée",desc:"Consolider une bibliothèque de prix matériel (prix moyens par année) à partir des devis fournisseurs reçus : soit en faisant creuser l'IA dans les mails et pièces jointes, soit en analysant des devis PDF rangés dans un SharePoint. Sert d'élément de comparaison en chiffrage et d'argumentaire de négociation fournisseurs.",outil:"Copilot M365 + Outlook / SharePoint",crit:"Moyen",freq:"Mensuelle",prof:"6 personnes du BE",pre:"Accès Outlook ; ou devis PDF dans SharePoint",ph:"Phase 2",verb:"« Vous me donnez un prix sur telle gaine alors que ça fait trois ans que le prix moyen est à tant : qu'est-ce qui se passe ? »"},
+{id:"CAP-05",p:"Capitalisation & Data",h:"mt",fl:"RAG",n:"RAG sur les procédures et documents internes",d:"Procédures interrogeables",desc:"Connecter les procédures de l'entreprise et les documents de référence stockés dans SharePoint ou sur les serveurs, aujourd'hui peu consultés faute de savoir où chercher, pour les rendre interrogeables en langage naturel. Brique de mémoire d'entreprise complémentaire des bases métier.",outil:"Copilot M365 + SharePoint",crit:"Faible",freq:"Ponctuelle",prof:"Toute l'agence",pre:"Inventaire et structuration des procédures",ph:"Phase 2",verb:"« Tous les documents qu'on crée et qu'on retrouve dans des SharePoint ou des serveurs, et que personne ne regarde au quotidien parce qu'ils ne savent pas où c'est. »"},
+{id:"CAP-03",p:"Capitalisation & Data",h:"lt",fl:"Agent / API",n:"Interrogation de la base prix et commandes Vinci",d:"Meilleur prix des dernières commandes, sur demande",desc:"Interfacer l'assistant avec la base interne Vinci accessible en web (prix tarifs, prix dérogés, vingt derniers achats, remises, dates) pour demander directement le meilleur prix d'une référence sans ouvrir l'interface. Faisabilité conditionnée au SSO Vinci et à l'existence d'une API ; à négocier le cas échéant avec la DSI.",outil:"Copilot Studio (à qualifier)",crit:"Moyen",freq:"Hebdomadaire",prof:"6 personnes du BE",pre:"Vérification SSO / API côté DSI Vinci ; Copilot Studio (payant)",ph:"Phase 2",verb:"« On n'aurait plus besoin d'ouvrir l'interface, d'aller chercher l'info, on pourrait la demander directement. »"},
+{id:"CAP-06",p:"Capitalisation & Data",h:"lt",fl:"Agent",n:"Fiches de passation BE vers chefs de projet",d:"Fiches de passation générées",desc:"À la fin d'une affaire gagnée, générer depuis l'environnement projet (pièces, chiffrage, mémoire, fil de réflexion) les fiches de synthèse et de stratégie alimentant les documents codifiés de démarrage et de suivi de projet. Réduit la coupure entre étude et exploitation.",outil:"Copilot M365 + SharePoint",crit:"Moyen",freq:"Mensuelle",prof:"BE + responsables d'affaires",pre:"Environnement projet en place (AO-06) ; trames des documents",ph:"Phase 2",verb:"« Ces documents-là, il y a beaucoup de données à indiquer dedans, et c'est beaucoup de données qui sont disponibles quelque part. »"},
+{id:"TRA-03",p:"Transverse & Mobilité",h:"ct",fl:"Assistant",n:"Dictée vocale en mobilité et brouillons Outlook",d:"Brouillons prêts à envoyer",desc:"Pratique individuelle à mutualiser : dictée du mail à Copilot pendant les trajets, reformulation, puis copier-coller à l'arrivée. Avec le connecteur Outlook (version payante à demander), les brouillons sont générés prêts à envoyer ; extension possible à la pose de points d'agenda à l'oral.",outil:"Copilot M365 + Outlook",crit:"Moyen",freq:"Quotidienne",prof:"6 personnes du BE, extensible agence",pre:"Licences Copilot payantes ; connecteur Outlook",ph:"Phase 1",verb:"« Je suis parti de chez moi, j'ai une heure de route, et des fois je réfléchis au mail que je dois faire en arrivant. Donc je le dicte à Copilot. »",n1:"Niveau 1. Dictée et reformulation dans le chat, copier-coller du texte à l'arrivée (pratique actuelle).",n2:"Niveau 2. Connecteur Outlook, le brouillon attend dans la boîte, prêt à valider."},
+{id:"TRA-04",p:"Transverse & Mobilité",h:"ct",fl:"Assistant",n:"Rapports de visite dictés à l'oral",d:"Rapport et mail générés au retour",desc:"Assistant préconfiguré avec la charte graphique : notes vocales prises sur le terrain au fil de la visite, puis génération du rapport complet et du mail d'accompagnement au retour. Fonctionne aussi en mode anonymisé (sans nom de client ni de site), un outil externe restant envisageable uniquement en anonymisation complète (cas très rare).",outil:"Copilot M365",crit:"Moyen",freq:"Ponctuelle",prof:"BE + responsables d'affaires",pre:"Assistant avec charte graphique et trame de rapport",ph:"Phase 1",verb:"« Vous revenez au bureau : vous avez juste marché vers votre voiture, et vous avez un rapport. » | « C'est ce que je fais, des fois. »"},
+{id:"TRA-06",p:"Transverse & Mobilité",h:"lt",fl:"Agent",n:"Constitution des dossiers d'analyse de risques",d:"Excel d'analyse de risques pré-rempli",desc:"Aider à remplir la documentation des comités d'analyse de risques (Excel à compléter, une partie en amont, une partie après), en allant chercher les données nécessaires dans les documents du dossier et les espaces internes. Cas cité comme extensible à d'autres documents de process hors BE.",outil:"Copilot M365 + SharePoint",crit:"Moyen",freq:"Mensuelle",prof:"BE + responsables d'affaires",pre:"Trame de l'Excel ; accès aux données sources",ph:"Phase 2",verb:"« Comité d'analyse de risques, la documentation qu'il faut produire, ça oui. [...] Souvent, il faut quand même aller chercher de la data sur les interfaces, sur les sites Vinci. »"},
+{id:"TRA-07",p:"Transverse & Mobilité",h:"lt",fl:"Agent",n:"Aide à la production de bilans carbone",d:"Rapport de bilan carbone consolidé",desc:"Le BE ne produit pas de bilans carbone aujourd'hui, faute d'outil, alors que la demande progresse ; volonté claire de le faire si un outil le permettait. L'IA peut aider étape par étape : extraction des éléments lors des consultations, demandes spécifiques aux fournisseurs, consolidation sous forme de rapport.",outil:"Copilot M365",crit:"Faible",freq:"Ponctuelle",prof:"BE + agence",pre:"Méthodologie cible ; données fournisseurs",ph:"Phase 2",verb:"« S'il y avait un outil qui nous permettait de le faire, on le ferait. »"},
+{id:"TRA-01",p:"Transverse & Mobilité",h:"dp",fl:"En place",n:"Comptes rendus de réunion automatisés (Teams)",d:"CR systématiques",desc:"Transcription et comptes rendus de réunions déjà utilisés systématiquement dans l'agence via l'environnement Microsoft. Signal de maturité ; usage à entretenir et à relier aux futurs environnements projet.",outil:"Teams + Copilot M365",crit:"Faible",freq:"Quotidienne",prof:"Toute l'agence",pre:"Aucun (en place)",ph:"Phase 1",verb:"« Les réunions, on les transcrit, on fait les comptes rendus. Ça, on l'utilise systématiquement. »"},
+{id:"TRA-02",p:"Transverse & Mobilité",h:"dp",fl:"En place",n:"Assistant de correction et rédaction de mails",d:"Mails corrigés, main gardée",desc:"Usage individuel existant : les mails sont tapés puis corrigés par Copilot (préférence exprimée pour garder la main sur la rédaction). À formaliser en pratique d'équipe avec un assistant de correction partagé.",outil:"Copilot M365 + Outlook",crit:"Faible",freq:"Quotidienne",prof:"6 personnes du BE, extensible agence",pre:"Aucun (en place)",ph:"Phase 1",verb:"« Je donne mon texte à corriger. Je préfère taper moi-même et après je vérifie que je n'ai pas fait de bêtises. »"},
+{id:"TRA-05",p:"Transverse & Mobilité",h:"dp",fl:"En place",n:"Support logiciel Revit / AutoCAD par IA généralistes",d:"Déblocage logiciel sans données client",desc:"Pour les questions d'utilisation de logiciels sans aucune donnée client, le BE utilise déjà des IA externes plus performantes que Copilot sur ce terrain. Pratique conforme au cadre de confidentialité, à formaliser (assistant expert Revit possible avec la documentation en ligne).",outil:"ChatGPT / Mistral (anonymisé, très rare)",crit:"Faible",freq:"Ponctuelle",prof:"6 personnes du BE",pre:"Rappel du cadre (aucune donnée client)",ph:"Phase 1",verb:"« C'est un des rares cas où on va utiliser une autre IA [...] parce que la réponse est meilleure. » | « Il faut juste que je n'y mette aucune donnée confidentielle. »"}
+];
+
+const board=document.getElementById('board');
+const HZ=[["ct","Court terme · 0 à 3 mois","hz-ct"],["mt","Moyen terme · 3 à 6 mois","hz-mt"],["lt","Long terme · 6 à 12 mois","hz-lt"],["dp","Déjà en place · à entretenir","hz-dp"]];
+const BCLASS={Assistant:"b-assist",RAG:"b-rag",Agent:"b-agent","Agent / API":"b-agent","En place":"b-hors"};
+
+function render(view){
+  document.getElementById('visionC').classList.add('hidden');
+  document.getElementById('visionR').classList.add('hidden');
+  board.classList.remove('hidden');
+  if(view==='visionC'){board.classList.add('hidden');document.getElementById('visionC').classList.remove('hidden');return;}
+  if(view==='visionR'){board.classList.add('hidden');document.getElementById('visionR').classList.remove('hidden');return;}
+  let list=CASES.slice();
+  if(view!=='all'){list=list.filter(c=>c.p===view);}
+  let html='';
+  for(const [hz,label,cls] of HZ){
+    const items=list.filter(c=>c.h===hz);
+    if(!items.length)continue;
+    html+=`<div class="horizon"><div class="horizon-head ${cls}"><span>${label}</span><span class="cnt">${items.length} cas</span></div>`;
+    let lastP=null;
+    for(const c of items){
+      if(view==='all'&&c.p!==lastP){html+=`<div class="perim">${c.p}</div>`;lastP=c.p;}
+      const bc=BCLASS[c.fl]||'b-hors';
+      html+=`<div class="case" onclick="toggle('${c.id}')">
+        <div class="case-id">${c.id}</div>
+        <div><div class="case-name">${c.n}<span>${c.d}</span></div></div>
+        <div class="case-gain">${c.outil}</div>
+        <div class="badge ${bc}">${c.fl}</div>
+      </div>
+      <div class="detail" id="d-${c.id}">
+        <div class="d-desc">${c.desc}</div>
+        ${c.n1?`<div class="d-grid"><div class="d-box d-n1"><h4>Niveau 1 · démarrage</h4>${c.n1}</div><div class="d-box d-n2"><h4>Niveau 2 · connecté</h4>${c.n2}</div></div>`:''}
+        <div class="d-tags">
+          <span class="d-tag"><b>Outil</b> ${c.outil}</span>
+          <span class="d-tag"><b>Phase</b> ${c.ph}</span>
+          <span class="d-tag"><b>Criticité</b> ${c.crit}</span>
+          <span class="d-tag"><b>Fréquence</b> ${c.freq}</span>
+          <span class="d-tag"><b>Profils</b> ${c.prof}</span>
+          <span class="d-tag"><b>Prérequis</b> ${c.pre}</span>
+        </div>
+        <div class="d-verb">${c.verb}</div>
+      </div>`;
+    }
+    html+=`</div>`;
+  }
+  board.innerHTML=html;
+}
+let openId=null;
+function toggle(id){
+  const el=document.getElementById('d-'+id);
+  if(openId&&openId!==id){const o=document.getElementById('d-'+openId);if(o)o.classList.remove('open');}
+  if(el.classList.contains('open')){el.classList.remove('open');openId=null;}
+  else{el.classList.add('open');openId=id;}
+}
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');openId=null;
+    render(t.dataset.view);
+  });
+});
+render('all');
+</script>
+</body>
+</html>
