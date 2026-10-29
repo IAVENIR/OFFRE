@@ -126,6 +126,18 @@ section{padding:90px 0}
 .st-no{background:rgba(0,0,0,.35);color:#fff}
 .empty{text-align:center;color:var(--muted);padding:40px;display:none}
 
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:30px}
+@media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{padding:18px;border-radius:18px;background:rgba(255,255,255,.05);border:1px solid var(--line);text-align:center}
+.stat .n{font-family:Fredoka,Nunito,sans-serif;font-size:2.4rem;font-weight:700;color:var(--yellow);line-height:1}
+.stat .l{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-top:6px}
+.badge{position:absolute;left:12px;top:10px;font-size:.72rem;font-weight:800;padding:4px 10px;border-radius:99px}
+.b-oui{background:var(--cyan);color:#10221f} .b-peut-etre{background:var(--yellow);color:#1b0d33} .b-non{background:rgba(0,0,0,.35);color:#fff}
+.mom{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 10px}
+.mom span{font-size:.75rem;font-weight:800;padding:4px 9px;border-radius:99px;background:rgba(255,255,255,.08);color:var(--text)}
+.card .plus{font-weight:800;color:var(--pink);font-size:.95rem}
+.card .song{color:var(--muted);font-size:.88rem;margin-top:4px}
+
 /* MODAL */
 .overlay{position:fixed;inset:0;background:rgba(10,4,22,.78);backdrop-filter:blur(6px);z-index:50;display:none;align-items:center;justify-content:center;padding:16px}
 .overlay.show{display:flex}
@@ -233,7 +245,7 @@ footer .display{font-size:2rem;color:var(--text);margin-bottom:6px}
     </div>
     <div class="cta">
       <a href="#reponse" class="btn btn-main">Je réponds</a>
-      <a href="#invites" class="btn btn-ghost">Trouver mon invitation</a>
+      <a href="#invites" class="btn btn-ghost">Voir qui vient</a>
     </div>
     <div class="countdown" id="countdown">
       <div class="cd"><div class="n" id="cd-d">--</div><div class="l">jours</div></div>
@@ -331,9 +343,10 @@ footer .display{font-size:2rem;color:var(--text);margin-bottom:6px}
     <div class="wrap">
       <div class="sec-head">
         <span class="tag">La liste</span>
-        <h2>50 invités, 50 invitations</h2>
-        <p>Cherche ton nom et ouvre ton invitation personnelle : ta table, ta mission de la soirée, et ta réponse.</p>
+        <h2>Ils seront de la fête</h2>
+        <p>La liste se remplit au fil des réponses au formulaire. Tu n'y es pas encore ? <a href="#reponse" style="color:var(--yellow);font-weight:800">Réponds ici</a>.</p>
       </div>
+      <div class="stats" id="stats"></div>
       <div class="toolbar">
         <label class="search">
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
@@ -343,7 +356,7 @@ footer .display{font-size:2rem;color:var(--text);margin-bottom:6px}
       </div>
       <div class="count" id="count"></div>
       <div class="grid" id="grid"></div>
-      <div class="empty" id="empty">Personne avec ce nom. Vérifie l'orthographe.</div>
+      <div class="empty" id="empty">Personne pour l'instant avec ce nom ou ce filtre.</div>
     </div>
   </section>
 
@@ -406,10 +419,12 @@ const CONFIG = {
   /* --- Galerie photos --- */
   // Dépôt GitHub qui héberge le site : les photos déposées dans le dossier "photos" s'affichent seules.
   github: { owner: "IAVENIR", repo: "OFFRE", branch: "main", folder: "invitation-photos" },
+  // Liste des invités en direct : lien CSV de l'onglet « Liste publique » publié sur le Web
+  // (Fichier > Partager > Publier sur le Web). Laisser vide pour utiliser la liste REPONSES ci-dessous.
+  guestsCsv: "",
   uploadUrl: ""                // lien d'un album partagé (Google Photos / Drive) où les invités déposent leurs photos
 };
 
-const TABLES = ["Table Disco","Table Paillettes","Table Confettis","Table Champagne","Table Groove","Table Funky","Table Néon"];
 const GRADS = [
   "linear-gradient(135deg,#ff4fa3,#ff8a3d)","linear-gradient(135deg,#9b6bff,#ff4fa3)",
   "linear-gradient(135deg,#3ee0d0,#9b6bff)","linear-gradient(135deg,#ffd23f,#ff8a3d)",
@@ -417,72 +432,41 @@ const GRADS = [
   "linear-gradient(135deg,#ffd23f,#3ee0d0)"
 ];
 
-/* ===== INVITÉS (fictifs) ===== [prénom, nom, groupe, mot perso, mission] */
-const RAW = [
- ["Léa","Moreau","Famille","Sans toi, une fête de famille n’est jamais vraiment complète.","Gardienne officielle du gâteau"],
- ["Paul","Moreau","Famille","Le tonton qui connaît toutes les paroles de Claude François : on compte sur toi.","Ouvrir le bal après le dîner"],
- ["Hélène","Roussel","Famille","Tu m’as vu souffler mes premières bougies, viens voir les suivantes.","Superviser le moment des bougies"],
- ["Lucas","Moreau","Famille","Le petit cousin a grandi : rendez-vous sur la piste jusqu’au bout.","Tenir jusqu’à 6h, sans exception"],
- ["Margaux","Fontaine","Famille","Notre experte des discours émouvants : prépare les mouchoirs.","Dire un mot au micro pendant le dîner"],
- ["Bernard","Roussel","Famille","Ta bonne humeur est contagieuse, on en veut une grosse dose.","Lancer la première chenille"],
- ["Zoé","Garnier","Famille","La cousine la plus stylée de la famille a carte blanche sur la tenue.","Élire la meilleure tenue de la soirée"],
- ["Nathan","Garnier","Famille","Toujours partant, toujours en retard : cette fois, l’apéro commence sans toi.","Arriver à l’heure (défi du siècle)"],
- ["Agathe","Fontaine","Famille","La photographe de toutes nos fêtes de famille reprend du service.","Immortaliser l’arrivée du gâteau"],
-
- ["Camille","Martin","Amis d’enfance","Vingt ans d’amitié et toujours la première sur la piste.","Lancer la première danse à 23h pile"],
- ["Hugo","Laurent","Amis d’enfance","Le roi des playlists de colo a une revanche à prendre.","Soumettre trois titres au DJ avant minuit"],
- ["Manon","Girard","Amis d’enfance","Des cabanes au fond du jardin aux soirées parisiennes : la boucle est bouclée.","Raconter LA meilleure anecdote d’enfance"],
- ["Théo","Bonnet","Amis d’enfance","Ton rire s’entend depuis l’autre bout du bar, et c’est tant mieux.","Faire rire toute la table au dîner"],
- ["Clara","Dupuis","Amis d’enfance","La complice de toutes les bêtises du collège : ce soir, on recommence.","Organiser un blind test improvisé"],
- ["Arthur","Lambert","Amis d’enfance","Pas de match, pas d’excuse : le 12 décembre, tu es à nous.","Chauffer la piste avant l’arrivée du DJ"],
- ["Jade","Mercier","Amis d’enfance","Tu connais tous mes secrets. Ce soir, on en crée de nouveaux.","Garder les secrets (la plupart)"],
- ["Louis","Faure","Amis d’enfance","Le seul capable de danser le rock et la tecktonik sur la même chanson.","Ressortir un pas de danse culte"],
- ["Emma","Rousseau","Amis d’enfance","Tu étais là à mes 10 ans, impossible de fêter celui-ci sans toi.","Porter un toast à l’amitié"],
-
- ["Sarah","Petit","Promo","La reine des soirées de promo revient pour une édition légendaire.","Animer le photocall"],
- ["Inès","Lefebvre","Promo","On a survécu aux partiels ensemble : une nuit blanche de plus ne nous fait pas peur.","Tenir jusqu’au lever du soleil"],
- ["Mehdi","Benali","Promo","Le délégué de promo est attendu pour organiser le chaos.","Lancer le cri de guerre de la promo"],
- ["Pauline","Chevalier","Promo","Ta playlist de révisions était culte, on attend ton verdict sur le DJ set.","Juger le DJ set (avec bienveillance)"],
- ["Romain","Blanc","Promo","Les soirées étudiantes avaient un MVP. Il s’appelait Romain.","Remettre son titre en jeu"],
- ["Yasmine","Haddad","Promo","La plus organisée de la promo a enfin le droit de lâcher prise.","N’organiser absolument rien"],
- ["Victor","Marchand","Promo","Trois ans de coloc, mille souvenirs, une soirée de plus à écrire.","Rejouer le grand classique de la coloc"],
- ["Alice","Perrin","Promo","Notre experte en karaoké improvisé est attendue de pied ferme.","Tenter une chanson au micro"],
-
- ["Julien","Bernard","Boulot","Promis, aucune réunion ce soir-là. Même pas un point rapide.","Interdire toute conversation boulot"],
- ["Maxime","Michel","Boulot","Le meilleur pitch de l’année : venir danser jusqu’à 6h.","Porter le premier toast de l’apéro"],
- ["Sophie","Gauthier","Boulot","La machine à café est fermée, mais le bar est ouvert.","Tester la carte des cocktails (avec modération)"],
- ["Karim","Aït-Saïd","Boulot","Après les deadlines, une seule échéance compte : 19h30, Les Copains.","Briser la glace à l’apéro"],
- ["Élodie","Renard","Boulot","Ton énergie au bureau est connue de tous, la piste de danse t’attend.","Entraîner toute l’équipe sur la piste"],
- ["Nicolas","Morel","Boulot","Mode avion activé, mode fête enclenché.","Couper les notifications jusqu’au lendemain"],
- ["Laura","Bertin","Boulot","La reine des afterworks passe en version longue durée.","Faire le lien entre toutes les tables"],
- ["Samuel","Cohen","Boulot","Ce soir, le seul indicateur à suivre, c’est le compte à rebours.","Annoncer le passage au DJ set"],
- ["Anaïs","Roche","Boulot","On partage un open space, on partagera la piste.","Former un duo de danse avec un inconnu"],
-
- ["Thomas","Durand","Foot du dimanche","Ce soir, pas de carton jaune : uniquement des cocktails.","Capitaine de la piste de danse"],
- ["Kévin","Lemaire","Foot du dimanche","Le meilleur buteur du dimanche est attendu en attaque sur le dancefloor.","Célébrer chaque morceau comme un but"],
- ["Rayan","Mansouri","Foot du dimanche","Notre gardien ne laissera passer aucune occasion de faire la fête.","Bloquer quiconque veut partir avant 4h"],
- ["Benjamin","Colin","Foot du dimanche","La troisième mi-temps la plus attendue de la saison, c’est celle-là.","Entonner le chant de l’équipe"],
- ["Quentin","Brun","Foot du dimanche","Toujours le dernier au vestiaire, ce soir le dernier sur la piste.","Fermer la soirée à 6h"],
- ["Florian","Picard","Foot du dimanche","L’arbitre officieux de nos matchs aura enfin une soirée sans contestation.","Siffler le début du dîner"],
- ["Dylan","Gaillard","Foot du dimanche","Le roi du dribble a promis quelques pas de danse inédits.","Montrer un pas jamais vu"],
-
- ["Chloé","Simon","Voisins","Cette fois, c’est nous qui faisons du bruit, et tu es invitée.","Rassembler tout le monde pour la photo de groupe"],
- ["Gérard","Lemoine","Voisins","Le voisin le plus serviable de l’immeuble mérite une soirée à la hauteur.","Raconter la meilleure histoire de l’immeuble"],
- ["Martine","Lemoine","Voisins","Tes gâteaux font la réputation du palier, ce soir c’est toi qu’on gâte.","Goûter et noter le dessert"],
- ["Ousmane","Diallo","Voisins","La fête des voisins version XXL, et sans la pluie.","Mettre l’ambiance dès l’apéro"],
- ["Juliette","Vasseur","Voisins","Le palier n’a jamais été aussi festif que depuis ton arrivée.","Distribuer les accessoires du photocall"],
- ["Mathis","Royer","Voisins","Notre DJ du rez-de-chaussée va pouvoir observer un pro à l’œuvre.","Négocier un passage aux platines"],
- ["Nadia","Boucher","Voisins","Celle qui a les clés de tout l’immeuble a aussi celles de la soirée.","Ouvrir officiellement la piste de danse"],
- ["Simon","Carpentier","Voisins","Tu nous as prêté ta perceuse, on te prête la piste toute la nuit.","Prouver qu’il sait danser"]
+/* ===== RÉPONSES AU FORMULAIRE (mise à jour : 29/10/2026) =====
+   Seules ces informations sont publiques : prénom, initiale du nom, réponse, moments, nombre de +1, morceau.
+   Ne jamais ajouter ici d'e-mail, d'allergie, de nom complet ni de message personnel.
+   [prénom, initiale, réponse "oui" | "peut-etre" | "non", moments "Apéro, Dîner, DJ set", nb de +1, morceau] */
+const REPONSES = [
+ ["Antoine","O.","oui","DJ set",3,"ABBA"],
+ ["Henri","P.","oui","Apéro, Dîner, DJ set",4,""]
 ];
 
-const slug = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
-const GUESTS = RAW.map((g,i)=>({
-  first:g[0], last:g[1], group:g[2], line:g[3], mission:g[4],
-  table: TABLES[i % TABLES.length],
-  grad: GRADS[(i*3) % GRADS.length],
-  id: slug(g[0]+" "+g[1])
-}));
+const slug = s => s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const cap = s => s.trim().toLowerCase().replace(/(^|[\s-])\p{L}/gu, m=>m.toUpperCase());
+function statut(v){ v = slug(v); return v.startsWith("oui") ? "oui" : v.startsWith("peut") ? "peut-etre" : v.startsWith("non") ? "non" : ""; }
+function moments(v){
+  const t = slug(v), m = [];
+  if (t.includes("apero")) m.push("Apéro");
+  if (t.includes("diner")) m.push("Dîner");
+  if (t.includes("dj")) m.push("DJ set");
+  return m;
+}
+let GUESTS = [];
+function buildGuests(rows){
+  const byId = new Map();
+  rows.forEach(r=>{
+    const first = cap(String(r[0]||"")), ini = String(r[1]||"").trim().charAt(0).toUpperCase();
+    if (!first) return;
+    const st = statut(r[2]);
+    const g = { first, ini, name: first + (ini ? " " + ini + "." : ""), status: st,
+      moments: st==="non" ? [] : moments(r[3]), plus: st==="oui" || st==="peut-etre" ? (parseInt(r[4],10) || 0) : 0,
+      song: String(r[5]||"").trim(), id: slug(first + " " + ini) };
+    byId.set(g.id, g);                      // une personne qui répond deux fois : on garde la dernière réponse
+  });
+  GUESTS = [...byId.values()].map((g,i)=>({ ...g, grad: GRADS[(i*3) % GRADS.length] }));
+}
+buildGuests(REPONSES);
 
 /* ===== Liens vers le formulaire ===== */
 function formLink(g){
@@ -518,43 +502,73 @@ function tick(){
 tick(); setInterval(tick,1000);
 
 /* ===== Liste ===== */
-const groups = ["Tous", ...new Set(GUESTS.map(g=>g.group))];
-let activeGroup = "Tous";
+const FILTERS = [["tous","Tous"],["oui","Présents"],["peut-etre","Peut-être"],["non","Absents"]];
+let activeGroup = "tous";
 const fWrap = document.getElementById("filters");
-groups.forEach(g=>{
+FILTERS.forEach(([k,label])=>{
   const b = document.createElement("button");
-  b.className = "f" + (g==="Tous" ? " on" : "");
-  b.textContent = g;
-  b.onclick = ()=>{ activeGroup = g; [...fWrap.children].forEach(c=>c.classList.toggle("on", c===b)); render(); };
+  b.className = "f" + (k==="tous" ? " on" : "");
+  b.textContent = label;
+  b.onclick = ()=>{ activeGroup = k; [...fWrap.children].forEach(c=>c.classList.toggle("on", c===b)); render(); };
   fWrap.appendChild(b);
 });
 document.getElementById("q").addEventListener("input", render);
 
-function initials(g){ return (g.first[0]+g.last[0]).toUpperCase(); }
+const LABEL = { "oui":"Présent·e", "peut-etre":"Peut-être", "non":"Absent·e" };
+function renderStats(){
+  const oui = GUESTS.filter(g=>g.status==="oui"), plus = oui.reduce((a,g)=>a+g.plus,0);
+  const stats = [[GUESTS.length,"Réponses"],[oui.length,"Présents confirmés"],[plus,"Accompagnants"],[oui.length+plus,"Personnes attendues"]];
+  document.getElementById("stats").innerHTML = stats.map(([n,l])=>`<div class="stat"><div class="n">${n}</div><div class="l">${l}</div></div>`).join("");
+}
 
 function render(){
+  renderStats();
   const q = slug(document.getElementById("q").value);
-  const list = GUESTS.filter(g => (activeGroup==="Tous" || g.group===activeGroup) && (!q || g.id.includes(q)));
+  const list = GUESTS.filter(g => (activeGroup==="tous" || g.status===activeGroup) && (!q || g.id.includes(q)));
   const grid = document.getElementById("grid");
   grid.innerHTML = list.map((g,i)=>`
     <article class="card" style="--grad:${g.grad};animation-delay:${Math.min(i,20)*30}ms" data-id="${g.id}" tabindex="0">
-      <div class="card-top"><span class="tbl">${g.table}</span></div>
-      <div class="av">${initials(g)}</div>
+      <div class="card-top">${g.status ? `<span class="badge b-${g.status}">${LABEL[g.status]}</span>` : ""}</div>
+      <div class="av">${esc(g.first[0] + (g.ini || ""))}</div>
       <div class="card-body">
-        <h3>${g.first} ${g.last}</h3>
-        <span class="grp">${g.group}</span>
-        <p>${g.line}</p>
-        <span class="open">Ouvrir mon invitation →</span>
+        <h3>${esc(g.name)}</h3>
+        <div class="mom">${g.moments.map(m=>`<span>${m}</span>`).join("")}</div>
+        <p>${g.plus ? `<span class="plus">+${g.plus} accompagnant${g.plus>1?"s":""}</span>` : g.status==="non" ? "Ne pourra pas venir" : "Vient seul·e"}</p>
+        ${g.song ? `<div class="song">Son morceau : ${esc(g.song)}</div>` : ""}
+        <span class="open">Voir ma réponse →</span>
       </div>
     </article>`).join("");
-  document.getElementById("count").innerHTML = `<b>${list.length}</b> invité${list.length>1?"s":""} affiché${list.length>1?"s":""} sur ${GUESTS.length}`;
-  document.getElementById("empty").style.display = list.length ? "none" : "block";
+  document.getElementById("count").innerHTML = `<b>${list.length}</b> réponse${list.length>1?"s":""} affichée${list.length>1?"s":""} sur ${GUESTS.length}`;
+  const empty = document.getElementById("empty");
+  empty.textContent = GUESTS.length ? "Personne pour l'instant avec ce nom ou ce filtre." : "Les premières réponses arrivent bientôt.";
+  empty.style.display = list.length ? "none" : "block";
   grid.querySelectorAll(".card").forEach(c=>{
     c.onclick = ()=> location.hash = c.dataset.id;
     c.onkeydown = e=>{ if(e.key==="Enter") location.hash = c.dataset.id; };
   });
 }
 render();
+
+/* Liste en direct depuis l'onglet « Liste publique » (si CONFIG.guestsCsv est renseigné) */
+function parseCSV(t){
+  const rows = []; let row = [], f = "", q = false;
+  for (let i=0;i<t.length;i++){
+    const c = t[i];
+    if (q){ if (c==='"'){ if (t[i+1]==='"'){ f+='"'; i++; } else q = false; } else f += c; }
+    else if (c==='"') q = true;
+    else if (c===","){ row.push(f); f = ""; }
+    else if (c==="\n" || c==="\r"){ if (c==="\r" && t[i+1]==="\n") i++; row.push(f); rows.push(row); row = []; f = ""; }
+    else f += c;
+  }
+  if (f || row.length){ row.push(f); rows.push(row); }
+  return rows;
+}
+if (CONFIG.guestsCsv){
+  fetch(CONFIG.guestsCsv + (CONFIG.guestsCsv.includes("?") ? "&" : "?") + "t=" + Date.now())
+    .then(r=> r.ok ? r.text() : Promise.reject())
+    .then(t=>{ const rows = parseCSV(t).slice(1).filter(r=>r[0]); buildGuests(rows); render(); if (location.hash) openInvite(location.hash.slice(1)); })
+    .catch(()=>{});
+}
 
 /* ===== Invitation personnelle ===== */
 const overlay = document.getElementById("overlay");
@@ -566,23 +580,23 @@ function openInvite(id){
   box.innerHTML = `
     <button class="close" aria-label="Fermer">×</button>
     <div class="inv-head">
-      <small>Invitation personnelle · ${g.table}</small>
-      <h2>Salut ${g.first} !</h2>
+      <small>Ta réponse · ${LABEL[g.status] || "Invitation"}</small>
+      <h2>${g.status==="non" ? "Dommage, " + esc(g.first) + " !" : "Merci " + esc(g.first) + " !"}</h2>
       <div class="when">Samedi 12 décembre · ${CONFIG.venue}</div>
     </div>
     <div class="perf"></div>
     <div class="inv-body">
-      <div class="quote">${g.line}</div>
-      <p>Pour mon anniversaire, on se retrouve au ${CONFIG.venue}, en région parisienne, pour une soirée qui va durer jusqu’au petit matin. Il manquerait quelqu’un sans toi.</p>
-      <div class="mission"><b>Ta mission de la soirée</b>${g.mission}</div>
+      <div class="quote">${g.status==="non" ? "On pensera à toi le 12 décembre." : g.status==="peut-etre" ? "On croise les doigts pour que tu puisses venir !" : "Ta place est réservée, on a hâte de te voir."}</div>
+      <p>Pour mon anniversaire, on se retrouve au ${CONFIG.venue}, en région parisienne, pour une soirée qui va durer jusqu’au petit matin.</p>
+      ${g.status!=="non" ? `<div class="mission"><b>Ce que tu nous as dit</b>${g.moments.length ? "Présent·e : " + g.moments.join(", ") + ". " : ""}${g.plus ? "Tu viens avec " + g.plus + " accompagnant" + (g.plus>1?"s":"") + "." : "Tu viens seul·e."}${g.song ? " Ton morceau pour le DJ : " + esc(g.song) + "." : ""}</div>` : ""}
       <div class="mini">
         <div><strong>19h30</strong><span>Apéro</span></div>
         <div><strong>21h00</strong><span>Dîner</span></div>
         <div><strong>23h–6h</strong><span>DJ set</span></div>
       </div>
-      <p style="margin-bottom:8px"><b style="color:var(--text)">Tu viens ? Réponds avant le ${CONFIG.deadline}, +1 compris.</b></p>
+      <p style="margin-bottom:8px"><b style="color:var(--text)">Un changement ? Renvoie le formulaire : seule ta dernière réponse compte.</b></p>
       <div class="rsvp">
-        <a class="btn btn-yes" data-r="form" href="${formLink(g) || "#reponse"}" target="_blank" rel="noopener">${CONFIG.formPrefill ? "Je réponds (prénom et nom déjà remplis)" : "Je réponds au formulaire"}</a>
+        <a class="btn btn-yes" data-r="form" href="${formLink() || "#reponse"}" target="_blank" rel="noopener">Modifier ma réponse</a>
       </div>
       <div class="tools">
         <button class="btn btn-ghost" data-t="copy">Copier mon lien</button>
@@ -594,7 +608,7 @@ function openInvite(id){
   document.body.style.overflow = "hidden";
   box.querySelector(".close").onclick = closeInvite;
   box.querySelector('[data-r="form"]').onclick = e=>{
-    if (!formLink(g)){ e.preventDefault(); toast("Le formulaire arrive très bientôt."); return; }
+    if (!formLink()){ e.preventDefault(); toast("Le formulaire arrive très bientôt."); return; }
     burst();
   };
   box.querySelector('[data-t="copy"]').onclick = ()=>{
